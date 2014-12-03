@@ -1,0 +1,46 @@
+/* line 5, ../sass/type.scss */
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  line-height: 1;
+}
+
+/* line 10, ../sass/type.scss */
+h1, .h1 {
+  font-size: 36px;
+}
+
+/* line 11, ../sass/type.scss */
+h2, .h2 {
+  font-size: 30px;
+}
+
+/* line 12, ../sass/type.scss */
+h3, .h3 {
+  font-size: 24px;
+}
+
+/* line 13, ../sass/type.scss */
+h4, .h4 {
+  font-size: 18px;
+}
+
+/* line 14, ../sass/type.scss */
+h5, .h5 {
+  font-size: 14px;
+  margin-top: 20px;
+}
+
+/* line 15, ../sass/type.scss */
+h6, .h6 {
+  font-size: 12px;
+  margin-top: 20px;
+}
+
+/* line 18, ../sass/type.scss */
+p {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: #777;
+}
