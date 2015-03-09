@@ -13,15 +13,86 @@
   <meta name="MSSmartTagsPreventParsing" content="TRUE" />  
   <meta name="robots" content="all" />
   <link rel="Shortcut Icon" type="image/x-icon" href="$home$apphome/theme/images/favicon.ico" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   $pages.include("/${applicationid}/theme/layouts/includes.html")
 </head>
 <body>
        
-	$pages.include("/${applicationid}/theme/layouts/header.html")
-    <div class="container-fluid">
-		$pages.includeContent()          
+	<div class="wrapper">
+    <div class="box">
+        <div class="row row-offcanvas row-offcanvas-left">
+                      
+            <!-- sidebar -->
+  $pages.include("/${applicationid}/components/dontshow/sidebarm.html");
+            <!-- /sidebar -->
+          
+            <!-- main right col -->
+            <div class="column col-sm-10 col-xs-11" id="main">
+                
+          	$pages.include("/${applicationid}/theme/layouts/header.html")
+
+              
+                <div class="padding">
+                    <div class="full col-sm-9">
+                      
+						$pages.includeContent()                 
+                      
+                        <div class="row" id="footer">    
+                          <div class="col-sm-6">
+                            
+                          </div>
+                          <div class="col-sm-6">
+                            <p>
+                            <a href="#" class="pull-right">©Copyright 2013</a>
+                            </p>
+                          </div>
+                        </div>
+                      
+                      <hr>
+                      
+                      <h4 class="text-center">
+                      <a href="http://bootply.com/96266" target="ext">Download this Template @Bootply</a>
+                      </h4>
+                        
+                      <hr>
+                        
+                      
+                    </div><!-- /col-9 -->
+                </div><!-- /padding -->
+            </div>
+            <!-- /main -->
+          
+        </div>
+    </div>
+</div>
+
+
+<!--post modal-->
+<div id="postModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+  <div class="modal-content">
+      <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			Update Status
       </div>
+      <div class="modal-body">
+          <form class="form center-block">
+            <div class="form-group">
+              <textarea class="form-control input-lg" autofocus="" placeholder="What do you want to share?"></textarea>
+            </div>
+          </form>
+      </div>
+      <div class="modal-footer">
+          <div>
+          <button class="btn btn-primary btn-sm" data-dismiss="modal" aria-hidden="true">Post</button>
+            <ul class="pull-left list-inline"><li><a href=""><i class="glyphicon glyphicon-upload"></i></a></li><li><a href=""><i class="glyphicon glyphicon-camera"></i></a></li><li><a href=""><i class="glyphicon glyphicon-map-marker"></i></a></li></ul>
+		  </div>	
+      </div>
+  </div>
+  </div>
+</div>
+		
+		
 		
 </body>
 </html>

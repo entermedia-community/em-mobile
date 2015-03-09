@@ -1,0 +1,91 @@
+<div class="column col-sm-2 col-xs-1 sidebar-offcanvas" id="sidebar">
+              
+              	<ul class="nav">
+          			<li><a href="#" data-toggle="offcanvas" class="visible-xs text-center"><i class="glyphicon glyphicon-chevron-right"></i></a></li>
+            	</ul>
+               
+<div class="hidden-xs" id="lg-menu">   
+            
+<ul class="nav" id="filters-sidebar-selected" >
+ ##show search terms? and clear button
+ 
+ ##if library is selected then show collections for that library
+ 
+ #if( $hits.getSearchQuery().hasFilters() )
+	#foreach( $selectedfilter in $hits.getSearchQuery().getFilters() )
+			#set( $detail = $searcher.getDetail($selectedfilter.getId() ) )
+		<li><a class="ajax" title="$detail.getText($context)" targetdivinner="main" 
+				href="$home$apphome/views/search/filter.html?removefilter=$selectedfilter.getId()&hitssessionid=$!hits.sessionId&searchtype=$searcher.searchType&oemaxlevel=2" >$selectedfilter
+				 <span style="float: right; margin-top: -2px; margin-right: 5px;" class="ui-icon ui-icon-closethick"></span></a></li>
+	#end
+#end	
+</ul>
+#if( $usercollections.size() > 0)
+	<div class="librarylabels"><h4>[[Collections]]</h4>
+   	<ul class="nav">
+   		#foreach( $usercollection in $usercollections )
+		<li>
+			#set( $selected = false )
+			#if( $inmodule && $data && $usercollection.getId() == $data.id )
+				#set( $selected = true )
+			#end
+			<a href="$home$apphome/views/modules/librarycollection/viewassets.html?id=${usercollection.getId()}&searchtype=librarycollection" data-dropsaveurl="$home$apphome/components/libraries/addassettocollection.html?libraryid=${selectedlibrary.id}&librarycollection=${usercollection.getId()}" class="librarylabel #if ($user) librarycollectiondroparea #end #if ($selected ) selected #end"  data-targetdiv="left-col-libraries" title="$!{usercollection.getCollection().notes}"><span> $usercollection.getName() ($usercollection.getAssetCount())</span></a>
+		</li>
+		#end
+		#if ($canaddnewcollection)
+		<li>
+			<div id="createnewarea"><a class="ajax" targetdivinner="createnewarea" data-oemaxlevel="1" href="$home$apphome/components/libraries/addnewchild.html?libraryid=$selectedlibrary.id" ><span> [[Create New]]</span></a></div>
+		</li>
+		#end
+	</ul>	
+	</div>
+#end
+
+#set($facets = $hits.getFilterOptions())
+
+<form class="ajaxform" targetdiv="searchlayout" action="$home$apphome/views/search/filter.html" target="_parent" name="dontshow" id="dontshow" valign="middle">
+
+#foreach($type in $facets )
+	#if(!$hits.isChildFacetSelected($type))
+	<h4>$context.getText($type.toString())</h4>
+	    <ul class="nav filters-sidebar">	     
+			#foreach($entry in $type.children)
+				#if( $velocityCount == 10 )
+					</ul>
+					<a class="toggle-visible morelink" href="#" data-targetdiv="showmore${type.getId()}" data-showlabel="Show More" data-hidelabel="Show Less"><span>Show More</span></a>
+					<ul id="showmore${type.getId()}" class="filters-sidebar morefilters">
+				#end
+					<li>
+					<a class="addfilter" data-filtertype="$type.getId()" data-filtervalue="$entry.getId()" data-filterlabel="$entry" href="#"><span> $entry ($entry.count)</span></a>
+					</li>
+			#end
+		</ul>
+	#end
+#end
+    <input type="hidden" name="catalogid" value="$!catalogid" />
+    <input type="hidden" name="searchtype" value="$searcher.searchType" />
+    <input type="hidden" id="filtertype" name="filtertype" value="" />
+    <input type="hidden" id="filtervalue" name="filtervalue" value="" />
+    <input type="hidden" id="filterlabel" name="filterlabel" value="" />
+    <input type="hidden" name="oemaxlevel" value="2" />
+    <input type="hidden" name="hitssessionid" value="$!hits.sessionId" /> ##TODO: reload on ajax reloads
+</form>
+	
+</div>
+	
+
+   <ul class="list-unstyled hidden-xs" id="sidebar-footer">
+       <li>
+         <a href="http://www.bootply.com"><h3>Bootstrap</h3> <i class="glyphicon glyphicon-heart-empty"></i> Bootply</a>
+       </li>
+   </ul>
+              
+              	<!-- tiny only nav-->
+              <ul class="nav visible-xs" id="xs-menu">
+                  	<li><a href="#featured" class="text-center"><i class="glyphicon glyphicon-list-alt"></i></a></li>
+                    <li><a href="#stories" class="text-center"><i class="glyphicon glyphicon-list"></i></a></li>
+                  	<li><a href="#" class="text-center"><i class="glyphicon glyphicon-paperclip"></i></a></li>
+                    <li><a href="#" class="text-center"><i class="glyphicon glyphicon-refresh"></i></a></li>
+                </ul>
+              
+</div>
