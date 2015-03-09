@@ -12,6 +12,8 @@
                   	<nav class="collapse navbar-collapse" role="navigation">
                     <form class="navbar-form navbar-left" name="searchform" action="$apphome/views/search/search.html" method="POST">
                         <div class="input-group input-group-sm" style="max-width:360px;">
+							<input type="hidden" name="field" value="description" />
+							<input type="hidden" name="operation" value="freeform" />                        
                         	#set( $input = "") 
 							#set( $input = $hits.getInput("description") )
 						  <input type="text"  placeholder="[[Search Collections]]" id="assetsearchinput" class="form-control field" name="description.value" value="$!input" />
