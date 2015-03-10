@@ -1,0 +1,37 @@
+<div class="container-fluid">
+
+<div class="row" id="detailspanel">
+
+<div id="playbutton" class="glyphicon glyphicon-play"></div>
+
+
+<div class="hidden-xs goleftlick col-md-2" >
+##Only needed if there is a previous image
+</div>
+
+<div class="playerarea col-md-8">
+	
+#set( $type = $mediaarchive.getMediaRenderType($asset.fileFormat))
+$pages.include("$apphome/components/players/types/${type}.html",$context)
+
+</div>
+
+<div id="closebutton" class="glyphicon glyphicon-remove-circle"></div>
+
+<div class="hidden-xs gorightlick col-md-2" >
+</div>
+
+
+</div>
+close button
+slide show
+
+big image
+
+tap on it for metadata
+
+swipe next/previous events and click handling on sides and on image
+
+
+
+</div>

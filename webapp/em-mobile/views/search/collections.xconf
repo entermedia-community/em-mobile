@@ -1,0 +1,11 @@
+<page>
+	<property name="hitsname">hits</property>
+	
+	<path-action name="DataEditModule.loadData" >
+		<property name="searchtype">librarycollection</property>
+    </path-action>
+	
+	<path-action name="ProjectModule.searchForAssetsOnCollection"/>
+	
+	
+</page>
