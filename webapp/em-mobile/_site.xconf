@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <page>
-  	<property name="fallbackdirectory">/WEB-INF/base/emfrontend</property>
-  	
   	<property name="applicationid">em-mobile</property>
 	<property name="catalogid">media/catalogs/public</property>
 	<path-action name="Admin.loadPermissions"/>
