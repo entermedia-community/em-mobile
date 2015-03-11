@@ -67,14 +67,14 @@ jQuery('.playerclink').bind('click',function(e)
 	
 });
 
-function doResize() 
+doResize = function() 
 {
 	var fixedheight = 300;
 	var sofarused = 0;
 	var totalavailable = $(".masonry-grid ").width(); 
 	var row = [];
 	$(".masonry-grid .masonry-grid-cell").each(function()
-			
+	{		
 		var cell = $(this);
 		var w = cell.data("width");
 		if( !w )
@@ -93,25 +93,27 @@ function doResize()
 		
 		var wimg = Math.floor( fixedheight * a );
 		
-		sofarused = sofarused + neww;
+		sofarused = sofarused + wimg + 20;
 		if( sofarused > totalavailable )
 		{
 			//TODO: set the height of this row
 			var overage = totalavailable / sofarused;
 			var newheight = fixedheight * overage;
 			$.each( row, function()
-				$(this).height(newheight);
+				{
+					$(this).height(newheight);
+				}	
 			);
 			row = [];
+			sofarused = wimg + 20;			
 		}
 		else
 		{
-			sofarused = neww;			
 			row.push( cell );
 		}
 		
 		
-	);
+	});
 	
 	
 	
