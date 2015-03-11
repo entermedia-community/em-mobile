@@ -91,6 +91,8 @@ doResize = function()
 		h = parseInt(h);
 		var a = w / h;  
 		
+		var hratio = h / fixedheight;  
+
 		var neww = Math.floor( fixedheight * a );
 		
 		sofarused = sofarused + neww + 20;
@@ -99,9 +101,10 @@ doResize = function()
 			//TODO: set the height of this row
 			var overage = totalavailable / sofarused;
 			var newheight = fixedheight * overage;
+			var newheightrounded = Math.floor(newheightrounded);
 			$.each( row, function()
 				{
-					var newcell = $(this);
+					var newcell = this;
 					var newwidth = Math.floor(newheight * newcell.aspect); 
 					newcell.cell.height(newheight);
 					newcell.cell.width(newwidth);
@@ -112,7 +115,7 @@ doResize = function()
 		}
 		else
 		{
-			row.push( {cell:cell, aspect:a, width:w, height:h} );
+			row.push( {cell:$(cell), aspect:a, width:w, height:h} );
 		}
 		
 		

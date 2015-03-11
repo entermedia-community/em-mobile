@@ -50,3 +50,7 @@
 	height: 300px;	
 }
 
+.masonry-grid-cell #emthumbholder img
+{
+	width:100%;
+}
