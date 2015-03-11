@@ -47,8 +47,7 @@
 
 .masonry-grid
 {
-	width: 1200px;
-	background-color: gray;
+	background-color: rgb(230,230,230);
 }
 
 .masonry-grid-cell

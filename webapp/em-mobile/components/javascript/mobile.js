@@ -64,54 +64,45 @@ jQuery('.playerclink').bind('click',function(e)
 				console.log("Now Play slideshow");
 			});
 
-	
+	doResize();
 });
 
 doResize = function() 
 {
-	var fixedheight = 160;
+	var fixedheight = 180;
+	var cellpadding = 30;
 	var sofarused = 0;
 	var totalwidth = 0;
 	var rownum = 0;
-	var totalavailable = $(".masonry-grid ").width() - 100; 
+	var totalavailable = $(".masonry-grid ").width() - 30; 
 	var row = [];
 	$(".masonry-grid .masonry-grid-cell").each(function()
 	{		
 		var cell = $(this);
 		//var w = cell.data("width");
 		var useimage = false;
-		var w = cell.data("imgwidth");
-		if( isNaN(w) )
+		var w = jQuery("#emthumbholder img",cell).width();
+		if(w == 0) //not loaded yet
 		{
-			var w = jQuery("#emthumbholder img",cell).width();
-			if(w == 0) //not loaded yet
+			useimage = true;
+			w = cell.data("width");
+			if( isNaN(w) )
 			{
-				useimage = true;
-				w = cell.data("width");
-				if( isNaN(w) )
-				{
-					w = 160;
-				}
+				w = 160;
 			}
-			cell.data("imgwidth",w);
 		}
 		
-		var h = cell.data("imgheight");
-		if( isNaN(h) )
+		if( useimage )
 		{
-			if( useimage)
+			h= cell.data("height");
+			if(isNaN(h) )
 			{
-				h= cell.data("height");
-				if(isNaN(h) )
-				{
-					h = 160;
-				}			
-			}
-			else
-			{
-				h = jQuery("#emthumbholder img",cell).height();
-			}
-			cell.data("imgheight",h);
+				h = 160;
+			}			
+		}
+		else
+		{
+			h = jQuery("#emthumbholder img",cell).height();
 		}
 		w = parseInt(w);
 		h = parseInt(h);
@@ -123,7 +114,7 @@ doResize = function()
 		var over = sofarused + neww;
 		if( over > totalavailable )
 		{
-			var overage = (totalavailable - row.length * 30)/ sofarused;
+			var overage = (totalavailable - row.length * cellpadding)/ sofarused;
 			var newheight = fixedheight * overage;
 
 			//Need to figure aspect of entire row
@@ -133,12 +124,9 @@ doResize = function()
 					var newcell = this;
 					var newwidth = Math.floor(newheight * newcell.aspect); 
 					
-					jQuery("#emthumbholder img",newcell.cell).height(roundedheight); //TODO: Fix aspect
+					//jQuery("#emthumbholder img",newcell.cell).height(roundedheight); //TODO: Fix aspect
 					jQuery("#emthumbholder img",newcell.cell).width(newwidth);
-					//newcell.cell.width(newwidth - 30);
-					var r1 = newcell.width / newcell.height;
-					var r2 = (newwidth) / roundedheight;
-					jQuery(".caption a", newcell.cell).html(rownum  );
+					newcell.cell.height(roundedheight + 60); //TODO: Fix aspect
 				}	
 			);
 			row = [];
@@ -151,7 +139,7 @@ doResize = function()
 		
 	});
 	
-	var overage = (totalavailable - row.length * 30)/ sofarused;
+	var overage = (totalavailable - row.length * cellpadding)/ sofarused;
 	var newheight = fixedheight * overage;
 	var roundedheight = Math.floor(newheight);
 	if( roundedheight > (fixedheight + 100) )
