@@ -100,13 +100,14 @@ function doResize()
 			var overage = totalavailable / sofarused;
 			var newheight = fixedheight * overage;
 			$.each( row, function()
-				
+				$(this).height(newheight);
 			);
+			row = [];
 		}
 		else
 		{
 			sofarused = neww;			
-			row.add( cell );
+			row.push( cell );
 		}
 		
 		
