@@ -99,6 +99,7 @@ doResize = function()
 		var neww = Math.floor( fixedheight * a );
 		
 		sofarused = sofarused + neww + 20;
+		row.push( {cell:$(cell), aspect:a, width:w, height:h} );
 		if( sofarused > totalavailable )
 		{
 			//TODO: set the height of this row
@@ -114,11 +115,7 @@ doResize = function()
 				}	
 			);
 			row = [];
-			sofarused = neww + 20;			
-		}
-		else
-		{
-			row.push( {cell:$(cell), aspect:a, width:w, height:h} );
+			sofarused = 0;			
 		}
 		
 		
