@@ -69,59 +69,94 @@ jQuery('.playerclink').bind('click',function(e)
 
 doResize = function() 
 {
-	var fixedheight = 300;
+	var fixedheight = 160;
 	var sofarused = 0;
 	var totalwidth = 0;
-	var totalavailable = $(".masonry-grid ").width(); 
+	var rownum = 0;
+	var totalavailable = $(".masonry-grid ").width() - 50; 
 	var row = [];
 	$(".masonry-grid .masonry-grid-cell").each(function()
 	{		
 		var cell = $(this);
-		var w = cell.data("width");
-		if( !w )
+		//var w = cell.data("width");
+		var useimage = false;
+		var w = jQuery("#emthumbholder img",cell).width();
+		if(w == 0) //not loaded yet
 		{
-			w = 100;
+			useimage = true;
+			w = cell.data("width");
+			if( isNaN(w) )
+			{
+				w = 160;
+			}
 		}
 		
-		var h = cell.data("height");
-		if( !h )
+		var h;
+		if( useimage)
 		{
-			h = 100;
+			h= cell.data("height");
+			if(isNaN(h) )
+			{
+				h = 160;
+			}			
+		}
+		else
+		{
+			h = jQuery("#emthumbholder img",cell).height();
 		}
 		w = parseInt(w);
 		h = parseInt(h);
 		var a = w / h;  
-		if( a > 1)
-		{
-			//this is an extra wide one so we need to set
-		}
+	
 		//var hratio = h / fixedheight;  
 		var neww = Math.floor( fixedheight * a );
 		
-		sofarused = sofarused + neww + 20;
-		row.push( {cell:$(cell), aspect:a, width:w, height:h} );
-		if( sofarused > totalavailable )
+		var over = sofarused + neww;
+		if( over > totalavailable )
 		{
 			//TODO: set the height of this row
 			var overage = totalavailable / sofarused;
 			var newheight = fixedheight * overage;
-			var newheightrounded = Math.floor(newheightrounded);
+			var roundedheight = Math.floor(newheight);
+			
 			$.each( row, function()
 				{
 					var newcell = this;
 					var newwidth = Math.floor(newheight * newcell.aspect); 
-					//newcell.cell.height(newheight);
-					newcell.cell.width(newwidth);
+					
+					jQuery("#emthumbholder img",newcell.cell).height(roundedheight); //TODO: Fix aspect
+					jQuery("#emthumbholder img",newcell.cell).width(newwidth);
+					//newcell.cell.width(newwidth - 30);
+					jQuery(".caption a", newcell.cell).html(rownum );
 				}	
 			);
 			row = [];
-			sofarused = 0;			
+			sofarused = 0;
+			rownum = rownum + 1;
 		}
 		
+		sofarused = sofarused + neww;
+		row.push( {cell:$(cell), aspect:a, width:w, height:h} );		
 		
 	});
 	
-	
+	var overage = totalavailable / sofarused;
+	var newheight = fixedheight * overage;
+	var roundedheight = Math.floor(newheight);
+	$.each( row, function()
+		{
+			var newcell = this;
+			var newwidth = Math.floor(newheight * newcell.aspect); 
+			if( roundedheight > fixedheight)
+			{
+				roundedheight = fixedheight; 
+			}
+			jQuery("#emthumbholder img",newcell.cell).height(roundedheight);
+			//jQuery("#emthumbholder img",newcell.cell).width(newwidth);
+			jQuery(".caption a", newcell.cell).html(rownum);
+		}	
+	);
+
 	
 
 }
