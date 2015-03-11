@@ -45,12 +45,19 @@
 	width:100%;
 }
 
+.masonry-grid
+{
+	width: 1200px;
+	background-color: gray;
+}
+
 .masonry-grid-cell
 {
-	height: 300px;	
+	margin:  0 15px 0 15px;
+	padding: 0;
+	border: 0;
 }
 
 .masonry-grid-cell #emthumbholder img
 {
-	width:100%;
 }

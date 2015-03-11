@@ -27,7 +27,7 @@ $context.putPageValue("showtoolbar", "false")
         $context.putPageValue("count", $count )
         $context.putPageValue("click", $click)
         $context.putPageValue("sourcepath", $sourcepath)
-		<div class="thumbnail pull-left masonry-grid-cell" id="cell${catalogid}_${hit.id}" data-width="$hit.width" data-height="$hit.height" style="margin:10px" >
+		<div class="thumbnail pull-left masonry-grid-cell" id="cell${catalogid}_${hit.id}" data-width="$hit.width" data-height="$hit.height" >
 		    	<a class="playerclink" href="$click">
 		    	    <div class="emthumbimage em$thumbsize assetdraggable" data-assetid="${hit.id}" title="$sourcepath"> 
 		        	    $pages.include("$apphome/components/results/thumbnails/${type}.html", $context)             
