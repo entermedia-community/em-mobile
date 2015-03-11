@@ -71,6 +71,7 @@ doResize = function()
 {
 	var fixedheight = 300;
 	var sofarused = 0;
+	var totalwidth = 0;
 	var totalavailable = $(".masonry-grid ").width(); 
 	var row = [];
 	$(".masonry-grid .masonry-grid-cell").each(function()
@@ -90,9 +91,11 @@ doResize = function()
 		w = parseInt(w);
 		h = parseInt(h);
 		var a = w / h;  
-		
-		var hratio = h / fixedheight;  
-
+		if( a > 1)
+		{
+			//this is an extra wide one so we need to set
+		}
+		//var hratio = h / fixedheight;  
 		var neww = Math.floor( fixedheight * a );
 		
 		sofarused = sofarused + neww + 20;
@@ -106,7 +109,7 @@ doResize = function()
 				{
 					var newcell = this;
 					var newwidth = Math.floor(newheight * newcell.aspect); 
-					newcell.cell.height(newheight);
+					//newcell.cell.height(newheight);
 					newcell.cell.width(newwidth);
 				}	
 			);
