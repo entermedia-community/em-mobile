@@ -66,6 +66,11 @@
 {
 }
 
+.masonry-grid-cell .caption
+{
+	bottom: 0px;
+}
+
 .filters-sidebar
 {
 	

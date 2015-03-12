@@ -14,7 +14,17 @@ doResize = function()
 	var sofarused = 0;
 	var totalwidth = 0;
 	var rownum = 0;
-	var totalavailable = $("#main").width() - 5; //$(".masonry-grid").width() - 25;
+	
+	var totalavailable;
+	if( $("#sidebar").is(":visible") )
+	{
+		totalavailable = 10/12 * $(window).width(); //$(".masonry-grid").width() - 25;
+	}
+	else
+	{
+		totalavailable = $(window).width(); //$(".masonry-grid").width() - 25;		
+	}
+	totalavailable  = totalavailable  - 30;//buffer
 	console.log(totalavailable);
 	var row = [];
 	$(".masonry-grid .masonry-grid-cell").each(function()
@@ -67,7 +77,7 @@ doResize = function()
 					
 					//jQuery("#emthumbholder img",newcell.cell).height(roundedheight); //TODO: Fix aspect
 					jQuery("#emthumbholder img",newcell.cell).width(newwidth);
-					newcell.cell.width(newwidth); //TODO: Fix aspect
+					//newcell.cell.width(newwidth); //TODO: Fix aspect
 					jQuery(".imagearea",newcell.cell).height(roundedheight); //TODO: Fix aspect
 				}	
 			);
