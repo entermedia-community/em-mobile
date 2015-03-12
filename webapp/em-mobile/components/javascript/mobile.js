@@ -66,6 +66,14 @@ jQuery('.playerclink').bind('click',function(e)
 		console.log("Now Play slideshow");
 	});
 
+	$('.showmore').on('click', function(e) {
+		if ($('.in', this)) {
+			$(this).text('Show Less');
+		} else {
+			$(this).text('Show More');
+		}
+	});	
+
 	doResize();
 });
 
