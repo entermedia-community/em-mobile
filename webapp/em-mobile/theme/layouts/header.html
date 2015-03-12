@@ -1,20 +1,34 @@
                 <!-- top nav -->
               	<div class="navbar navbar-black navbar-static-top">  
-                    <div class="navbar-header">
+                    <div class="navbar-header" >
+                    
+                    <ul class="nav navbar-nav">
+                  	<li class="navbar-left pull-left">
+          			<a href="#" data-toggle="offcanvas" class="filterbtn" ><i class="press-up glyphicon glyphicon-filter"></i></a>                  	
+					</li>
+                  	<li class="navbar-left  pull-left">
+                    <a href="/" class="navbar-brand logo"></a>
+                    </li>
+                    
+					</li>
+                  	<li class="pull-right">
                       <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".navbar-collapse">
                         <span class="sr-only">Toggle</span>
                         <span class="icon-bar"></span>
           				<span class="icon-bar"></span>
           				<span class="icon-bar"></span>
                       </button>
-          			<a href="#" data-toggle="offcanvas" style="font-color: white;"><i class="glyphicon glyphicon-chevron-up"></i></a>                  	
-                    <a href="/" class="navbar-brand logo">b</a>
+                     </li>
+                    </ul>
+					
+                      
                   	</div>
                   	<nav class="collapse navbar-collapse" role="navigation">
                   	
-                  	
-                    <form class="navbar-form navbar-left" name="searchform" action="$apphome/views/search/search.html" method="POST">
-                        <div class="input-group input-group-sm" style="max-width:360px;">
+                  	<ul class="nav navbar-nav">
+                  	<li class="navbar-left">
+                    <form class="navbar-form" name="searchform" action="$apphome/views/search/search.html" method="POST">
+                        <div class="input-group input-group-sm" >
 							<input type="hidden" name="field" value="description" />
 							<input type="hidden" name="operation" value="freeform" />                        
                         	#set( $input = "") 
@@ -25,7 +39,7 @@
                           </div>
                         </div>
                     </form>
-                    <ul class="nav navbar-nav">
+                    </li>
                       <li>
                         <a href="#"><i class="glyphicon glyphicon-home"></i> Home</a>
                       </li>

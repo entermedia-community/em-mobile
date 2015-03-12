@@ -11,8 +11,6 @@ html, body {
 }
 
 .nav li {
-	margin-left: -13px;
-	padding-left: 10px;
 }
 
 a {
@@ -63,7 +61,7 @@ hr {
     left: 0;
     right: 0;
     top: 0;
-    background-color:#444444;
+    background-color:#333;
   /*
     background-image:url('/assets/example/bg_suburb.jpg');
     background-size:cover;
@@ -77,7 +75,34 @@ hr {
 
 .navbar-form
 {
-	margin-left: 70px;
+	margin-left: 30px;
+	max-width:260px;
+}
+.navbar-nav
+{
+	margin: 0px;
+}
+
+.navbar-nav>li>a.filterbtn
+{
+	margin: 0px;
+	padding: 0px;
+	border: 0px;
+}
+.press-down
+{
+	background-color: #333;
+	font-color: #EEE;
+	font-size: 25px;
+	padding: 12px;
+}
+
+.press-up
+{
+	background-color: #444444;
+	font-color: white;
+	font-size: 25px;
+	padding: 12px ;
 }
 
 div.navbar-black
@@ -131,20 +156,13 @@ div.navbar-black
 
 .logo {
   display:block;
-  padding:3px;
-  background-color:#fff;
-  color:#3B5999;
-  height:28px;
-  width:28px;
-  margin:9px;
+  padding:0px;
+  background:url("../images/logo.png");
+  height:38px;
+  width:185px;
+  margin:2px;
   margin-right:2px;
   margin-left:15px;
-  font-size:20px;
-  font-weight:700;
-  text-align:center;
-  text-decoration:none;
-  text-shadow:0 0 1px;
-  border-radius:2px;
 }
 #sidebar-footer {
   background-color:#444;
@@ -261,6 +279,11 @@ small.text-muted {
   }
 
 }
+
+	.sidebar-offcanvas
+	{
+		display: none;
+	}
 
 
 /*
