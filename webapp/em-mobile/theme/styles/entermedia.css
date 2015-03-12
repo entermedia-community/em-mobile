@@ -47,16 +47,16 @@
 
 .masonry-grid
 {
-	background-color: rgb(230,230,230);
+	background-color: rgb(200,200,200);
 }
 
 .masonry-grid-cell
 {
-	margin: 15px;
+	position: relative;
+	margin: 8px;
 	padding: 0;
 	border: 0;
 	text-overflow: ellipsis;
-
 }
 .masonry-grid-cell .imagearea
 {
@@ -64,14 +64,47 @@
 }
 .masonry-grid-cell #emthumbholder img
 {
+	border-radius: 0 0 .2em .2em;
 }
 
 .masonry-grid-cell .caption
 {
+	position: absolute;
 	bottom: 0px;
-}
+	background-color: rgba(20,20,20,.4);
+	width: 100%;
+	border-radius: 0 0 .2em .2em;
+	padding: 0px 5px 5px 5px;
 
+}
+.masonry-grid-cell .caption a
+{
+	color: white;
+	text-shadow:0 0 2px #121212;
+}	
+
+.masonry-grid-cell .gallery-checkbox
+{
+	float: right;
+	margin: 0; 
+}
 .filters-sidebar
 {
 	
+}
+
+#detailspanel .playerarea
+{
+	position:fixed !important;
+	position:absolute;
+	top:0;
+	right:0;
+	bottom:0;
+	left:0;
+	overflow: auto;
+}
+
+#detailspanel .playerarea
+{
+	position:relative;
 }

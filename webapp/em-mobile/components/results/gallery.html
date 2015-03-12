@@ -27,7 +27,7 @@ $context.putPageValue("showtoolbar", "false")
         $context.putPageValue("count", $count )
         $context.putPageValue("click", $click)
         $context.putPageValue("sourcepath", $sourcepath)
-		<div class="thumbnail pull-left masonry-grid-cell" id="cell${catalogid}_${hit.id}" data-width="$hit.width" data-height="$hit.height" >
+		<div class="pull-left masonry-grid-cell" id="cell${catalogid}_${hit.id}" data-width="$hit.width" data-height="$hit.height" >
 			<div class="imagearea">
 		    	<a class="playerclink" href="$click">
 		    	    <div class="emthumbimage em$thumbsize assetdraggable" data-assetid="${hit.id}" title="$sourcepath"> 
@@ -36,10 +36,10 @@ $context.putPageValue("showtoolbar", "false")
 		    	</a>
 		    </div>	
 		      <div class="caption">
+			      <div class="gallery-checkbox">
+			          <input type="checkbox" class="selectionbox" name="count" value="" #if($hits.isSelectedOnPage(${hit.id})) checked #end data-dataid="${hit.id}" />          
+			      </div>
 		         <div class="gallery-field-info" title="#if( $hit.assettitle ) $hit.assettitle #else $hit.name #end" ><a href="$click">#if( $hit.assettitle ) $hit.assettitle #else $hit.name #end</a></div>
-		      <div class="gallery-checkbox">
-		          <input type="checkbox" class="selectionbox" name="count" value="" #if($hits.isSelectedOnPage(${hit.id})) checked #end data-dataid="${hit.id}" />          
-		      </div>
 		     </div>
 		</div>
         #set ( $count = $count + 1)

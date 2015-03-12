@@ -1,3 +1,79 @@
+$(document).ready(function(){/* off-canvas sidebar toggle */
+
+$('[data-toggle=offcanvas]').click(function() {
+  	//$(this).toggleClass('visible-xs text-center');
+	 var url = $(this).data("urlstatesave");
+    $(this).find('i').toggleClass('press-up press-down');
+   $(".sidebar-offcanvas").toggle();
+   
+   $('#main').toggleClass('col-sm-10 col-sm-12').toggleClass('col-xs-11 col-xs-12');
+   
+   jQuery.get(url, {}, function(data) 
+	{
+		//cell.html(data);
+	   doResize();
+	});
+    //$('.row-offcanvas').toggleClass('active');
+    
+   // $('#lg-menu').toggleClass('visible-xs').toggleClass('hidden-xs');
+   // $('#xs-menu').toggleClass('hidden-xs').toggleClass('visible-xs');
+    //$('#btnShow').toggle();
+});
+
+jQuery('.playerclink').bind('click',function(e)
+{
+	e.preventDefault();
+	var link = $(this);
+
+	var hidden = $("#hiddenoverlay");
+
+	loadInto(link.attr("href") + "&oemaxlevel=1",hidden);
+
+	//Now show overlay
+	hidden.show();
+	
+});
+
+	jQuery('.addfilter').bind('click',function(e)
+	{	
+		e.preventDefault();
+		//TODO: Why not update the results with new data like VD does?
+			var link = $(this);
+			var picked = link.data("filtertype");
+			jQuery('#filtertype').val(picked);
+			var value = link.data("filtervalue");
+			jQuery('#filtervalue').val(value);
+			var label = link.data("filterlabel");
+			jQuery('#filterlabel').val(label);
+
+			jQuery('#dontshow').submit();
+			
+	});
+
+	$(document).on('click',"#closebutton",function(e)
+	{	
+		e.preventDefault();
+		var hidden = $("#hiddenoverlay");
+		hidden.hide();
+	});
+	
+	$(document).on('click',"#playbutton",function(e)
+	{	
+		e.preventDefault();
+		var div = $(this);
+		div.removeClass("glyphicon-play");
+		div.addClass("glyphicon-pause");
+		console.log("Now Play slideshow");
+	});
+
+	doResize();
+});
+
+
+$(window).resize(function(){
+	doResize();
+});
+
 loadInto = function(inLink,cell)
 {
 	jQuery.get(inLink, {}, function(data) 
@@ -9,8 +85,8 @@ loadInto = function(inLink,cell)
 
 doResize = function() 
 {
-	var fixedheight = 180;
-	var cellpadding = 30;
+	var fixedheight = 200;
+	var cellpadding = 16;
 	var sofarused = 0;
 	var totalwidth = 0;
 	var rownum = 0;
@@ -18,13 +94,13 @@ doResize = function()
 	var totalavailable;
 	if( $("#sidebar").is(":visible") )
 	{
-		totalavailable = 10/12 * $(window).width(); //$(".masonry-grid").width() - 25;
+		totalavailable = 10/12 * $(window).width();
 	}
 	else
 	{
-		totalavailable = $(window).width(); //$(".masonry-grid").width() - 25;		
+		totalavailable = $(window).width(); //$(".masonry-grid").width() - 25;	Can't do this since it changes float while loading	
 	}
-	totalavailable  = totalavailable  - 30;//buffer
+	totalavailable  = totalavailable  - 5;//buffer
 	console.log(totalavailable);
 	var row = [];
 	$(".masonry-grid .masonry-grid-cell").each(function()
@@ -111,79 +187,3 @@ doResize = function()
 	);
 }
 	
-
-$(document).ready(function(){/* off-canvas sidebar toggle */
-
-$('[data-toggle=offcanvas]').click(function() {
-  	//$(this).toggleClass('visible-xs text-center');
-	 var url = $(this).data("urlstatesave");
-    $(this).find('i').toggleClass('press-up press-down');
-   $(".sidebar-offcanvas").toggle();
-   
-   $('#main').toggleClass('col-sm-10 col-sm-12').toggleClass('col-xs-11 col-xs-12');
-   
-   jQuery.get(url, {}, function(data) 
-	{
-		//cell.html(data);
-	   doResize();
-	});
-    //$('.row-offcanvas').toggleClass('active');
-    
-   // $('#lg-menu').toggleClass('visible-xs').toggleClass('hidden-xs');
-   // $('#xs-menu').toggleClass('hidden-xs').toggleClass('visible-xs');
-    //$('#btnShow').toggle();
-});
-
-jQuery('.playerclink').bind('click',function(e)
-{
-	e.preventDefault();
-	var link = $(this);
-
-	var hidden = $("#hiddenoverlay");
-
-	loadInto(link.attr("href") + "&oemaxlevel=1",hidden);
-
-	//Now show overlay
-	hidden.show();
-	
-});
-
-	jQuery('.addfilter').bind('click',function(e)
-	{	
-		e.preventDefault();
-		//TODO: Why not update the results with new data like VD does?
-			var link = $(this);
-			var picked = link.data("filtertype");
-			jQuery('#filtertype').val(picked);
-			var value = link.data("filtervalue");
-			jQuery('#filtervalue').val(value);
-			var label = link.data("filterlabel");
-			jQuery('#filterlabel').val(label);
-
-			jQuery('#dontshow').submit();
-			
-	});
-
-	$(document).on('click',"#closebutton",function(e)
-	{	
-		e.preventDefault();
-		var hidden = $("#hiddenoverlay");
-		hidden.hide();
-	});
-	
-	$(document).on('click',"#playbutton",function(e)
-	{	
-		e.preventDefault();
-		var div = $(this);
-		div.removeClass("glyphicon-play");
-		div.addClass("glyphicon-pause");
-		console.log("Now Play slideshow");
-	});
-
-	doResize();
-});
-
-
-$(window).resize(function(){
-	doResize();
-});
