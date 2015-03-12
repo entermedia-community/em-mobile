@@ -21,6 +21,7 @@
 	<script id="bootstrap" src="/${applicationid}/theme/bootstrap/js/bootstrap.js" />
 	<style id="bootstrap" href='/${applicationid}/theme/bootstrap/css/bootstrap.min.css' />
 	<script id="docs" src="/${applicationid}/components/javascript/mobile.js" />
+	<style id="theme" href='/${applicationid}/theme/styles/theme.css' />
 	<style id="styles" href='/${applicationid}/theme/styles/mobile.css' />
  
  <inner-layout>/${applicationid}/theme/layouts/layout.html</inner-layout>

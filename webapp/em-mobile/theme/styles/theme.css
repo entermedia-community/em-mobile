@@ -10,6 +10,11 @@ html, body {
    font-size:13px;
 }
 
+.nav li {
+	margin-left: -13px;
+	padding-left: 10px;
+}
+
 a {
   color:#222222;
 }
@@ -50,13 +55,12 @@ hr {
 }
 
 .full{
-	padding-top:70px;
+	padding-top:50px;
 }
 
 .box {
   	bottom: 0; /* increase for footer use */
     left: 0;
-    position: absolute;
     right: 0;
     top: 0;
     background-color:#444444;
@@ -71,24 +75,30 @@ hr {
 	margin-top:32px;
 }
 
-.navbar-blue {
+.navbar-form
+{
+	margin-left: 70px;
+}
+
+div.navbar-black
+{
+	margin-bottom: 0px;
     border-width:0;
-	background-color:#3B5999;
     color:#ffffff;
     font-family:arial,sans-serif;
     top:0;
     position:fixed;
-    width:inherit;
+    width:100%;
+    background-color:#444444;
 }
-
-.navbar-blue li > a,.navbar-toggle  {
+.navbar-black li > a,.navbar-toggle  {
    color:#efefef;
 }
 
-.navbar-blue .dropdown-menu li a {color:#2A4888;}
-.navbar-blue .dropdown-menu li > a {padding-left:30px;}
+.navbar-black .dropdown-menu li a {color:#2A4888;}
+.navbar-black .dropdown-menu li > a {padding-left:30px;}
 
-.navbar-blue li>a:hover, .navbar-blue li>a:focus, .navbar-blue .open, .navbar-blue .open>a, .navbar-blue .open>a:hover, .navbar-blue .open>a:focus {
+.navbar-black li>a:hover, .navbar-blue li>a:focus, .navbar-blue .open, .navbar-blue .open>a, .navbar-blue .open>a:hover, .navbar-blue .open>a:focus {
    background-color:#2A4888;
    color:#fff;
 }
@@ -241,10 +251,6 @@ small.text-muted {
 
   .column .padding {
     padding: 7px;
-  }
-
-  .full{
-	padding-top:20px;
   }
 
   .navbar-blue {

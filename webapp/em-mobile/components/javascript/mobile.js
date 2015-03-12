@@ -2,8 +2,8 @@
 $(document).ready(function(){/* off-canvas sidebar toggle */
 
 $('[data-toggle=offcanvas]').click(function() {
-  	$(this).toggleClass('visible-xs text-center');
-    $(this).find('i').toggleClass('glyphicon-chevron-right glyphicon-chevron-left');
+  	//$(this).toggleClass('visible-xs text-center');
+    $(this).find('i').toggleClass('glyphicon-chevron-down glyphicon-chevron-up');
     $('.row-offcanvas').toggleClass('active');
     $('#lg-menu').toggleClass('hidden-xs').toggleClass('visible-xs');
     $('#xs-menu').toggleClass('visible-xs').toggleClass('hidden-xs');
@@ -74,7 +74,7 @@ doResize = function()
 	var sofarused = 0;
 	var totalwidth = 0;
 	var rownum = 0;
-	var totalavailable = $(".masonry-grid ").width() - 30; 
+	var totalavailable = $(".masonry-grid ").width() - 5; 
 	var row = [];
 	$(".masonry-grid .masonry-grid-cell").each(function()
 	{		
@@ -126,7 +126,8 @@ doResize = function()
 					
 					//jQuery("#emthumbholder img",newcell.cell).height(roundedheight); //TODO: Fix aspect
 					jQuery("#emthumbholder img",newcell.cell).width(newwidth);
-					newcell.cell.height(roundedheight + 60); //TODO: Fix aspect
+					newcell.cell.width(newwidth); //TODO: Fix aspect
+					jQuery(".imagearea",newcell.cell).height(roundedheight); //TODO: Fix aspect
 				}	
 			);
 			row = [];
@@ -139,17 +140,21 @@ doResize = function()
 		
 	});
 	
+	//TODO: Move to method call
 	var overage = (totalavailable - row.length * cellpadding)/ sofarused;
 	var newheight = fixedheight * overage;
-	var roundedheight = Math.floor(newheight);
-	if( roundedheight > (fixedheight + 100) )
+	if( newheight > fixedheight + 100)
 	{
-		roundedheight = fixedheight + 100; 
+		newheight = fixedheight + 100
 	}
+	var roundedheight = Math.floor(newheight);
 	$.each( row, function()
 		{
 			var newcell = this;
-			jQuery("#emthumbholder img",newcell.cell).height(roundedheight);
+			var newwidth = Math.floor(newheight * newcell.aspect); 
+			jQuery("#emthumbholder img",newcell.cell).width(newwidth);
+			newcell.cell.width(newwidth); //TODO: Fix aspect
+			jQuery(".imagearea",newcell.cell).height(roundedheight); //TODO: Fix aspect
 			//jQuery("#emthumbholder img",newcell.cell).width(newwidth);
 		}	
 	);

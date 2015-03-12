@@ -20,19 +20,22 @@
        
 	<div class="wrapper">
     <div class="box">
+              	$pages.include("/${applicationid}/theme/layouts/header.html")
+    
         <div class="row row-offcanvas row-offcanvas-left">
                       
-            <!-- sidebar -->
-  $pages.include("/${applicationid}/components/dontshow/sidebarm.html");
+            <!-- main right col -->
+            
+                        <!-- sidebar -->
+  $pages.include("/${applicationid}/components/dontshow/sidebarm.html")
             <!-- /sidebar -->
           
-            <!-- main right col -->
+            
+            
             <div class="column col-sm-10 col-xs-11" id="main">
                 
-          	$pages.include("/${applicationid}/theme/layouts/header.html")
-
               
-                <div class="padding">
+                <div>
                     <div class="full content">
                       
 						$pages.includeContent()                 

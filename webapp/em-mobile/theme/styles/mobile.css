@@ -55,8 +55,13 @@
 	margin: 15px;
 	padding: 0;
 	border: 0;
-}
+	text-overflow: ellipsis;
 
+}
+.masonry-grid-cell .imagearea
+{
+	overflow: hidden;
+}
 .masonry-grid-cell #emthumbholder img
 {
 }
