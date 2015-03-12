@@ -24,14 +24,22 @@ jQuery('.playerclink').bind('click',function(e)
 {
 	e.preventDefault();
 	var link = $(this);
+	var image = $('img', link);
+	var percentleft = Math.floor(((e.pageX - link.offset().left) / image.width()) * 100);
+	var percenttop = Math.floor(((e.pageY - link.offset().top) / image.height()) * 100);
 
-	var hidden = $("#hiddenoverlay");
+	if (percenttop >= 70) {
+		console.log('Click in bottom 30%');
+	} else {
 
-	loadInto(link.attr("href") + "&oemaxlevel=1",hidden);
 
-	//Now show overlay
-	hidden.show();
+		var hidden = $("#hiddenoverlay");
 	
+		loadInto(link.attr("href") + "&oemaxlevel=1",hidden);
+	
+		//Now show overlay
+		hidden.show();
+	}
 });
 
 	jQuery('.addfilter').bind('click',function(e)
