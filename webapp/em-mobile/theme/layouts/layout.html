@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
 <head>
-  <title>$content.title - $!data</title>
+  <title>$content.title</title>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
   <meta http-equiv="X-UA-Compatible" content="chrome=1">
@@ -27,41 +27,39 @@
             <!-- main right col -->
             
                         <!-- sidebar -->
-  $pages.include("/${applicationid}/components/dontshow/sidebarm.html")
+  $pages.include("/${applicationid}/components/dontshow/sidebar.html")
             <!-- /sidebar -->
-          
             
-            
+#if( $userprofile.isEnabled("showsidebar") )                        
+            <div class="column col-sm-10 col-xs-11" id="main" >
+#else
             <div class="column col-sm-12 col-xs-12" id="main">
-                
-              
-                <div>
-                    <div class="full content">
+#end                
+                  <div class="full content">
+                    
+				$pages.includeContent()                 
+                    
+                   <div class="row" id="footer">    
+                         <div class="col-sm-6">
+                          
+                         </div>
+                         <div class="col-sm-6">
+                           <p>
+                           <a href="#" class="pull-right">©Copyright 2013</a>
+                           </p>
+                         </div>
+                   </div>
+                    
+                    <hr>
+                    
+                    <h4 class="text-center">
+                    <a href="http://bootply.com/96266" target="ext">Download this Template @Bootply</a>
+                    </h4>
                       
-						$pages.includeContent()                 
+                    <hr>
                       
-	                    <div class="row" id="footer">    
-	                          <div class="col-sm-6">
-                            
-	                          </div>
-	                          <div class="col-sm-6">
-	                            <p>
-	                            <a href="#" class="pull-right">©Copyright 2013</a>
-	                            </p>
-	                          </div>
-	                    </div>
-                      
-                      <hr>
-                      
-                      <h4 class="text-center">
-                      <a href="http://bootply.com/96266" target="ext">Download this Template @Bootply</a>
-                      </h4>
-                        
-                      <hr>
-                        
-                      
-                    </div><!-- /col-9 -->
-                </div><!-- /padding -->
+                    
+                  </div><!-- /col-9 -->
             </div>
             <!-- /main -->
           

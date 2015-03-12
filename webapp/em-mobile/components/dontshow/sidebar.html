@@ -1,5 +1,8 @@
+#if($userprofile.isEnabled("showsidebar") )
 <div class="col-sm-2 col-xs-1 sidebar-offcanvas" id="sidebar">
-              
+#else
+<div class="col-sm-2 col-xs-1 sidebar-offcanvas" style="display: none;" id="sidebar">
+#end              
                
 <div class="hidden-xs" id="lg-menu">   
             
@@ -7,7 +10,7 @@
  ##show search terms? and clear button
  
  ##if library is selected then show collections for that library
- 
+
  #if( $hits.getSearchQuery().hasFilters() )
 	#foreach( $selectedfilter in $hits.getSearchQuery().getFilters() )
 			#set( $detail = $searcher.getDetail($selectedfilter.getId() ) )

@@ -1,20 +1,3 @@
-
-$(document).ready(function(){/* off-canvas sidebar toggle */
-
-$('[data-toggle=offcanvas]').click(function() {
-  	//$(this).toggleClass('visible-xs text-center');
-    $(this).find('i').toggleClass('press-up press-down');
-   $(".sidebar-offcanvas").toggle();
-   
-   $('#main').toggleClass('col-sm-10 col-sm-12').toggleClass('col-xs-11 col-xs-12');
-   
-    //$('.row-offcanvas').toggleClass('active');
-    
-   // $('#lg-menu').toggleClass('visible-xs').toggleClass('hidden-xs');
-   // $('#xs-menu').toggleClass('hidden-xs').toggleClass('visible-xs');
-    //$('#btnShow').toggle();
-});
-
 loadInto = function(inLink,cell)
 {
 	jQuery.get(inLink, {}, function(data) 
@@ -23,54 +6,6 @@ loadInto = function(inLink,cell)
 	});
 }
 
-jQuery('.playerclink').bind('click',function(e)
-{
-	e.preventDefault();
-	var link = $(this);
-
-	var hidden = $("#hiddenoverlay");
-
-	loadInto(link.attr("href") + "&oemaxlevel=1",hidden);
-
-	//Now show overlay
-	hidden.show();
-	
-});
-
-	jQuery('.addfilter').bind('click',function(e)
-	{	
-		e.preventDefault();
-		//TODO: Why not update the results with new data like VD does?
-			var link = $(this);
-			var picked = link.data("filtertype");
-			jQuery('#filtertype').val(picked);
-			var value = link.data("filtervalue");
-			jQuery('#filtervalue').val(value);
-			var label = link.data("filterlabel");
-			jQuery('#filterlabel').val(label);
-
-			jQuery('#dontshow').submit();
-			
-	});
-
-	$(document).on('click',"#closebutton",function(e)
-	{	
-		e.preventDefault();
-		var hidden = $("#hiddenoverlay");
-		hidden.hide();
-	});
-	
-	$(document).on('click',"#playbutton",function(e)
-			{	
-				e.preventDefault();
-				var div = $(this);
-				div.removeClass("glyphicon-play");
-				div.addClass("glyphicon-pause");
-				console.log("Now Play slideshow");
-			});
-
-	doResize();
-});
 
 doResize = function() 
 {
@@ -79,7 +14,8 @@ doResize = function()
 	var sofarused = 0;
 	var totalwidth = 0;
 	var rownum = 0;
-	var totalavailable = $(".masonry-grid ").width() - 5; 
+	var totalavailable = $("#main").width() - 5; //$(".masonry-grid").width() - 25;
+	console.log(totalavailable);
 	var row = [];
 	$(".masonry-grid .masonry-grid-cell").each(function()
 	{		
@@ -158,15 +94,85 @@ doResize = function()
 			var newcell = this;
 			var newwidth = Math.floor(newheight * newcell.aspect); 
 			jQuery("#emthumbholder img",newcell.cell).width(newwidth);
-			newcell.cell.width(newwidth); //TODO: Fix aspect
+			//newcell.cell.width(newwidth); //TODO: Fix aspect
 			jQuery(".imagearea",newcell.cell).height(roundedheight); //TODO: Fix aspect
 			//jQuery("#emthumbholder img",newcell.cell).width(newwidth);
 		}	
 	);
-
+}
 	
 
-}
+$(document).ready(function(){/* off-canvas sidebar toggle */
+
+$('[data-toggle=offcanvas]').click(function() {
+  	//$(this).toggleClass('visible-xs text-center');
+	 var url = $(this).data("urlstatesave");
+    $(this).find('i').toggleClass('press-up press-down');
+   $(".sidebar-offcanvas").toggle();
+   
+   $('#main').toggleClass('col-sm-10 col-sm-12').toggleClass('col-xs-11 col-xs-12');
+   
+   jQuery.get(url, {}, function(data) 
+	{
+		//cell.html(data);
+	   doResize();
+	});
+    //$('.row-offcanvas').toggleClass('active');
+    
+   // $('#lg-menu').toggleClass('visible-xs').toggleClass('hidden-xs');
+   // $('#xs-menu').toggleClass('hidden-xs').toggleClass('visible-xs');
+    //$('#btnShow').toggle();
+});
+
+jQuery('.playerclink').bind('click',function(e)
+{
+	e.preventDefault();
+	var link = $(this);
+
+	var hidden = $("#hiddenoverlay");
+
+	loadInto(link.attr("href") + "&oemaxlevel=1",hidden);
+
+	//Now show overlay
+	hidden.show();
+	
+});
+
+	jQuery('.addfilter').bind('click',function(e)
+	{	
+		e.preventDefault();
+		//TODO: Why not update the results with new data like VD does?
+			var link = $(this);
+			var picked = link.data("filtertype");
+			jQuery('#filtertype').val(picked);
+			var value = link.data("filtervalue");
+			jQuery('#filtervalue').val(value);
+			var label = link.data("filterlabel");
+			jQuery('#filterlabel').val(label);
+
+			jQuery('#dontshow').submit();
+			
+	});
+
+	$(document).on('click',"#closebutton",function(e)
+	{	
+		e.preventDefault();
+		var hidden = $("#hiddenoverlay");
+		hidden.hide();
+	});
+	
+	$(document).on('click',"#playbutton",function(e)
+	{	
+		e.preventDefault();
+		var div = $(this);
+		div.removeClass("glyphicon-play");
+		div.addClass("glyphicon-pause");
+		console.log("Now Play slideshow");
+	});
+
+	doResize();
+});
+
 
 $(window).resize(function(){
 	doResize();
