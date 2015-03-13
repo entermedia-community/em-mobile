@@ -27,10 +27,10 @@
 #set( $text = "[[Libraries]]")
 #end
 
-	<div class="librarylabels"><h4 style="display:block;"><span class="glyphicon glyphicon-minus"></span> #$text <a href="$apphome/components/libraries/pick.html" title="[[Change Library]]" style="float:right;margin-right:5px;">
+	<div class="librarylabels"><h4 style="display:block;"><span class="glyphicon glyphicon-minus"></span> Selected Library <a href="$apphome/components/libraries/pick.html" title="[[Change Library]]" style="float:right;margin-right:5px;">
 	<span  class="glyphicon glyphicon-new-window" ></span></a> </h4>
    	<ul class="nav">
-		<li><a href="$home$apphome/index.html"><span class="glyphicon glyphicon-briefcase"></span>&nbsp;&nbsp;<span>All Media</span></a></li>
+		<li><a href="$home$apphome/index.html"><span class="glyphicon glyphicon-briefcase"></span>&nbsp;&nbsp;<span>$text (All)</span></a></li>
    		#foreach( $usercollection in $usercollections )
 		<li>
 			#set( $selected = false )

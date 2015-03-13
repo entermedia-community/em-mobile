@@ -9,6 +9,9 @@
 	<path-action name="ProfileModule.savePreference"/>
 	<path-action name="ProjectModule.loadCollections"/>
 	
+	<path-action name="DataEditModule.searchFields" >
+		<property name="searchtype">asset</property>
+	</path-action>
 	
 	
 </page>
