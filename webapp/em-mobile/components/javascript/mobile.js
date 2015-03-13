@@ -46,7 +46,7 @@ jQuery('.playerclink').bind('click',function(e)
 
 jQuery('a.imageplayer').on('click',function(e)
 {
-	e.preventDefault();
+	e.preventDefault();isNaN(w) 
 	var link = $(this);
 	var image = $('img', link);
 	var percentleft = Math.floor(((e.pageX - link.offset().left) / image.width()) * 100);
@@ -109,20 +109,48 @@ $(window).resize(function(){
 	doResize();
 });
 
+var loadingscroll = false;
+
 $(window).scroll(function() 
 {
+	if( loadingscroll )
+	{
+		return;
+	}
 	var appid = $("body").data("appid");
 	//are we near the end? Are there more pages?
-   if($(window).scrollTop() + $(window).height() > $(document).height() + 100) 
+	var attop = $(window).scrollTop() < $(window).height(); //past one entire window
+	if(	attop )
+    {
+	  return;
+	}
+	 var gallery= $("#resultsdiv");
+	var bottom = $(".masonry-grid-cell",gallery).last().offset().top;
+	var inmiddle = $(window).scrollTop() + 300 < bottom;
+	if(	inmiddle )
+    {
+	  return;
+	}
+	loadingscroll = true; 
+   var page = parseInt(gallery.data("pagenum"));   
+   var total = parseInt(gallery.data("totalpages"));
+   if( total > page)
    {
-       return;
+	   var session = gallery.data("hitssessionid");
+	   page = page + 1;
+	   gallery.data("pagenum",page);
+	   console.log("loading page: " + page);
+	   jQuery.get("/" + appid + "/components/results/gallery.html", {hitssessionid:session,page:page,oemaxlevel:"1"}, function(data) 
+	   {
+		   var jdata = $(data);
+		   var code = $(".masonry-grid",jdata).html();
+		   $(".masonry-grid",gallery).append(code);
+		   doResize();
+		   loadingscroll = false; 
+		});
+	   
    }
    
-   jQuery.get("/" + appid + "/components/results/gallery.html", {}, function(data) 
-				{
-					//cell.html(data);
-				   doResize();
-				});
 });
 
 
@@ -155,7 +183,7 @@ doResize = function()
 		totalavailable = $(window).width(); //$(".masonry-grid").width() - 25;	Can't do this since it changes float while loading	
 	}
 	totalavailable  = totalavailable  - 5;//buffer
-	console.log(totalavailable);
+	//console.log(totalavailable);
 	var row = [];
 	$(".masonry-grid .masonry-grid-cell").each(function()
 	{		
@@ -163,13 +191,13 @@ doResize = function()
 		//var w = cell.data("width");
 		var useimage = false;
 		var w = jQuery("#emthumbholder img",cell).width();
-		if(w == 0) //not loaded yet
+		if(w == 0 || w == null) //not loaded yet
 		{
 			useimage = true;
 			w = cell.data("width");
 			if( isNaN(w) || w == "" )
 			{
-				w = 160;
+				w = 80;
 			}
 		}
 		
@@ -178,7 +206,7 @@ doResize = function()
 			h= cell.data("height");
 			if(isNaN(h)  || h == "")
 			{
-				h = 160;
+				h = 80;
 			}			
 		}
 		else

@@ -1,4 +1,4 @@
-<div id="resultsdiv_${hits.getPage()}" data-hitssessionid="$hits.getSessionId()" data-pagenum="$hits.getPage()"  data-totalpages="$hits.size()">
+<div id="resultsdiv" data-hitssessionid="$hits.getSessionId()" data-pagenum="$hits.getPage()"  data-totalpages="$hits.getTotalPages()">
 
 $context.putPageValue("showtoolbar", "false")
 
@@ -45,12 +45,13 @@ $context.putPageValue("showtoolbar", "false")
         #set ( $count = $count + 1)
     #end
 </div>	
-	$pages.include("$apphome/components/results/pages.html",$context)
 #end
 #if ( $hits.totalPages == 0 )
 	<p class="info" style="margin: 20px;">
 	[[No results found.]]
 	</p>
+#else
+<div >$hits.size() [[assets]]</div>	
 #end
 </div>
 
