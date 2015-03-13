@@ -18,21 +18,30 @@ jQuery('.playerclink').bind('click',function(e)
 	e.preventDefault();
 	var link = $(this);
 	var image = $('img', link);
-	var percentleft = Math.floor(((e.pageX - link.offset().left) / image.width()) * 100);
-	var percenttop = Math.floor(((e.pageY - link.offset().top) / image.height()) * 100);
-
-	if (percenttop >= 70) {
-		console.log('Click in bottom 30%');
-	} else {
-
-
-		var hidden = $("#hiddenoverlay");
+	if (image.length) {
+		console.log(image);
+		var percentleft = Math.floor(((e.pageX - link.offset().left) / image.width()) * 100);
+		var percenttop = Math.floor(((e.pageY - link.offset().top) / image.height()) * 100);
 	
-		loadInto(link.attr("href") + "&oemaxlevel=1",hidden);
-	
-		//Now show overlay
-		hidden.show();
+		if (percenttop >= 70) {
+			console.log('Click in bottom 30%');
+			return;
+		}
 	}
+	
+	var href = link.attr("href");
+	if (href.indexOf("?") === -1) {
+		href = href + "?";
+	} else {
+	    href = href + "&";
+	}
+	var hidden = $("#hiddenoverlay");
+
+	loadInto(href + "oemaxlevel=1",hidden);
+
+	//Now show overlay
+	hidden.show();
+
 });
 
 jQuery('a.imageplayer').on('click',function(e)
