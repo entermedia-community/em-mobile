@@ -75,17 +75,17 @@ jQuery('a.imageplayer').on('click',function(e)
 			
 	});
 
-	$(document).on('click',"#closebutton",function(e)
+	$(document).on('click',".overlay-close",function(e)
 	{	
 		e.preventDefault();
 		var hidden = $("#hiddenoverlay");
 		hidden.hide();
 	});
 	
-	$(document).on('click',"#playbutton",function(e)
+	$(document).on('click',".overlay-play",function(e)
 	{	
 		e.preventDefault();
-		var div = $(this);
+		var div = $('span', this);
 		div.removeClass("glyphicon-play");
 		div.addClass("glyphicon-pause");
 		console.log("Now Play slideshow");

@@ -1,8 +1,20 @@
+.overlay-panel {
+	margin: 50px;
+	height: 60%;
+}
+
+.panel-heading > .overlay-close {
+	z-index: 10;
+	position: absolute;
+	right: 60px;
+	top: 60px;
+}
+
 #hiddenoverlay
 {
 	background-color: black;
 	display:none;
-	
+
 	position: fixed;
     top: 0;
     left: 0;
@@ -20,7 +32,7 @@
 	background-size: 100% auto;
 }
 
-#playbutton
+.overlay-play .largeicon
 {
 	font-size:30px;
 	color: rgb(200,200,200);
@@ -30,7 +42,7 @@
 	z-index: 10001;
 }
 
-#closebutton
+.overlay-close .largeicon
 {
 	font-size:30px;
 	color: rgb(200,200,200);
