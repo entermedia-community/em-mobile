@@ -1,7 +1,6 @@
 $(document).ready(function(){/* off-canvas sidebar toggle */
 
 $('[data-toggle=offcanvas]').click(function() {
-  	//$(this).toggleClass('visible-xs text-center');
 	 var url = $(this).data("urlstatesave");
     $(this).find('i').toggleClass('press-up press-down');
    $(".sidebar-offcanvas").toggle();
@@ -10,14 +9,8 @@ $('[data-toggle=offcanvas]').click(function() {
    
    jQuery.get(url, {}, function(data) 
 	{
-		//cell.html(data);
 	   doResize();
 	});
-    //$('.row-offcanvas').toggleClass('active');
-    
-   // $('#lg-menu').toggleClass('visible-xs').toggleClass('hidden-xs');
-   // $('#xs-menu').toggleClass('hidden-xs').toggleClass('visible-xs');
-    //$('#btnShow').toggle();
 });
 
 jQuery('.playerclink').bind('click',function(e)
@@ -39,6 +32,21 @@ jQuery('.playerclink').bind('click',function(e)
 	
 		//Now show overlay
 		hidden.show();
+	}
+});
+
+jQuery('a.imageplayer').on('click',function(e)
+{
+	e.preventDefault();
+	var link = $(this);
+	var image = $('img', link);
+	var percentleft = Math.floor(((e.pageX - link.offset().left) / image.width()) * 100);
+	var percenttop = Math.floor(((e.pageY - link.offset().top) / image.height()) * 100);
+
+	if (percentleft >= 70) {
+		console.log('Click on right 30%');
+	} else if (percentleft <= 30) {
+		console.log('Click on left 30%');
 	}
 });
 
@@ -75,10 +83,11 @@ jQuery('.playerclink').bind('click',function(e)
 	});
 
 	$('.showmore').on('click', function(e) {
-		if ($('.in', this)) {
-			$(this).text('Show Less');
+		var element = $(this);
+		if (element.hasClass('collapsed')) {
+			element.text('Show Less');
 		} else {
-			$(this).text('Show More');
+			element.text('Show More');
 		}
 	});	
 
