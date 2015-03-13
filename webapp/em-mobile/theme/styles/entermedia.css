@@ -32,7 +32,7 @@
 	background-size: 100% auto;
 }
 
-.overlay-play .largeicon
+.overlay-play.largeicon
 {
 	font-size:30px;
 	color: rgb(200,200,200);
@@ -42,7 +42,7 @@
 	z-index: 10001;
 }
 
-.overlay-close .largeicon
+.overlay-close.largeicon
 {
 	font-size:30px;
 	color: rgb(200,200,200);

@@ -167,7 +167,7 @@ doResize = function()
 		{
 			useimage = true;
 			w = cell.data("width");
-			if( isNaN(w) )
+			if( isNaN(w) || w == "" )
 			{
 				w = 160;
 			}
@@ -176,7 +176,7 @@ doResize = function()
 		if( useimage )
 		{
 			h= cell.data("height");
-			if(isNaN(h) )
+			if(isNaN(h)  || h == "")
 			{
 				h = 160;
 			}			
