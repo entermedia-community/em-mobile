@@ -50,7 +50,7 @@ hr {
     padding: 20px;
 }
 
-.full{
+#main{
 	padding-top:50px;
 }
 
@@ -335,4 +335,18 @@ h4 {
   #sidebar, #sidebar a, #sidebar-footer a {
     padding-left:3px;
   }
+}
+
+div.infopanel
+{
+	background-color: rgb(135,135,135);
+	padding: 14px 0 10px 20px;	
+}
+
+div.infopanel h2
+{
+	margin: 0;
+	color: white;
+	font-size: 1.2em;
+	text-shadow: 0 0 2px #121212;
 }
