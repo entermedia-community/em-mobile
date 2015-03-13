@@ -3,6 +3,8 @@
 	
 	<path-action name="DataEditModule.loadData" >
 		<property name="searchtype">librarycollection</property>
+		<property name="pageval">selectedcollection</property>
+		
     </path-action>
 	
 	<path-action name="ProjectModule.searchForAssetsOnCollection"/>

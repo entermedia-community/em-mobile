@@ -1,0 +1,14 @@
+<page>
+	<property name="hitsname">hits</property>
+	
+	<path-action name="DataEditModule.loadData" >
+		<property name="searchtype">library</property>
+		<property name="pageval">selectedlibrary</property>
+    </path-action>
+	
+	<path-action name="ProfileModule.savePreference"/>
+	<path-action name="ProjectModule.loadCollections"/>
+	
+	
+	
+</page>
