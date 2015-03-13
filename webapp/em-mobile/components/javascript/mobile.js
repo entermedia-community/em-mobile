@@ -83,6 +83,7 @@ jQuery('a.imageplayer').on('click',function(e)
 	});
 
 	$('.showmore').on('click', function(e) {
+		e.preventDefault();	
 		var element = $(this);
 		if (element.hasClass('collapsed')) {
 			element.text('Show Less');
