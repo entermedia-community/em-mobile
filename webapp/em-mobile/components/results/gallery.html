@@ -35,12 +35,12 @@ $context.putPageValue("showtoolbar", "false")
 		        	</div>
 		    	</a>
 		    </div>
-		      <!--<div class="caption">
+		      <div class="caption">
 			      <div class="gallery-checkbox">
 			          <input type="checkbox" class="selectionbox" name="count" value="" #if($hits.isSelectedOnPage(${hit.id})) checked #end data-dataid="${hit.id}" />          
 			      </div>
 		         <div class="gallery-field-info" title="#if( $hit.assettitle ) $hit.assettitle #else $hit.name #end" ><a href="$click">#if( $hit.assettitle ) $hit.assettitle #else $hit.name #end</a></div>
-		     </div>-->
+		     </div>
 		</div>
         #set ( $count = $count + 1)
     #end
