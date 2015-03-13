@@ -99,6 +99,25 @@ $(window).resize(function(){
 	doResize();
 });
 
+$(window).scroll(function() 
+{
+	var appid = $("body").data("appid");
+	//are we near the end? Are there more pages?
+   if($(window).scrollTop() + $(window).height() > $(document).height() + 100) 
+   {
+       return;
+   }
+   
+   jQuery.get("/" + appid + "/components/results/gallery.html", {}, function(data) 
+				{
+					//cell.html(data);
+				   doResize();
+				});
+});
+
+
+
+
 loadInto = function(inLink,cell)
 {
 	jQuery.get(inLink, {}, function(data) 
