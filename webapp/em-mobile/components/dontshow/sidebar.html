@@ -1,10 +1,12 @@
 #if($userprofile.isEnabled("showsidebar") )
-<div class="col-sm-2 col-xs-1 sidebar-offcanvas" id="sidebar">
+<div class="col-md-2  col-sm-3 col-xs-3 sidebar-offcanvas" id="sidebar">
 #else
-<div class="col-sm-2 col-xs-1 sidebar-offcanvas" style="display: none;" id="sidebar">
+<div class="col-md-2  col-sm-3  col-xs-3 sidebar-offcanvas" style="display: none;" id="sidebar">
 #end              
                
-<div class="hidden-xs" id="lg-menu">   
+<div id="lg-menu">   
+
+<h4><span class="glyphicon glyphicon-minus"></span> [[Assets]] ($hits.size())</h4>	
             
 <ul class="nav" id="filters-sidebar-selected" >
  ##show search terms? and clear button
@@ -83,13 +85,5 @@
 </form>
 	
 </div>
-	
-              	<!-- tiny only nav-->
-              <ul class="nav visible-xs" id="xs-menu">
-                  	<li><a href="#featured" class="text-center"><i class="glyphicon glyphicon-list-alt"></i></a></li>
-                    <li><a href="#stories" class="text-center"><i class="glyphicon glyphicon-list"></i></a></li>
-                  	<li><a href="#" class="text-center"><i class="glyphicon glyphicon-paperclip"></i></a></li>
-                    <li><a href="#" class="text-center"><i class="glyphicon glyphicon-refresh"></i></a></li>
-                </ul>
-              
+	              
 </div>

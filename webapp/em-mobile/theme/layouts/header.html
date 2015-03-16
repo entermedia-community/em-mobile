@@ -43,10 +43,18 @@
                     </form>
                     </li>
                       <li>
-                        <a href="$home$apphome/index.html"><i class="glyphicon glyphicon-home"></i> Home</a>
+                        <a href="$home$apphome/index.html?page=1"><i class="glyphicon glyphicon-home"></i> Home</a>
                       </li>
                       <li>
-                        <a href="#postModal" role="button" data-toggle="modal"><i class="glyphicon glyphicon-plus"></i> Add Media</a>
+                        <a href="#upload" id="openupload"><i class="glyphicon glyphicon-plus"></i> Add Media</a>
+                        <form id="uploadform" style="position:absolute; top:-300px;" name="wizard" method="post" enctype="multipart/form-data"	action="$home/${applicationid}/components/upload/finish.html">
+				          <input id="filepicker" type="file"  name="file.0" />
+				          #set($selected = $userprofile.get("last_selected_library" ) )
+				          #if($selected )
+				          <input  type="hidden"  name="field" value="library" />
+				          <input  type="hidden"  name="library.value" value="$selected" />
+				          #end
+				        </form>  
                       </li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">

@@ -25,6 +25,7 @@ hr {
 
 .wrapper, .row {
    height: 100%;
+   width: 100%;
    margin-left:0;
    margin-right:0;
 }

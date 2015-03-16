@@ -48,7 +48,7 @@
 		
 	#elseif( $hit.previewstatus && $hit.previewstatus == "mime")
 		#set ($mime = $mediaarchive.getMimeTypeIcon($hit.fileformat))
-		#set( $thumbpath =  "$themeprefix/images/mimetypes/${mime}.png" )
+		#set( $thumbpath =  "$apphome/theme/images/mimetypes/${mime}.png" )
 		<img class="mimethumb"  src="$home$thumbpath" border="0"/>
 	#else	
 		<img sourcepath="$sourcepath" catalogid="$catalogid" assetid="$hit.id" alt="" title="#if( $candownload )[[drag to download]]#end"

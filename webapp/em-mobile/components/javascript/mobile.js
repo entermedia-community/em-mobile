@@ -4,8 +4,8 @@ $('[data-toggle=offcanvas]').click(function() {
 	 var url = $(this).data("urlstatesave");
     $(this).find('i').toggleClass('press-up press-down');
    $(".sidebar-offcanvas").toggle();
-   
-   $('#main').toggleClass('col-sm-10 col-sm-12').toggleClass('col-xs-11 col-xs-12');
+   //class="col-md-10 col-sm-9 col-xs-8" id="main" >
+   $('#main').toggleClass('col-md-10 col-md-12').toggleClass('col-sm-9 col-sm-12').toggleClass('col-xs-9 col-xs-12');
    
    jQuery.get(url, {}, function(data) 
 	{
@@ -101,7 +101,30 @@ jQuery('a.imageplayer').on('click',function(e)
 		}
 	});	
 
-	doResize();
+    $("#filepicker").bind('change', function()  {
+    
+    	//did they cancel? Try submitting the form
+    	$("#uploadform").submit();
+    	
+    	
+    });
+	
+	$('#openupload').on('click', function(e) {
+		e.preventDefault();	
+		var element = $(this);
+		$("#filepicker").trigger('click');
+	});	
+
+	
+	$('#openupload').on('click', function(e) {
+		e.preventDefault();	
+		var element = $(this);
+		$("#filepicker").trigger('click');
+	});	
+	
+	$(window).load(function() {
+		doResize();
+	});	
 });
 
 
@@ -125,8 +148,15 @@ $(window).scroll(function()
 	  return;
 	}
 	 var gallery= $("#resultsdiv");
-	var bottom = $(".masonry-grid-cell",gallery).last().offset().top;
-	var inmiddle = $(window).scrollTop() + 300 < bottom;
+	 var lastcell = $(".masonry-grid-cell",gallery).last();
+	var bottom = lastcell.offset().top + lastcell.height();
+	var inmiddle = $(window).scrollTop() + lastcell.height() + 300  < bottom;
+	
+	if ($(window).scrollTop() == $(document).height()-$(window).height())
+	{
+		inmiddle = false;
+	}
+	
 	if(	inmiddle )
     {
 	  return;
@@ -168,22 +198,16 @@ loadInto = function(inLink,cell)
 doResize = function() 
 {
 	var fixedheight = 200;
-	var cellpadding = 16;
+	var cellpadding = 12;
 	var sofarused = 0;
 	var totalwidth = 0;
 	var rownum = 0;
+
+	console.log( "main " + $("#main").css("width") );
 	
-	var totalavailable;
-	if( $("#sidebar").is(":visible") )
-	{
-		totalavailable = 10/12 * $(window).width();
-	}
-	else
-	{
-		totalavailable = $(window).width(); //$(".masonry-grid").width() - 25;	Can't do this since it changes float while loading	
-	}
-	totalavailable  = totalavailable  - 5;//buffer
-	//console.log(totalavailable);
+	//var totalavailable = $(window).width() - $("#sidebar").width();
+	var totalavailable = $(".masonry-grid").width() - 5;
+	
 	var row = [];
 	$(".masonry-grid .masonry-grid-cell").each(function()
 	{		
