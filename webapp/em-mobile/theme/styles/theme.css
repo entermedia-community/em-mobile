@@ -373,3 +373,8 @@ div.infopanel h2
 {
 	max-width: 280px;
 }
+
+.login-area
+{
+	margin: 5px 0px 0px 30px;
+}
