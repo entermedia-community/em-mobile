@@ -1,6 +1,7 @@
-export JAVA_HOME=~/programs/jdk1.7.0_60
-export ANDROID_HOME=~/Android/Sdk
+JAVA_HOME=~/programs/jdk1.7.0_60
+ANDROID_HOME=~/Android/Sdk
 
+cordova-gen-icon
 cordova build
 cordova run android
 

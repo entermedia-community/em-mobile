@@ -356,3 +356,20 @@ div.infopanel h2
 	font-size: 1.2em;
 	text-shadow: 0 0 2px #121212;
 }
+
+.login-form .field {
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    font-size: 16px;
+    padding: 8px;
+    width: 260px;
+    margin-bottom: 10px;
+    margin-top: 5px;
+    border: 1px solid #CCC;
+}
+
+.login-form
+{
+	max-width: 280px;
+}
