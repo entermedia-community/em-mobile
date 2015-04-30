@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="net.entermediadb.%client_id" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="net.entermediadb.%sub_domain" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>%client_name</name>
     <description>
 	A mobile client for use with the %client_name DAM
@@ -7,6 +7,6 @@
     <author email="help+%client_id@entermediasoftware.com" href="http://entermediasoftware.com">
 	EnterMedia
 </author>
-    <content src="http://%client_domain.entermediadb.net/%client_id/em-mobile/" />
+    <content src="http://%sub_domain.entermediadb.net/%client_id/em-mobile/" />
     <access origin="*" />
 </widget>
