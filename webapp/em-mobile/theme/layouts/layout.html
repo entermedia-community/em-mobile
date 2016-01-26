@@ -19,16 +19,16 @@
 <body data-appid="${applicationid}">
        
 	<div class="wrapper">
-    <div class="box">
-              	$pages.include("/${applicationid}/theme/layouts/header.html")
+    	<div class="box">
+            $pages.include("/${applicationid}/theme/layouts/header.html")
     
-        <div class="row ">
+        	<div class="row ">
                       
-            <!-- main right col -->
+            	<!-- main left col -->
             
-                        <!-- sidebar -->
-  $pages.include("/${applicationid}/components/dontshow/sidebar.html")
-            <!-- /sidebar -->
+            	<!-- sidebar -->
+  				$pages.include("/${applicationid}/components/dontshow/sidebar.html")
+            	<!-- /sidebar -->
             
 #if( $userprofile.isEnabled("showsidebar") )                        
             <div class="col-md-10 col-sm-9 col-xs-9" id="main" >
@@ -39,13 +39,11 @@
                     
 				$pages.includeContent()                 
                     
-                  </div><!-- /col-9 -->
-            </div>
-            <!-- /main -->
-          
-        </div>
-    </div>
-</div>
+                  </div><!-- /full content -->
+            </div> <!-- /main -->
+        </div> <!-- /row -->
+    </div> <!-- /box -->
+</div> <!-- /wrapper -->
 
 
 <!--post modal-->
@@ -59,7 +57,7 @@
       <div class="modal-body">
           <form class="form center-block">
             <div class="form-group">
-              <textarea class="form-control input-lg" autofocus="" placeholder="What do you want to share?"></textarea>
+              <textarea class="form-control input-lg" autofocus="" placeholder="[[What do you want to share]]?"></textarea>
             </div>
           </form>
       </div>

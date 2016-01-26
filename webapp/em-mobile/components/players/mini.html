@@ -8,7 +8,7 @@
                     <div class="main-info">
         
  <div class="primary" style="text-align: center">
-						Editing across $asset.size() assets
+						[[Editing across]] $asset.size() [[assets]]
 </div>
 </div>
 		#else            
@@ -28,7 +28,7 @@
 						#set ( $sourcepath = $asset.sourcepath)
 					#end
                     #set( $link = "/${applicationid}/views/modules/asset/downloads/preview/extralarge/$sourcepath/preview.jpg")
-                    <a class="thickbox" href="$home$link" target="_parent" title="[[$asset]]">
+                    <a class="thickbox" href="$home$link" target="_parent" title="$asset">
                         $pages.include("$apphome/components/results/thumbnails/${type}.html", $context) 
                     </a>
                     <br>
@@ -61,19 +61,19 @@
                                 #if ( $velocityCount <= 10 )
                                 <a href="$home$apphome/views/search/search.html?field=keywords&operation=matches&keywords.value=$tag">$tag</a> 
                                 #elseif ( $velocityCount == 11 )
-                                    <a class="ajax tooltip" title="View All Tags" targetdiv="detaileditor" href="$home$apphome/views/modules/asset/editor/tags/index.html?assetid=$asset.id&hitssessionid=$hitssessionid&oemaxlevel=2">...</a>
+                                    <a class="ajax tooltip" title="[[View All Tags]]" targetdiv="detaileditor" href="$home$apphome/views/modules/asset/editor/tags/index.html?assetid=$asset.id&hitssessionid=$hitssessionid&oemaxlevel=2">...</a>
                                 #end
                             #end
                         #end
                      </p>
                      <p style="line-height: 25px; text-align: left; color: #fff; ">
                         #if ($asset.getCategories().size() > 0)
-                            <strong>Categories</strong><br/>
+                            <strong>[[Categories]]</strong><br/>
                             #foreach ($category in $asset.getCategories())
                                 #if ( $velocityCount <= 8 )
                                 <a href="$home$apphome/views/categories/${category.id}.html">$category</a> 
                                 #elseif ( $velocityCount == 9 )
-                                    <a class="ajax tooltip" title="View All Categories" targetdiv="detaileditor" href="$home$apphome/views/modules/asset/editor/categorize/index.html?assetid=$asset.id&hitssessionid=$hitssessionid&oemaxlevel=2">...</a>
+                                    <a class="ajax tooltip" title="[[View All Categories]]" targetdiv="detaileditor" href="$home$apphome/views/modules/asset/editor/categorize/index.html?assetid=$asset.id&hitssessionid=$hitssessionid&oemaxlevel=2">...</a>
                                 #end
                             #end
                         #end
@@ -83,7 +83,7 @@
                      #if($contact)
                       <p style="line-height: 25px; text-align: left; color: #fff; ">
                         
-                            <strong>Contact</strong><br/>
+                            <strong>[[Contact]]</strong><br/>
                                 
                                 <a href="$home$apphome/views/modules/contact/edit/edit.html?id=${contact.id}&viewid=contactcontact_details&viewpath=contact/contactcontact_details&searchtype=contact&detailsreadonly=true&preview=true">$contact</a> 
                                 
@@ -94,7 +94,7 @@
                      #if($canviewshoppingcart)
                      	#if($asset.shoppingcartlink)
                      	<p style="line-height: 25px; text-align: left; color: #fff; ">
-                     		<strong>Shopping Cart</strong><br/>
+                     		<strong>[[Shopping Cart]]</strong><br/>
                             $pages.include("/$applicationid/views/modules/asset/editor/editshoppingcart/shoppingcartbutton.html",$context)
                         </p>
                         #end

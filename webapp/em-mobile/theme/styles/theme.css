@@ -378,3 +378,27 @@ div.infopanel h2
 {
 	margin: 5px 0px 0px 30px;
 }
+
+/* --------------------------
+	File picking stuff
+---------------------------*/
+
+.btn-file {
+    position: relative;
+    overflow: hidden;
+}
+.btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
+}
