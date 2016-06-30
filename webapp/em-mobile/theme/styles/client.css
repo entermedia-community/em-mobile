@@ -1,0 +1,28 @@
+/*
+	Custom theme for Mobile Clients
+*/
+
+/* Import Stylesheets, don't remove these.
+-----------------------------------------------------------*/
+@import url("./theme.css");
+
+/* Make all custom CSS changes BELOW this line
+-----------------------------------------------------------*/
+/* Example: Change the sidebar background to blue:
+#sidebar {
+	background: blue;
+}
+*/
+
+/*
+Uncomment the blocks below to control the appearance of your theme
+------------------------------------------------------------------
+	Example: alter the path below for a custom logo */
+/*
+.logo {
+  background:url("../images/logo.png");
+}
+
+	Example: alter the background color on the nav header to change the menu bar
+.
+*/
