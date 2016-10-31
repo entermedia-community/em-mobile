@@ -25,9 +25,9 @@
 		<path-action name="Admin.loadPermissions"/>
 	<path-action name="Admin.allowViewing" />
 	
-	<script id="jquery" src="/${applicationid}/theme/bootstrap/js/jquery.js" />
-	<script id="bootstrap" src="/${applicationid}/theme/bootstrap/js/bootstrap.js" />
-	<style id="bootstrap" href='/${applicationid}/theme/bootstrap/css/bootstrap.min.css' />
+	<script id="jquery" src="/${applicationid}/components/javascript/jquery-1.12.3.min.js"/>
+	<script id="bootstrap" src="/${applicationid}/components/javascript/bootstrap/js/bootstrap.js" />
+	<style id="bootstrap" href='/${applicationid}/components/javascript/bootstrap/css/bootstrap.min.css' />
 	<script id="docs" src="/${applicationid}/components/javascript/mobile.js" />
 	<style id="theme" href='/${applicationid}/theme/styles/theme.css' />
 	<style id="styles" href='/${applicationid}/theme/styles/entermedia.css' />

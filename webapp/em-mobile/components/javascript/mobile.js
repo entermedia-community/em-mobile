@@ -197,7 +197,7 @@ loadInto = function(inLink,cell)
 
 doResize = function() 
 {
-	var fixedheight = 200;
+	var fixedheight = 150;
 	var cellpadding = 12;
 	var sofarused = 0;
 	var totalwidth = 0;
@@ -241,7 +241,6 @@ doResize = function()
 		h = parseInt(h);
 		var a = w / h;  
 	
-		//var hratio = h / fixedheight;  
 		var neww = Math.floor( fixedheight * a );
 		
 		var over = sofarused + neww;
@@ -257,9 +256,7 @@ doResize = function()
 					var newcell = this;
 					var newwidth = Math.floor(newheight * newcell.aspect); 
 					
-					//jQuery("#emthumbholder img",newcell.cell).height(roundedheight); //TODO: Fix aspect
 					jQuery("#emthumbholder img",newcell.cell).width(newwidth);
-					//newcell.cell.width(newwidth); //TODO: Fix aspect
 					jQuery(".imagearea",newcell.cell).height(roundedheight); //TODO: Fix aspect
 				}	
 			);
@@ -276,7 +273,7 @@ doResize = function()
 	//TODO: Move to method call
 	var overage = (totalavailable - row.length * cellpadding)/ sofarused;
 	var newheight = fixedheight * overage;
-	if( newheight > fixedheight + 100)
+	if( newheight > fixedheight + 100) //100 is how wide the next image is going to be
 	{
 		newheight = fixedheight + 100
 	}

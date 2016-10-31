@@ -19,8 +19,7 @@
 			#set( $detail = $mediaarchive.getAssetSearcher().getDetail($selectedfilter.getId() ) )
 		<li><a class="ajax" title="$detail.getText($context)" targetdivinner="main" 
 				href="$home$apphome/views/search/filter.html?removefilter=$selectedfilter.getId()&hitssessionid=$!hits.sessionId&searchtype=$searcher.searchType&oemaxlevel=2" > 
-				<span class="glyphicon glyphicon-remove"></span>&nbsp;&nbsp;$selectedfilter
-				</a></li>
+				<span class="glyphicon glyphicon-remove"></span>&nbsp;&nbsp;$selectedfilter</a></li>
 	#end
 #end	
 </ul>
