@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1099360417953",
+    "firebase_url": "https://entermediadb-40753.firebaseio.com",
+    "project_id": "entermediadb-40753",
+    "storage_bucket": "entermediadb-40753.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1099360417953:android:c2b6d5b3eb81953f17d8e0",
+        "android_client_info": {
+          "package_name": "org.entermediadb.app1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1099360417953-o50nesip7mmjrjk7ti6jmvt1n6j112fq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBTJLbIiq7Dx5kbpUxHWI0fwsVl0FIsDxU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1099360417953-o50nesip7mmjrjk7ti6jmvt1n6j112fq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
