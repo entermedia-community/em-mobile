@@ -1,0 +1,27 @@
+https://sdkman.io/install
+sdk install gradle 5.6.2
+
+more ~/.gradle/gradle.properties 
+org.gradle.daemon=false
+
+org.gradle.parallel=true
+
+
+cd $ANDROID_HOME
+tools/bin/sdkmanager --licenses
+
+
+Using Android SDK: /home/shanti/Android/Sdk
+Install missing SDK package(s) <-- This is a link
+
+\From studio Packages to install: 
+- Android SDK Platform 28 (platforms;android-28)
+
+Preparing "Install Android SDK Platform 28 (revision: 6)".
+Downloading https://dl.google.com/android/repository/platform-28_r06.zip
+
+
+1. import cordova project: new, import, choose projectdir/platforms/android/ and import
+2. wait for gradle to sync
+3. build-> generate signed bundle (see keystore and alias password on OEpwd at monaca line *** GDRIVE: https://drive.google.com/open?id=1pdEzVqSNPuyRU6uo7-TaWmapzVeR9iAs
+4. https://play.google.com/apps/publish/?account=7056730519978099587#ManageReleasesPlace:p=org.entermediadb.app1&appid=4975355597455888380
