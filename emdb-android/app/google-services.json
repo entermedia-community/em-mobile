@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "279466694094",
+    "firebase_url": "https://entermediadb-177816.firebaseio.com",
+    "project_id": "entermediadb-177816",
+    "storage_bucket": "entermediadb-177816.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:279466694094:android:89c853760e16b40afec79f",
+        "android_client_info": {
+          "package_name": "org.entermediadb.chat2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "279466694094-jo658skoqembq8p6nd5fqsl2t2p15lj0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.entermediadb.chat2",
+            "certificate_hash": "94ddf6a07ca902a9d50392a7a2ca3ace26cf6b9f"
+          }
+        },
+        {
+          "client_id": "279466694094-cjckl7csk7s27b4kche22shtccbknp9e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCFJYJAZl3nc86KMhJvVPDXSB9sAUGbdVw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "279466694094-cjckl7csk7s27b4kche22shtccbknp9e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
