@@ -1,18 +1,18 @@
 package org.entermediadb.entermediaslide;
 
 import android.os.Bundle;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
 import android.text.SpannableStringBuilder;
 import android.text.style.StyleSpan;
 import android.text.style.TypefaceSpan;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -21,23 +21,17 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 
-import androidx.drawerlayout.widget.DrawerLayout;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
-import android.view.Menu;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
 public class MainActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener {
+
+    EnterMediaConnection connection = new EnterMediaConnection();
 
     private AppBarConfiguration mAppBarConfiguration;
 
@@ -71,11 +65,12 @@ public class MainActivity extends AppCompatActivity implements
 
         //TODO: Go to EnterMedia REST API and get projects your a team on
 
-        topChannelMenu.add("EnterMedia / General");
-        topChannelMenu.add("CBC / General");
-        topChannelMenu.add("PRN / General");
-        MenuItem item = topChannelMenu.add("PRN / Emergency");
-        item.setChecked(true);
+        //Collection all = connection.getAsList("https://entermediadb.org/");
+
+        topChannelMenu.add(0, 2, 1, "EnterMedia / General");
+
+//        MenuItem item = topChannelMenu.add("PRN / Emergency");
+//        item.setChecked(true);
 
 
         TypefaceSpan span = new TypefaceSpan("serif");
@@ -120,6 +115,8 @@ public class MainActivity extends AppCompatActivity implements
 
 
     }
+
+
 
     //https://www.youtube.com/watch?v=ZyJeyZpIhFA
     //https://github.com/umangburman/Navigation-Drawer-With-Navigation-Component
