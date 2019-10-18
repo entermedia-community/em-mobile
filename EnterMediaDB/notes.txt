@@ -25,3 +25,19 @@ Downloading https://dl.google.com/android/repository/platform-28_r06.zip
 2. wait for gradle to sync
 3. build-> generate signed bundle (see keystore and alias password on OEpwd at monaca line *** GDRIVE: https://drive.google.com/open?id=1pdEzVqSNPuyRU6uo7-TaWmapzVeR9iAs
 4. https://play.google.com/apps/publish/?account=7056730519978099587#ManageReleasesPlace:p=org.entermediadb.app1&appid=4975355597455888380
+
+
+
+
+Firebase app
+
+Created new key in
+/home/shanti/git/em-mobile/EnterMediaDB/etc/entermediadb.keystore
+
+Password is Burkey@12
+Created debug build:
+
+It put a key here:
+/home/shanti/git/em-mobile/EnterMediaDB/etc/exported
+
+
