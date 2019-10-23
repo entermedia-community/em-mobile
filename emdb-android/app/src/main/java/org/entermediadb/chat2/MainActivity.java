@@ -40,7 +40,9 @@ import java.util.Set;
 
 
 public class MainActivity extends AppCompatActivity implements
-        NavigationView.OnNavigationItemSelectedListener, OnChatSelectedListener {
+        NavigationView.OnNavigationItemSelectedListener, OnChatSelectedListener
+{
+       // MenuItem.OnMenuItemClickListener {
 
     //TODO: get from fire
     public static final String CONFIG_SERVER = "http://192.168.0.108:8080/assets";
@@ -151,6 +153,7 @@ public class MainActivity extends AppCompatActivity implements
 //                title.setSpan(bss, 0, title.length(), 0);
                 //menu.add(0, 0, 1, title);
 
+                    /*
                     try {
 
                         JSONObject data = getJsonData();
@@ -160,7 +163,7 @@ public class MainActivity extends AppCompatActivity implements
                         {
                             String name = (String)objct.get("name");
                             MenuItem item = topChannelMenu.add(Menu.NONE, index++, Menu.NONE, name);
-                            item.setOnMenuItemClickListener(MainActivity.this::onNavigationItemSelected);
+                           // item.setOnMenuItemClickListener(MainActivity.this);
                         }
                         //TODO Subscribe to each of these topics
 
@@ -169,6 +172,8 @@ public class MainActivity extends AppCompatActivity implements
                         //log
                         Toast.makeText(MainActivity.this, "Could not get menu " + ex, Toast.LENGTH_SHORT).show();
                     }
+
+                     */
 
                 //item.setIcon()
                 //        item.setChecked(true);
@@ -187,11 +192,11 @@ public class MainActivity extends AppCompatActivity implements
                 topLevelDestinations.add(R.id.nav_home);
                 topLevelDestinations.add(R.id.nav_gallery);
                 topLevelDestinations.add(R.id.nav_tools);
-                    topLevelDestinations.add(R.id.nav_gallery);
+
 
 //        topLevelDestinations.add(R.id.nav_share);
 //        topLevelDestinations.add(R.id.nav_send);
-
+                    navigationView.setNavigationItemSelectedListener(MainActivity.this);
                 mAppBarConfiguration = new AppBarConfiguration.Builder(topLevelDestinations)
                         .setDrawerLayout(drawer)
                         .build();
@@ -201,7 +206,7 @@ public class MainActivity extends AppCompatActivity implements
                 NavController navController = Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment);
                 NavigationUI.setupActionBarWithNavController(MainActivity.this, navController, mAppBarConfiguration);
                 NavigationUI.setupWithNavController(navigationView, navController);
-                navigationView.setNavigationItemSelectedListener(MainActivity.this);
+                    navigationView.setNavigationItemSelectedListener(MainActivity.this);
             }
         };
         connection.process(handler);
@@ -248,6 +253,13 @@ public class MainActivity extends AppCompatActivity implements
 
     }
 
+//    @Override
+//    public boolean onMenuItemClick(MenuItem menuItem) {
+//
+//        menuItem.setChecked(true);
+//        return false;
+//    }
+
     //https://www.youtube.com/watch?v=ZyJeyZpIhFA
     //https://github.com/umangburman/Navigation-Drawer-With-Navigation-Component
     @Override
@@ -263,12 +275,12 @@ public class MainActivity extends AppCompatActivity implements
 
         JSONObject data = menudata.get(id);
 
-        org.entermediadb.chat2.WebViewFragment browser = (org.entermediadb.chat2.WebViewFragment)
-                getSupportFragmentManager().findFragmentById(R.id.fragment_chatlog);
-
-        browser.setUrl("https://em9dev.entermediadb.org");
-
-        navController.navigate(R.id.fragment_chatlog);
+//        org.entermediadb.chat2.WebViewFragment browser = (org.entermediadb.chat2.WebViewFragment)
+//                getSupportFragmentManager().findFragmentById(R.id.fragment_chatlog);
+//
+//        browser.setUrl("https://em9dev.entermediadb.org");
+//
+//        navController.navigate(R.id.fragment_chatlog);
 
 
 
