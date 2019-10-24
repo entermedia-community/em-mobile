@@ -18,7 +18,8 @@ import javax.annotation.Nullable;
 public class WebViewFragment extends Fragment {
 
     public WebView mWebView;
-
+    public String fieldBaseUrl;
+    public boolean loaded = false;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -38,11 +39,22 @@ public class WebViewFragment extends Fragment {
     }
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        loaded = true;
         //you can set the title for your toolbar here for different fragments different titles
-        getActivity().setTitle("Chat Enabled");
+        renderUrl();
     }
     public void setUrl(String inUrl)
     {
-        mWebView.loadUrl(inUrl);
+        fieldBaseUrl = inUrl;
+        if( loaded )
+        {
+            renderUrl();
+        }
+    }
+    protected void renderUrl()
+    {
+        getActivity().setTitle("Chat Enabled " + fieldBaseUrl);
+        mWebView.loadUrl(fieldBaseUrl);
+
     }
 }

@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -41,8 +42,7 @@ import java.util.List;
 import java.util.Set;
 
 
-public class MainActivity extends AppCompatActivity implements
-        NavigationView.OnNavigationItemSelectedListener, OnChatSelectedListener
+public class MainActivity extends AppCompatActivity implements OnChatSelectedListener
 {
        // MenuItem.OnMenuItemClickListener {
 
@@ -51,7 +51,13 @@ public class MainActivity extends AppCompatActivity implements
 
     EnterMediaConnection connection = new EnterMediaConnection();
     List<JSONObject> menudata;
-    private AppBarConfiguration mAppBarConfiguration;
+    //private AppBarConfiguration mAppBarConfiguration;
+
+    private DrawerLayout mDrawer;
+    private Toolbar toolbar;
+    private NavigationView nvDrawer;
+
+    // Make sure to be using androidx.appcompat.app.ActionBarDrawerToggle version.
     private ActionBarDrawerToggle drawerToggle;
 
     @Override
@@ -63,8 +69,11 @@ public class MainActivity extends AppCompatActivity implements
         //See if im loged in already?
 
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
+
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,7 +82,30 @@ public class MainActivity extends AppCompatActivity implements
                         .setAction("Action", null).show();
             }
         });
+        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        nvDrawer = (NavigationView) findViewById(R.id.nav_view);
+        nvDrawer.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        selectDrawerItem(menuItem);
+                        return true;
+                    }
+                });
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        // Find our drawer view
+        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawerToggle =  new ActionBarDrawerToggle(this, mDrawer, toolbar, R.string.drawer_open,  R.string.drawer_close);
+
+
+        // Setup toggle to display hamburger icon with nice animation
+        drawerToggle.setDrawerIndicatorEnabled(true);
+        drawerToggle.syncState();
+
+        // Tie DrawerLayout events to the ActionBarToggle
+        mDrawer.addDrawerListener(drawerToggle);
 
         Intent intent = getIntent();
         if( intent != null) {
@@ -96,10 +128,19 @@ public class MainActivity extends AppCompatActivity implements
                 //https://developer.android.com/guide/webapps/webview
             }
         }
-
-
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // The action bar home/up action should open or close the drawer.
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                mDrawer.openDrawer(GravityCompat.START);
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
     private void reloadMenu(final String inIdToken)
     {
 
@@ -202,8 +243,8 @@ public class MainActivity extends AppCompatActivity implements
 //                NavController navController = Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment);
 //                NavigationUI.setupActionBarWithNavController(MainActivity.this, navController, mAppBarConfiguration);
 //                NavigationUI.setupWithNavController(navigationView, navController);
-                    navigationView.setNavigationItemSelectedListener(MainActivity.this);
-                    setupDrawerContent(navigationView);
+              //  navigationView.setNavigationItemSelectedListener(MainActivity.this);
+
             }
         };
         connection.process(handler);
@@ -259,14 +300,20 @@ public class MainActivity extends AppCompatActivity implements
 
     //https://www.youtube.com/watch?v=ZyJeyZpIhFA
     //https://github.com/umangburman/Navigation-Drawer-With-Navigation-Component
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+    //https://guides.codepath.com/android/fragment-navigation-drawer
+//    @Override
+//    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+//        menuItem.setChecked(true);
+//        return true;
+//    }
+    public void selectDrawerItem(MenuItem menuItem) {
 
         menuItem.setChecked(true);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawers();
 
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        //BUG: https://stackoverflow.com/questions/5293850/fragment-duplication-on-fragment-transaction
+        //NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
 
         if( menuItem.getGroupId() == 666)
         {
@@ -279,20 +326,26 @@ public class MainActivity extends AppCompatActivity implements
                     getSupportFragmentManager().findFragmentByTag("navtest_chatlog");
 
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+
+            String collectionid = (String) data.get("id");
+            String url = "https://em9dev.entermediadb.org?collectionid=" + collectionid;
+
             if( browser == null)
             {
                 //https://developer.android.com/guide/components/fragments.html#Adding
                 browser = new org.entermediadb.chat2.ui.chat.WebViewFragment();
+                browser.setUrl(url);
                 ft.add(R.id.nav_host_fragment,browser,"navtest_chatlog");
                 ft.replace(R.id.nav_host_fragment, browser);
             }
             else
             {
+                browser.setUrl(url);
                 ft.replace(R.id.nav_host_fragment, browser);
-                //navController.navigate(R.id.nav_gallery);
             }
             ft.addToBackStack(null);
             ft.commit();
+
             //
 //            String collectionid = (String) data.get("id");
 //            browser.setUrl("https://em9dev.entermediadb.org?collectionid=" + collectionid);
@@ -304,8 +357,6 @@ public class MainActivity extends AppCompatActivity implements
 
                     //getSupportFragmentManager().findFragmentById(R.id.navtest_chatlog);
 //
-            String collectionid = (String) data.get("id");
-          //  browser.setUrl("https://em9dev.entermediadb.org?collectionid=" + collectionid);
 
 
 
@@ -315,8 +366,33 @@ public class MainActivity extends AppCompatActivity implements
         }
         else
         {
-            navController.navigate(R.id.nav_gallery); //Switch statment
+            //navController.navigate(R.id.nav_gallery); //Switch statment
             //super? Natural?
+            Fragment fragment = null;
+            Class fragmentClass;
+            switch(menuItem.getItemId()) {
+                case R.id.nav_gallery:
+                    fragmentClass = org.entermediadb.chat2.ui.gallery.GalleryFragment.class;
+                    break;
+                default:
+                    fragmentClass = org.entermediadb.chat2.ui.home.HomeFragment.class;
+            }
+
+            try {
+                fragment = (Fragment) fragmentClass.newInstance();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            // Insert the fragment by replacing any existing fragment
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, fragment).commit();
+
+            // Highlight the selected item has been done by NavigationView
+            menuItem.setChecked(true);
+            // Set action bar title
+            setTitle(menuItem.getTitle());
+            // Close the navigation drawer
         }
 
         /*
@@ -336,7 +412,7 @@ public class MainActivity extends AppCompatActivity implements
 
         }
         */
-        return true;
+        //return true;
 
     }
 
@@ -360,12 +436,12 @@ public class MainActivity extends AppCompatActivity implements
         return true;
     }
 
-    @Override
-    public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        return NavigationUI.navigateUp(navController, mAppBarConfiguration)
-                || super.onSupportNavigateUp();
-    }
+//    @Override
+//    public boolean onSupportNavigateUp() {
+//        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+//        return NavigationUI.navigateUp(navController, mAppBarConfiguration)
+//                || super.onSupportNavigateUp();
+//    }
 
 
     public void onCollectionSelected(int position)
