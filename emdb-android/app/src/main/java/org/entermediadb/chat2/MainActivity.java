@@ -47,7 +47,10 @@ public class MainActivity extends AppCompatActivity implements OnChatSelectedLis
        // MenuItem.OnMenuItemClickListener {
 
     //TODO: get from fire
+    //public static final String CONFIG_SERVER = "https://entermediadb.org/entermediadb";
     public static final String CONFIG_SERVER = "http://192.168.0.108:8080/assets";
+
+    public static final String CHAT_SERVER = "https://entermediadb.org";
 
     EnterMediaConnection connection = new EnterMediaConnection();
     List<JSONObject> menudata;
@@ -56,6 +59,8 @@ public class MainActivity extends AppCompatActivity implements OnChatSelectedLis
     private DrawerLayout mDrawer;
     private Toolbar toolbar;
     private NavigationView nvDrawer;
+
+    protected String fieldUserToken;
 
     // Make sure to be using androidx.appcompat.app.ActionBarDrawerToggle version.
     private ActionBarDrawerToggle drawerToggle;
@@ -122,9 +127,10 @@ public class MainActivity extends AppCompatActivity implements OnChatSelectedLis
             //TODO: Handle notification messages
             String idtoken = intent.getStringExtra("idtoken");
             if( idtoken != null) {
+                fieldUserToken = idtoken;
                 //String email = intent.getStringExtra("useremail");
                // Toast.makeText(MainActivity.this, idtoken, Toast.LENGTH_SHORT).show();
-                reloadMenu(idtoken);
+                reloadMenu();
                 //https://developer.android.com/guide/webapps/webview
             }
         }
@@ -141,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements OnChatSelectedLis
 
         return super.onOptionsItemSelected(item);
     }
-    private void reloadMenu(final String inIdToken)
+    private void reloadMenu()
     {
 
             UpdateActivity handler = new UpdateActivity(this)
@@ -165,7 +171,7 @@ public class MainActivity extends AppCompatActivity implements OnChatSelectedLis
                     term.put("value","*");
                     terms.add(term);
 
-                    JSONObject all = connection.postJson(CONFIG_SERVER + "/mediadb/services/lists/search/librarycollection?googleaccesskey=" + inIdToken,
+                    JSONObject all = connection.postJson(CONFIG_SERVER + "/mediadb/services/lists/search/librarycollection?googleaccesskey=" + fieldUserToken,
                             obj);
                     setJsonData(all);
                 }
@@ -322,13 +328,14 @@ public class MainActivity extends AppCompatActivity implements OnChatSelectedLis
             JSONObject data = menudata.get(id);
 
 
-            org.entermediadb.chat2.ui.chat.WebViewFragment browser = (org.entermediadb.chat2.ui.chat.WebViewFragment)
-                    getSupportFragmentManager().findFragmentByTag("navtest_chatlog");
-
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 
             String collectionid = (String) data.get("id");
-            String url = "https://em9dev.entermediadb.org?collectionid=" + collectionid;
+
+            String url = CHAT_SERVER + "/app/collective/community/index.html?goaltrackerstaff=*&collectionid=" + collectionid + "&googleaccesskey=" + fieldUserToken;
+
+            org.entermediadb.chat2.ui.chat.WebViewFragment browser = (org.entermediadb.chat2.ui.chat.WebViewFragment)
+                    getSupportFragmentManager().findFragmentByTag("navtest_chatlog");
 
             if( browser == null)
             {
