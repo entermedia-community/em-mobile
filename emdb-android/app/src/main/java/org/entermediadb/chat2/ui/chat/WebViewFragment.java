@@ -1,4 +1,4 @@
-package org.entermediadb.chat2;
+package org.entermediadb.chat2.ui.chat;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,6 +9,10 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import androidx.fragment.app.Fragment;
+
+import org.entermediadb.chat2.R;
+
+import javax.annotation.Nullable;
 
 
 public class WebViewFragment extends Fragment {
@@ -32,7 +36,11 @@ public class WebViewFragment extends Fragment {
         mWebView.setWebViewClient(new WebViewClient());
         return theview;
     }
-
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        //you can set the title for your toolbar here for different fragments different titles
+        getActivity().setTitle("Chat Enabled");
+    }
     public void setUrl(String inUrl)
     {
         mWebView.loadUrl(inUrl);

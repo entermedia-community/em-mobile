@@ -13,10 +13,12 @@ import android.webkit.WebViewFragment;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
@@ -50,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements
     EnterMediaConnection connection = new EnterMediaConnection();
     List<JSONObject> menudata;
     private AppBarConfiguration mAppBarConfiguration;
+    private ActionBarDrawerToggle drawerToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -153,7 +156,6 @@ public class MainActivity extends AppCompatActivity implements
 //                title.setSpan(bss, 0, title.length(), 0);
                 //menu.add(0, 0, 1, title);
 
-                    /*
                     try {
 
                         JSONObject data = getJsonData();
@@ -162,7 +164,7 @@ public class MainActivity extends AppCompatActivity implements
                         for(JSONObject objct : menudata)
                         {
                             String name = (String)objct.get("name");
-                            MenuItem item = topChannelMenu.add(Menu.NONE, index++, Menu.NONE, name);
+                            MenuItem item = topChannelMenu.add(666, index++, Menu.NONE, name);
                            // item.setOnMenuItemClickListener(MainActivity.this);
                         }
                         //TODO Subscribe to each of these topics
@@ -173,7 +175,6 @@ public class MainActivity extends AppCompatActivity implements
                         Toast.makeText(MainActivity.this, "Could not get menu " + ex, Toast.LENGTH_SHORT).show();
                     }
 
-                     */
 
                 //item.setIcon()
                 //        item.setChecked(true);
@@ -187,26 +188,22 @@ public class MainActivity extends AppCompatActivity implements
                 // Passing each menu ID as a set of Ids because each
                 // menu should be considered as top level destinations.
 
-                Set<Integer> topLevelDestinations = new HashSet<>();
-
-                topLevelDestinations.add(R.id.nav_home);
-                topLevelDestinations.add(R.id.nav_gallery);
-                topLevelDestinations.add(R.id.nav_tools);
-
-
-//        topLevelDestinations.add(R.id.nav_share);
-//        topLevelDestinations.add(R.id.nav_send);
+//                Set<Integer> topLevelDestinations = new HashSet<>();
+//
+//                topLevelDestinations.add(R.id.nav_home);
+//                topLevelDestinations.add(R.id.nav_gallery);
+//                topLevelDestinations.add(R.id.nav_tools);
+//                mAppBarConfiguration = new AppBarConfiguration.Builder(topLevelDestinations)
+//                        .setDrawerLayout(drawer)
+//                        .build();
+//
+//
+//                //mAppBarConfiguration
+//                NavController navController = Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment);
+//                NavigationUI.setupActionBarWithNavController(MainActivity.this, navController, mAppBarConfiguration);
+//                NavigationUI.setupWithNavController(navigationView, navController);
                     navigationView.setNavigationItemSelectedListener(MainActivity.this);
-                mAppBarConfiguration = new AppBarConfiguration.Builder(topLevelDestinations)
-                        .setDrawerLayout(drawer)
-                        .build();
-
-
-                //mAppBarConfiguration
-                NavController navController = Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment);
-                NavigationUI.setupActionBarWithNavController(MainActivity.this, navController, mAppBarConfiguration);
-                NavigationUI.setupWithNavController(navigationView, navController);
-                    navigationView.setNavigationItemSelectedListener(MainActivity.this);
+                    setupDrawerContent(navigationView);
             }
         };
         connection.process(handler);
@@ -271,18 +268,56 @@ public class MainActivity extends AppCompatActivity implements
 
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
 
-        int id = menuItem.getItemId();
+        if( menuItem.getGroupId() == 666)
+        {
+            int id = menuItem.getItemId();
 
-        JSONObject data = menudata.get(id);
+            JSONObject data = menudata.get(id);
 
-//        org.entermediadb.chat2.WebViewFragment browser = (org.entermediadb.chat2.WebViewFragment)
-//                getSupportFragmentManager().findFragmentById(R.id.fragment_chatlog);
+
+            org.entermediadb.chat2.ui.chat.WebViewFragment browser = (org.entermediadb.chat2.ui.chat.WebViewFragment)
+                    getSupportFragmentManager().findFragmentByTag("navtest_chatlog");
+
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            if( browser == null)
+            {
+                //https://developer.android.com/guide/components/fragments.html#Adding
+                browser = new org.entermediadb.chat2.ui.chat.WebViewFragment();
+                ft.add(R.id.nav_host_fragment,browser,"navtest_chatlog");
+                ft.replace(R.id.nav_host_fragment, browser);
+            }
+            else
+            {
+                ft.replace(R.id.nav_host_fragment, browser);
+                //navController.navigate(R.id.nav_gallery);
+            }
+            ft.addToBackStack(null);
+            ft.commit();
+            //
+//            String collectionid = (String) data.get("id");
+//            browser.setUrl("https://em9dev.entermediadb.org?collectionid=" + collectionid);
+
+
+            //https://stackoverflow.com/questions/33606431/add-fragment-to-navigationdrawer-activity
+            //https://www.simplifiedcoding.net/android-navigation-drawer-example-using-fragments/
+
+
+                    //getSupportFragmentManager().findFragmentById(R.id.navtest_chatlog);
 //
-//        browser.setUrl("https://em9dev.entermediadb.org");
-//
-//        navController.navigate(R.id.fragment_chatlog);
+            String collectionid = (String) data.get("id");
+          //  browser.setUrl("https://em9dev.entermediadb.org?collectionid=" + collectionid);
 
 
+
+           // navController.navigate(R.id.nav_gallery); //Switch statment
+
+
+        }
+        else
+        {
+            navController.navigate(R.id.nav_gallery); //Switch statment
+            //super? Natural?
+        }
 
         /*
         switch (id) {
