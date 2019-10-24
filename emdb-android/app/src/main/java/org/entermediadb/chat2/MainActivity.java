@@ -2,6 +2,9 @@ package org.entermediadb.chat2;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.SpannableStringBuilder;
+import android.text.style.StyleSpan;
+import android.text.style.TypefaceSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
@@ -30,8 +33,10 @@ import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
 
 
+import org.entermediadb.firebase.quickstart.auth.java.ChooserActivity;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -50,7 +55,8 @@ public class MainActivity extends AppCompatActivity implements OnChatSelectedLis
     //public static final String CONFIG_SERVER = "https://entermediadb.org/entermediadb";
     public static final String CONFIG_SERVER = "http://192.168.0.108:8080/assets";
 
-    public static final String CHAT_SERVER = "https://entermediadb.org";
+    //public static final String EMINSTITUTE = "https://entermediadb.org/entermediadb/app";
+    public static final String EMINSTITUTE = "http://192.168.0.108:8080/assets/app";
 
     EnterMediaConnection connection = new EnterMediaConnection();
     List<JSONObject> menudata;
@@ -78,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements OnChatSelectedLis
         setSupportActionBar(toolbar);
 
 
-
+/*
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,6 +93,8 @@ public class MainActivity extends AppCompatActivity implements OnChatSelectedLis
                         .setAction("Action", null).show();
             }
         });
+
+ */
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         nvDrawer = (NavigationView) findViewById(R.id.nav_view);
         nvDrawer.setNavigationItemSelectedListener(
@@ -142,6 +150,11 @@ public class MainActivity extends AppCompatActivity implements OnChatSelectedLis
         switch (item.getItemId()) {
             case android.R.id.home:
                 mDrawer.openDrawer(GravityCompat.START);
+                return true;
+            case R.id.action_logout:
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(getApplicationContext(), ChooserActivity.class);
+                getApplicationContext().startActivity(intent);
                 return true;
         }
 
@@ -211,7 +224,12 @@ public class MainActivity extends AppCompatActivity implements OnChatSelectedLis
                         for(JSONObject objct : menudata)
                         {
                             String name = (String)objct.get("name");
-                            MenuItem item = topChannelMenu.add(666, index++, Menu.NONE, name);
+
+                            SpannableStringBuilder title = new SpannableStringBuilder(name);
+                            final StyleSpan bss = new StyleSpan(android.graphics.Typeface.BOLD);  //Depending on unread
+                            title.setSpan(bss, 0, title.length(), 0);
+
+                            MenuItem item = topChannelMenu.add(666, index++, Menu.NONE, title);
                            // item.setOnMenuItemClickListener(MainActivity.this);
                         }
                         //TODO Subscribe to each of these topics
@@ -332,7 +350,7 @@ public class MainActivity extends AppCompatActivity implements OnChatSelectedLis
 
             String collectionid = (String) data.get("id");
 
-            String url = CHAT_SERVER + "/app/collective/community/index.html?goaltrackerstaff=*&collectionid=" + collectionid + "&googleaccesskey=" + fieldUserToken;
+            String url = EMINSTITUTE + "/collective/community/appchat.html?goaltrackerstaff=*&collectionid=" + collectionid + "&googleaccesskey=" + fieldUserToken;
 
             org.entermediadb.chat2.ui.chat.WebViewFragment browser = (org.entermediadb.chat2.ui.chat.WebViewFragment)
                     getSupportFragmentManager().findFragmentByTag("navtest_chatlog");
@@ -350,6 +368,9 @@ public class MainActivity extends AppCompatActivity implements OnChatSelectedLis
                 browser.setUrl(url);
                 ft.replace(R.id.nav_host_fragment, browser);
             }
+            String name = (String)data.get("name");
+            setTitle(name);
+
             ft.addToBackStack(null);
             ft.commit();
 

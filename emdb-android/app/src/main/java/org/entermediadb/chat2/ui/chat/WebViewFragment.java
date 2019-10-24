@@ -32,7 +32,8 @@ public class WebViewFragment extends Fragment {
         // Enable Javascript
         WebSettings webSettings = mWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
-
+        //webSettings.setTextZoom(20);
+        //webSettings.setLo
         // Force links and redirects to open in the WebView instead of in a browser
         mWebView.setWebViewClient(new WebViewClient());
         return theview;
@@ -53,7 +54,6 @@ public class WebViewFragment extends Fragment {
     }
     protected void renderUrl()
     {
-        getActivity().setTitle("Chat Enabled " + fieldBaseUrl);
         mWebView.loadUrl(fieldBaseUrl);
 
     }
