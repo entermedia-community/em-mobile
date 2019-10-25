@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -25,6 +26,11 @@ public class WebViewFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View theview = inflater.inflate(R.layout.fragment_chatlog, container, false);
+
+        //https://medium.com/hootsuite-engineering/handling-orientation-changes-on-android-41a6b62cb43f
+        setRetainInstance(true);
+        //getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN |     WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+
 
         mWebView = (WebView) theview.findViewById(R.id.chatlog_webview);  //chatlog_webview
         //mWebView.loadUrl("google.com");

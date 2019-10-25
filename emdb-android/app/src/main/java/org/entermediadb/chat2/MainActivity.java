@@ -71,6 +71,8 @@ public class MainActivity extends AppCompatActivity implements OnChatSelectedLis
     // Make sure to be using androidx.appcompat.app.ActionBarDrawerToggle version.
     private ActionBarDrawerToggle drawerToggle;
 
+    //https://medium.com/hootsuite-engineering/handling-orientation-changes-on-android-41a6b62cb43f
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
