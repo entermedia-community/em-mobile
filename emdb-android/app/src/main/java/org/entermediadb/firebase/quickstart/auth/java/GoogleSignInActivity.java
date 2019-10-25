@@ -255,17 +255,10 @@ public class GoogleSignInActivity extends BaseActivity implements
 
         */
             mStatusTextView.setText(getString(R.string.google_status_fmt, user.getEmail()));
-            mDetailTextView.setText(getString(R.string.firebase_status_fmt, user.getUid()));
+            mDetailTextView.setText("Login Complete");
 
             findViewById(R.id.signInButton).setVisibility(View.GONE);
             findViewById(R.id.signOutAndDisconnect).setVisibility(View.VISIBLE);
-
-            String channelId  = "fcm_default_channel";
-            String channelName = getString(R.string.default_notification_channel_name);
-            NotificationManager notificationManager =
-                    getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(new NotificationChannel(channelId,
-                    channelName, NotificationManager.IMPORTANCE_LOW));
 
 
             //var **accessTokent** = GoogleAuthUtil.getToken(mActivity!!, result.signInAccount.account, "oauth2:" + Scopes.PLUS_LOGIN)
@@ -282,7 +275,7 @@ public class GoogleSignInActivity extends BaseActivity implements
 //                        }
 //                    });
 
-            GetToken gett = new GetToken(getApplicationContext());
+            GetToken gett = new GetToken(getApplicationContext(),null);
             gett.execute();
 
 

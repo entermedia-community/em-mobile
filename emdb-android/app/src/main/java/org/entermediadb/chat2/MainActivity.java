@@ -1,10 +1,13 @@
 package org.entermediadb.chat2;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 import android.text.style.StyleSpan;
 import android.text.style.TypefaceSpan;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
@@ -30,13 +33,18 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 
+import org.entermediadb.chat2.ui.home.HomeFragment;
 import org.entermediadb.firebase.quickstart.auth.java.ChooserActivity;
+import org.entermediadb.firebase.quickstart.auth.java.GoogleSignInActivity;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -50,6 +58,7 @@ import java.util.Set;
 public class MainActivity extends AppCompatActivity implements OnChatSelectedListener
 {
        // MenuItem.OnMenuItemClickListener {
+       private static final String TAG = "MainActivity";
 
     //TODO: get from fire
     //public static final String CONFIG_SERVER = "https://entermediadb.org/entermediadb";
@@ -134,15 +143,19 @@ public class MainActivity extends AppCompatActivity implements OnChatSelectedLis
 //                    Toast.makeText(ChooserActivity.this, data.toString(), Toast.LENGTH_SHORT).show();
 //                }
 //            }
-            //TODO: Handle notification messages
-            String idtoken = intent.getStringExtra("idtoken");
-            if( idtoken != null) {
+            String selectedcollection = intent.getStringExtra("collectionid");  //Chooser notification
+            String idtoken = intent.getStringExtra("idtoken");  //Regular login
+            if( idtoken != null)
+            {
                 fieldUserToken = idtoken;
                 //String email = intent.getStringExtra("useremail");
                // Toast.makeText(MainActivity.this, idtoken, Toast.LENGTH_SHORT).show();
-                reloadMenu();
+                reloadMenu(selectedcollection);
                 //https://developer.android.com/guide/webapps/webview
             }
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.nav_host_fragment, new HomeFragment());
+            ft.commit();
         }
     }
 
@@ -163,7 +176,7 @@ public class MainActivity extends AppCompatActivity implements OnChatSelectedLis
 
         return super.onOptionsItemSelected(item);
     }
-    private void reloadMenu()
+    private void reloadMenu(String openCollectionId)
     {
 
             UpdateActivity handler = new UpdateActivity(this)
@@ -190,6 +203,16 @@ public class MainActivity extends AppCompatActivity implements OnChatSelectedLis
                     JSONObject all = connection.postJson(CONFIG_SERVER + "/mediadb/services/lists/search/librarycollection?googleaccesskey=" + fieldUserToken,
                             obj);
                     setJsonData(all);
+
+
+                    String channelId  = "fcm_default_channel";
+                    String channelName = getString(R.string.default_notification_channel_name);
+                    NotificationManager notificationManager =
+                            getSystemService(NotificationManager.class);
+                    notificationManager.createNotificationChannel(new NotificationChannel(channelId,
+                            channelName, NotificationManager.IMPORTANCE_LOW));
+
+
                 }
 
                 public void runUiUpdate()
@@ -205,7 +228,7 @@ public class MainActivity extends AppCompatActivity implements OnChatSelectedLis
                 //https://stackoverflow.com/questions/31722566/dynamic-adding-item-to-navigationview-in-android
                 Menu menu = navigationView.getMenu();
 
-                SubMenu topChannelMenu = menu.addSubMenu("Chat Channels");
+                SubMenu topChannelMenu = menu.addSubMenu("Projects");
 
                 //TODO: Go to EnterMedia REST API and get projects your a team on
 
@@ -226,6 +249,7 @@ public class MainActivity extends AppCompatActivity implements OnChatSelectedLis
                         int index = 0;
                         for(JSONObject objct : menudata)
                         {
+                            final String collectionid = (String)objct.get("id");
                             String name = (String)objct.get("name");
 
                             SpannableStringBuilder title = new SpannableStringBuilder(name);
@@ -233,97 +257,31 @@ public class MainActivity extends AppCompatActivity implements OnChatSelectedLis
                             title.setSpan(bss, 0, title.length(), 0);
 
                             MenuItem item = topChannelMenu.add(666, index++, Menu.NONE, title);
-                           // item.setOnMenuItemClickListener(MainActivity.this);
+
+                            FirebaseMessaging.getInstance().subscribeToTopic(collectionid).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (!task.isSuccessful()) {
+                                            Log.d(TAG, "Could not subscribe to " + collectionid);
+                                        }
+                                    }
+                             });
+                            if( openCollectionId != null && openCollectionId.equals(collectionid))
+                            {
+                                selectDrawerItem(item);
+                            }
                         }
-                        //TODO Subscribe to each of these topics
 
                     } catch (Throwable ex)
                     {
                         //log
                         Toast.makeText(MainActivity.this, "Could not get menu " + ex, Toast.LENGTH_SHORT).show();
                     }
-
-
-                //item.setIcon()
-                //        item.setChecked(true);
-                //MenuItem item = menu.findItem(R.id.group2);
-
-
-//        public boolean onNavigationItemSelected(MenuItem item){
-//            // Handle navigation view item clicks here.
-//            int id = item.getItemId();
-//        }
-                // Passing each menu ID as a set of Ids because each
-                // menu should be considered as top level destinations.
-
-//                Set<Integer> topLevelDestinations = new HashSet<>();
-//
-//                topLevelDestinations.add(R.id.nav_home);
-//                topLevelDestinations.add(R.id.nav_gallery);
-//                topLevelDestinations.add(R.id.nav_tools);
-//                mAppBarConfiguration = new AppBarConfiguration.Builder(topLevelDestinations)
-//                        .setDrawerLayout(drawer)
-//                        .build();
-//
-//
-//                //mAppBarConfiguration
-//                NavController navController = Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment);
-//                NavigationUI.setupActionBarWithNavController(MainActivity.this, navController, mAppBarConfiguration);
-//                NavigationUI.setupWithNavController(navigationView, navController);
-              //  navigationView.setNavigationItemSelectedListener(MainActivity.this);
-
             }
         };
         connection.process(handler);
 
-
     }
-
-    public void loginComplete(String inUserName, String inToken)
-    {
-        /*
-        mStatusTextView.setText(getString(R.string.google_status_fmt, user.getEmail()));
-        mDetailTextView.setText(getString(R.string.firebase_status_fmt, user.getUid()));
-
-        findViewById(R.id.signInButton).setVisibility(View.GONE);
-        findViewById(R.id.signOutAndDisconnect).setVisibility(View.VISIBLE);
-
-
-
-        String channelId  = "fcm_default_channel";
-        String channelName = getString(R.string.default_notification_channel_name);
-        NotificationManager notificationManager =
-                getSystemService(NotificationManager.class);
-        notificationManager.createNotificationChannel(new NotificationChannel(channelId,
-                channelName, NotificationManager.IMPORTANCE_LOW));
-
-        mDetailTextView.setText(getString(R.string.firebase_status_fmt, user.getUid()) + " channel" + channelId );
-
-        Log.d(TAG, "Channel:9 registered");
-
-        FirebaseMessaging.getInstance().subscribeToTopic("9")
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        String msg =  "ok";
-                        if (!task.isSuccessful()) {
-                            msg = "error";
-                        }
-                        Log.d(TAG, msg);
-                        Toast.makeText(GoogleSignInActivity.this, msg, Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-    */
-
-    }
-
-//    @Override
-//    public boolean onMenuItemClick(MenuItem menuItem) {
-//
-//        menuItem.setChecked(true);
-//        return false;
-//    }
 
     //https://www.youtube.com/watch?v=ZyJeyZpIhFA
     //https://github.com/umangburman/Navigation-Drawer-With-Navigation-Component
@@ -333,6 +291,24 @@ public class MainActivity extends AppCompatActivity implements OnChatSelectedLis
 //        menuItem.setChecked(true);
 //        return true;
 //    }
+
+
+    @Override
+    protected void onDestroy()
+    {
+        org.entermediadb.chat2.ui.chat.WebViewFragment browser = (org.entermediadb.chat2.ui.chat.WebViewFragment)
+                getSupportFragmentManager().findFragmentByTag("navtest_chatlog");
+        if( browser != null)
+        {
+            String collectionid = browser.getOpenCollection();
+            if( collectionid != null)
+            {
+                FirebaseMessaging.getInstance().subscribeToTopic(collectionid);
+            }
+        }
+        super.onDestroy();
+    }
+
     public void selectDrawerItem(MenuItem menuItem) {
 
         menuItem.setChecked(true);
@@ -362,7 +338,9 @@ public class MainActivity extends AppCompatActivity implements OnChatSelectedLis
             {
                 //https://developer.android.com/guide/components/fragments.html#Adding
                 browser = new org.entermediadb.chat2.ui.chat.WebViewFragment();
+                browser.setInstance(browser);
                 browser.setUrl(url);
+
                 ft.add(R.id.nav_host_fragment,browser,"navtest_chatlog");
                 ft.replace(R.id.nav_host_fragment, browser);
             }
@@ -371,6 +349,14 @@ public class MainActivity extends AppCompatActivity implements OnChatSelectedLis
                 browser.setUrl(url);
                 ft.replace(R.id.nav_host_fragment, browser);
             }
+            String previouscollection = browser.getOpenCollection();
+            if( previouscollection != null)
+            {
+                FirebaseMessaging.getInstance().subscribeToTopic(previouscollection);
+            }
+            browser.setOpenCollection(collectionid);
+            FirebaseMessaging.getInstance().unsubscribeFromTopic(collectionid);
+
             String name = (String)data.get("name");
             setTitle(name);
 

@@ -20,9 +20,12 @@ import java.io.IOException;
     public class GetToken extends AsyncTask<Void, Void, String> {
 
         private final Context context;
+        protected String collectionid;
 
-        public GetToken(Context context) {
+        public GetToken(Context context,String inCollectionId)
+        {
             this.context = context;
+            this.collectionid = inCollectionId;
         }
 
         @Override
@@ -46,6 +49,11 @@ import java.io.IOException;
       //  intent.putExtra("useremail", user.getEmail());
 
         intent.putExtra("idtoken", inToken);
+        if( collectionid != null)
+        {
+            intent.putExtra("collectionid", collectionid);
+
+        }
         context.startActivity(intent);
 
 

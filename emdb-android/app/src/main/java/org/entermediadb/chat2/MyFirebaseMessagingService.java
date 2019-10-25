@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.entermediadb.firebase.quickstart.auth.java;
+package org.entermediadb.chat2;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -33,8 +33,8 @@ import androidx.work.WorkManager;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
-import org.entermediadb.chat2.MainActivity;
-import org.entermediadb.chat2.R;
+import org.entermediadb.firebase.quickstart.auth.java.ChooserActivity;
+import org.entermediadb.firebase.quickstart.auth.java.MyWorker;
 
 
 /**
@@ -84,27 +84,21 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         if (remoteMessage.getData().size() > 0) {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
 
-            if (/* Check if data needs to be processed by long running job */ true) {
-                // For long-running tasks (10 seconds or more) use WorkManager.
-                scheduleJob();
-            } else {
-                // Handle message within 10 seconds
-                handleNow();
+            // Check if message contains a notification payload.
+            if (remoteMessage.getNotification() != null) {
+                String msg = remoteMessage.getNotification().getBody();
+                String userlabel = remoteMessage.getData().get("userlabel");
+                String collectionid = remoteMessage.getData().get("collectionid");
+                String chattopic = remoteMessage.getData().get("chattopic");
+
+                Log.d(TAG, "Message Notification Body: " + msg);
+                showNotification(collectionid,chattopic,userlabel,msg);
+                // Toast.makeText(MyFirebaseMessagingService.this, msg, Toast.LENGTH_SHORT).show();
             }
-
         }
-
-        // Check if message contains a notification payload.
-        if (remoteMessage.getNotification() != null) {
-            String msg = remoteMessage.getNotification().getBody();
-            Log.d(TAG, "Message Notification Body: " + msg);
-            sendNotification(msg);
-           // Toast.makeText(MyFirebaseMessagingService.this, msg, Toast.LENGTH_SHORT).show();
-        }
-
 
         // Also if you intend on generating your own notifications as a result of a received FCM
-        // message, here is where that should be initiated. See sendNotification method below.
+        // message, here is where that should be initiated. See showNotification method below.
     }
     // [END receive_message]
 
@@ -162,25 +156,32 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      *
      * @param messageBody FCM message body received.
      */
-    private void sendNotification(String messageBody) {
+    protected void showNotification(String inCollectionId, String inTopic, String inUserLabel, String messageBody) {
 
         //https://medium.com/@anitaa_1990/how-to-update-an-activity-from-background-service-or-a-broadcastreceiver-6dabdb5cef74
 
-        Intent intent = new Intent(this, MainActivity.class);  //cburkey
+        Intent intent = new Intent(this, ChooserActivity.class);  //cburkey
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.setData(Uri.parse("content:" + messageBody));
         intent.setType("text/plain");
+        intent.putExtra("collectionid",inCollectionId);
+        intent.putExtra("chattopic",inTopic);
+        intent.putExtra("userlabel",inUserLabel);
         intent.putExtra("message",messageBody);
+
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 
+//        org.entermediadb.chat2.ui.chat.WebViewFragment browser = (org.entermediadb.chat2.ui.chat.WebViewFragment)
+//                getSupportFragmentManager().findFragmentByTag("navtest_chatlog");
 
-        String channelId = getString(R.string.default_notification_channel_id);
+        //Unsucribe to the channel while you are in it
+
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder =
-                new NotificationCompat.Builder(this, channelId)
+                new NotificationCompat.Builder(this, inCollectionId)
                         .setSmallIcon(R.drawable.ic_stat_ic_notification)
-                        .setContentTitle(getString(R.string.fcm_message))
+                        .setContentTitle(inUserLabel + " " + inTopic)
                         .setContentText(messageBody)
                         .setAutoCancel(true)
                         .setSound(defaultSoundUri)
@@ -191,7 +192,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         // Since android Oreo notification channel is needed.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(channelId,
+            NotificationChannel channel = new NotificationChannel(inCollectionId,
                     "Channel human readable title",
                     NotificationManager.IMPORTANCE_DEFAULT);
             notificationManager.createNotificationChannel(channel);

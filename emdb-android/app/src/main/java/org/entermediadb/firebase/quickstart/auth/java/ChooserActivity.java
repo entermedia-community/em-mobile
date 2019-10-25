@@ -88,8 +88,8 @@ public class ChooserActivity extends AppCompatActivity implements AdapterView.On
         Intent intent = getIntent();
         if( intent != null)
         {
-            String idtoken = intent.getStringExtra("logout");
-            if( Boolean.parseBoolean(idtoken)) {
+            String logoutaction = intent.getStringExtra("logout");
+            if( Boolean.parseBoolean(logoutaction)) {
                 autologin = false;
             }
         }
@@ -97,7 +97,8 @@ public class ChooserActivity extends AppCompatActivity implements AdapterView.On
         {
             GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
             if (account != null) {
-                GetToken gett = new GetToken(getApplicationContext());
+                String collectionid = intent.getStringExtra("collectionid");
+                GetToken gett = new GetToken(getApplicationContext(),collectionid);
                 gett.execute();
                 return;
             }

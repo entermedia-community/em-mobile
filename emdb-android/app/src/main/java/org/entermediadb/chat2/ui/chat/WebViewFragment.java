@@ -20,6 +20,17 @@ public class WebViewFragment extends Fragment {
 
     public WebView mWebView;
     public String fieldBaseUrl;
+    public String fieldOpenCollection;
+    private static WebViewFragment fieldInstance;
+    public static WebViewFragment getInstance()
+    {
+        return fieldInstance;
+    }
+    public void setInstance(WebViewFragment inThis)
+    {
+        fieldInstance = inThis;
+    }
+
     public boolean loaded = false;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -57,6 +68,14 @@ public class WebViewFragment extends Fragment {
         {
             renderUrl();
         }
+    }
+    public String getOpenCollection()
+    {
+        return fieldOpenCollection;
+    }
+    public void setOpenCollection(String inCollectionId)
+    {
+        fieldOpenCollection = inCollectionId;
     }
     protected void renderUrl()
     {
