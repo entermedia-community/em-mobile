@@ -30,6 +30,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+
+import org.entermediadb.chat2.GetToken;
 import org.entermediadb.chat2.R;
 
 
@@ -78,6 +82,27 @@ public class ChooserActivity extends AppCompatActivity implements AdapterView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        boolean autologin = true;
+
+        Intent intent = getIntent();
+        if( intent != null)
+        {
+            String idtoken = intent.getStringExtra("logout");
+            if( Boolean.parseBoolean(idtoken)) {
+                autologin = false;
+            }
+        }
+        if( autologin)
+        {
+            GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+            if (account != null) {
+                GetToken gett = new GetToken(getApplicationContext());
+                gett.execute();
+                return;
+            }
+        }
+
         setContentView(R.layout.activity_chooser);
 
         // Set up ListView and Adapter

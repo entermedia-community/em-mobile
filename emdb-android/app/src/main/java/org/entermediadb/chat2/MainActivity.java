@@ -154,6 +154,7 @@ public class MainActivity extends AppCompatActivity implements OnChatSelectedLis
             case R.id.action_logout:
                 FirebaseAuth.getInstance().signOut();
                 Intent intent = new Intent(getApplicationContext(), ChooserActivity.class);
+                intent.putExtra("logout","true");
                 getApplicationContext().startActivity(intent);
                 return true;
         }
