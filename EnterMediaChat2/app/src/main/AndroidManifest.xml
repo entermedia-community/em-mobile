@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="org.entermediadb.chat2">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+
+    <activity android:name="org.entermediadb.firebase.quickstart.auth.java.ChooserActivity" >
+
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+    </activity>
+
+
+
+    <activity
+        android:name=".MainActivity"
+        android:label="@string/app_name"
+        android:windowSoftInputMode="adjustResize"
+        android:theme="@style/AppTheme.NoActionBar">
+
+    </activity>
+<!--
+    <application
+        android:name="androidx.multidex.MultiDexApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+-->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_stat_ic_notification" />
+        <!-- Set color used with incoming notification messages. This is used when no color is set for the incoming
+             notification message. See README(https://goo.gl/6BKBk7) for more. -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/colorAccent" />
+        <!-- [END fcm_default_icon] -->
+        <!-- [START fcm_default_channel] -->
+
+
+
+        <activity
+            android:name="org.entermediadb.firebase.quickstart.auth.java.CustomAuthActivity"
+            android:label="@string/label_custom_auth" />
+        <activity
+            android:name="org.entermediadb.firebase.quickstart.auth.java.GoogleSignInActivity"
+            android:label="@string/label_google_sign_in" />
+        <activity
+            android:name="org.entermediadb.firebase.quickstart.auth.java.FacebookLoginActivity"
+            android:label="@string/label_facebook_login" />
+        <activity
+            android:name="org.entermediadb.firebase.quickstart.auth.java.EmailPasswordActivity"
+            android:label="@string/label_emailpassword"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name="org.entermediadb.firebase.quickstart.auth.java.PasswordlessActivity"
+            android:label="@string/label_passwordless"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <data
+                    android:host="your-project-id.firebaseapp.com"
+                    android:scheme="https" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="org.entermediadb.firebase.quickstart.auth.java.PhoneAuthActivity"
+            android:label="@string/label_phone_auth"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="org.entermediadb.firebase.quickstart.auth.java.AnonymousAuthActivity"
+            android:label="@string/label_anonymous_auth" />
+        <activity
+            android:name="org.entermediadb.firebase.quickstart.auth.java.TwitterLoginActivity"
+            android:label="@string/label_twitter_login" />
+        <activity
+            android:name="org.entermediadb.firebase.quickstart.auth.java.FirebaseUIActivity"
+            android:label="@string/label_firebase_ui" />
+        <activity
+            android:name="org.entermediadb.firebase.quickstart.auth.java.GenericIdpActivity"
+            android:label="@string/label_generic_idp" />
+
+
+        <!-- Facebook Configuration -->
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id"
+            tools:replace="android:value" />
+
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            tools:replace="android:theme" />
+
+
+        <service
+            android:name=".MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+    </application>
+
+</manifest>

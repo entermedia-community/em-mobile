@@ -1,0 +1,111 @@
+{
+  "_args": [
+    [
+      "cordova-custom-config@5.1.0",
+      "Google_Login"
+    ]
+  ],
+  "_from": "cordova-custom-config@5.1.0",
+  "_hasShrinkwrap": false,
+  "_id": "cordova-custom-config@5.1.0",
+  "_inCache": true,
+  "_installable": true,
+  "_location": "/cordova-custom-config",
+  "_nodeVersion": "8.11.1",
+  "_npmOperationalInternal": {
+    "host": "s3://npm-registry-packages",
+    "tmp": "tmp/cordova-custom-config_5.1.0_1553413616044_0.3897194735733003"
+  },
+  "_npmUser": {
+    "email": "dave@workingedge.co.uk",
+    "name": "davealden"
+  },
+  "_npmVersion": "5.6.0",
+  "_phantomChildren": {},
+  "_requested": {
+    "name": "cordova-custom-config",
+    "raw": "cordova-custom-config@5.1.0",
+    "rawSpec": "5.1.0",
+    "scope": null,
+    "spec": "5.1.0",
+    "type": "version"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/cordova-custom-config/-/cordova-custom-config-5.1.0.tgz",
+  "_shasum": "bb37c9d4b58eab9d05a6a8dd22ec1bd700b1c1ac",
+  "_shrinkwrap": null,
+  "_spec": "cordova-custom-config@5.1.0",
+  "_where": "Google_Login",
+  "author": {
+    "name": "Dave Alden"
+  },
+  "bugs": {
+    "url": "https://github.com/dpa99c/cordova-custom-config/issues"
+  },
+  "cordova": {
+    "id": "cordova-custom-config",
+    "platforms": [
+      "android",
+      "ios"
+    ]
+  },
+  "cordova_name": "cordova-custom-config",
+  "dependencies": {
+    "colors": "^1.1.2",
+    "elementtree": "^0.1.6",
+    "lodash": "^4.17.11",
+    "plist": "^3.0.1",
+    "q": "^1.4.1",
+    "shelljs": "^0.7.0",
+    "tostr": "^0.1.0",
+    "xcode": "^1.0.0"
+  },
+  "description": "Cordova/Phonegap plugin to update platform configuration files based on preferences and config-file data defined in config.xml.",
+  "devDependencies": {
+    "got": "^6.5.0",
+    "jshint": "^2.6.0"
+  },
+  "directories": {},
+  "dist": {
+    "fileCount": 12,
+    "integrity": "sha512-qPk1l1Rayu0PAp5kXqyvzMprc0oCqRa5pcs7iRrb0daq0I/RWIw7BngCyOJuv/wnJrTBbwxVued1+lVLe0/MeA==",
+    "npm-signature": "-----BEGIN PGP SIGNATURE-----\r\nVersion: OpenPGP.js v3.0.4\r\nComment: https://openpgpjs.org\r\n\r\nwsFcBAEBCAAQBQJclzXxCRA9TVsSAnZWagAALvoP/2PuVtWuHKTMdJ/Hf2nZ\nyEcSjkK5TPCDpg67mwoMPQ9gcgrKP4Y1TUERmg0P37nLS48Xkx6FMdPXMZyf\npR+GuN2lKOiidlEiqR6Mvx5ZAxWntd00NP6ydm7gKsn/U9pJzhJkYMm66zB5\nXqd2cPEiabxICnKM4bgJUpcxs8K7SgzaM6heDfC5ygcsCA5hRO+WPTzVssXh\n+rnEqF3sx1A3VZ27syeIJgcO6c3v5OPJxQ48R7GQyCYoNfz8n43c6uJOXXLc\nfrtKSitYalRI/7IxNdEKJyraLqDvZE0Xr4y3jT8/AZLZJp0Tscm7AWVjkprM\nECr70ruMhM60W+sbQ9zc4XH6y8BAM7t24LaeQPrKsZe5ovRkZifpEI4sDuz0\ni2Hvo9FCTu0MGw6APowYhaA+qL9/ECUd9JG3eeje01jA+zMwKIgG3YKzehR4\nbsaDBTPlGlHKXxqdc5793ruAstheUjuiSJ+EtuzLSLiGDQPTRoomQzOS2Nyy\nfKCqqhEWUrD/LxzahCC1kVfjQGDXa7wR54OfN1llFKhDH7dlB3VYHdiJhnNg\nlUvdg28OaTYlGIF2RZ9vVia3e0vQLXTJ6EU4v++wMLeJ5rQE1WDzpPe0VjT7\nmyQUgKyzREfrg01UKvgoO0BMYpUI39JwFa5WTuIt8QVx2ZCykcTXli2N4dnN\nQjwj\r\n=cN5v\r\n-----END PGP SIGNATURE-----\r\n",
+    "shasum": "bb37c9d4b58eab9d05a6a8dd22ec1bd700b1c1ac",
+    "tarball": "https://registry.npmjs.org/cordova-custom-config/-/cordova-custom-config-5.1.0.tgz",
+    "unpackedSize": 122350
+  },
+  "gitHead": "479bc593065310aea82762bb584c9422f3ef9d2d",
+  "homepage": "https://github.com/dpa99c/cordova-custom-config#readme",
+  "issue": "https://github.com/dpa99c/cordova-custom-config/issues",
+  "keywords": [
+    "config",
+    "configuration",
+    "cordova",
+    "cordova-android",
+    "cordova-ios",
+    "ecosystem:cordova",
+    "manifest",
+    "phonegap",
+    "plist"
+  ],
+  "license": "MIT",
+  "maintainers": [
+    {
+      "name": "davealden",
+      "email": "dave@workingedge.co.uk"
+    }
+  ],
+  "name": "cordova-custom-config",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dpa99c/cordova-custom-config.git"
+  },
+  "scripts": {
+    "test": "jshint hooks"
+  },
+  "version": "5.1.0"
+}
