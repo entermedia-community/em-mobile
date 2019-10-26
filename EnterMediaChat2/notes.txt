@@ -41,3 +41,16 @@ It put a key here:
 /home/shanti/git/em-mobile/EnterMediaDB/etc/exported
 
 
+##New stuff
+keytool -list -v -keystore ~/git/em-mobile/EnterMediaChat2/emreleasekeystore.jks -alias chat1 -storepass Mobile1234Pass -keypass Mobile1234Pass
+
+1D:E8:7B:6E:78:0E:0A:76:F8:E9:F7:28:24:15:5D:B4:A2:60:5E:43
+
+https://www.freakyjolly.com/change-version-number-of-app-in-android-studio/
+
+
+gcloud@openedit.org
+
+https://console.firebase.google.com/project/entermediadb-177816/settings/general/android:org.entermediadb.chat2
+
+https://play.google.com/apps/publish/?account=7056730519978099587#ManageReleasesPlace:p=org.entermediadb.app1&appid=4975355597455888380

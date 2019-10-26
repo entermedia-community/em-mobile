@@ -200,7 +200,7 @@ public class MainActivity extends AppCompatActivity implements OnChatSelectedLis
                     term.put("value","*");
                     terms.add(term);
 
-                    JSONObject all = connection.postJson(CONFIG_SERVER + "/mediadb/services/lists/search/librarycollection?googleaccesskey=" + fieldUserToken,
+                    JSONObject all = connection.postJson(CONFIG_SERVER + "/mediadb/services/module/librarycollection/viewprojects.json?googleaccesskey=" + fieldUserToken,
                             obj);
                     setJsonData(all);
 
