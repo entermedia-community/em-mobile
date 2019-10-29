@@ -1,6 +1,8 @@
 package org.entermediadb.chat2.ui.chat;
 
+import android.os.Build;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,10 +51,40 @@ public class WebViewFragment extends Fragment {
         // Enable Javascript
         WebSettings webSettings = mWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
+        if (Build.VERSION.SDK_INT > 17) {
+            webSettings.setMediaPlaybackRequiresUserGesture(false);
+        }
         //webSettings.setTextZoom(20);
         //webSettings.setLo
         // Force links and redirects to open in the WebView instead of in a browser
         mWebView.setWebViewClient(new WebViewClient());
+
+
+        mWebView.setOnKeyListener(new View.OnKeyListener()
+        {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event)
+            {
+                if(event.getAction() == KeyEvent.ACTION_DOWN)
+                {
+                    WebView webView = (WebView) v;
+
+                    switch(keyCode)
+                    {
+                        case KeyEvent.KEYCODE_BACK:
+                            if(webView.canGoBack())
+                            {
+                                webView.goBack();
+                                return true;
+                            }
+                            break;
+                    }
+                }
+
+                return false;
+            }
+        });
+
         return theview;
     }
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {

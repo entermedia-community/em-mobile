@@ -53,7 +53,9 @@ import java.io.IOException;
         {
             intent.putExtra("collectionid", collectionid);
 
+
         }
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
 
 

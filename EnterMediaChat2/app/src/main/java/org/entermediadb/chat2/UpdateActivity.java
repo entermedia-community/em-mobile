@@ -17,6 +17,7 @@ public abstract class UpdateActivity implements Runnable
 
     Activity fieldActivity;
     JSONObject jsonData;
+    Throwable fieldError;
 
     public UpdateActivity(Activity inActivity)
     {
@@ -40,6 +41,14 @@ public abstract class UpdateActivity implements Runnable
         jsonData = inData;
     }
 
+    public Throwable getError()
+    {
+        return fieldError;
+    }
+    public void setError(Throwable ex)
+    {
+        fieldError = ex;
+    }
     public abstract void runNetwork();
     //params
     public abstract void runUiUpdate();

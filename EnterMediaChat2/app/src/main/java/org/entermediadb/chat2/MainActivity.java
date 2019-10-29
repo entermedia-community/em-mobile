@@ -61,11 +61,11 @@ public class MainActivity extends AppCompatActivity implements OnChatSelectedLis
        private static final String TAG = "MainActivity";
 
     //TODO: get from fire
-    public static final String CONFIG_SERVER = "https://entermediadb.org/entermediadb";
-    //public static final String CONFIG_SERVER = "http://192.168.0.108:8080/assets";
+    //public static final String CONFIG_SERVER = "https://entermediadb.org/entermediadb";
+    public static final String CONFIG_SERVER = "http://192.168.0.108:8080/assets";
 
-    public static final String EMINSTITUTE = "https://entermediadb.org/entermediadb/app";
-    //public static final String EMINSTITUTE = "http://192.168.0.108:8080/assets/app";
+    //public static final String EMINSTITUTE = "https://entermediadb.org/entermediadb/app";
+    public static final String EMINSTITUTE = "http://192.168.0.108:8080/assets/app";
 
     EnterMediaConnection connection = new EnterMediaConnection();
     List<JSONObject> menudata;
@@ -157,6 +157,10 @@ public class MainActivity extends AppCompatActivity implements OnChatSelectedLis
             ft.replace(R.id.nav_host_fragment, new HomeFragment());
             ft.commit();
         }
+        else
+        {
+            reloadMenu(null);
+        }
     }
 
     @Override
@@ -200,10 +204,17 @@ public class MainActivity extends AppCompatActivity implements OnChatSelectedLis
                     term.put("value","*");
                     terms.add(term);
 
-                    JSONObject all = connection.postJson(CONFIG_SERVER + "/mediadb/services/module/librarycollection/viewprojects.json?googleaccesskey=" + fieldUserToken,
-                            obj);
-                    setJsonData(all);
+                    try
+                    {
+                        JSONObject all = connection.postJson(CONFIG_SERVER + "/mediadb/services/module/librarycollection/viewprojects.json?googleaccesskey=" + fieldUserToken,
+                                obj);
+                        setJsonData(all);
 
+                    }
+                    catch( Exception ex)
+                    {
+                        setError(ex);
+                    }
 
                     String channelId  = "fcm_default_channel";
                     String channelName = getString(R.string.default_notification_channel_name);
@@ -218,6 +229,12 @@ public class MainActivity extends AppCompatActivity implements OnChatSelectedLis
                 public void runUiUpdate()
                 {
                     //TODO?? getJsonData();
+                if( getError() != null)
+                {
+                    Toast.makeText(MainActivity.this, "Could load data " + getError(), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 DrawerLayout drawer = findViewById(R.id.drawer_layout);
 
                 //https://blog.teamtreehouse.com/add-navigation-drawer-android
@@ -275,7 +292,8 @@ public class MainActivity extends AppCompatActivity implements OnChatSelectedLis
                     } catch (Throwable ex)
                     {
                         //log
-                        Toast.makeText(MainActivity.this, "Could not get menu " + ex, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "Could create menu " + ex, Toast.LENGTH_SHORT).show();
+                        Log.d(TAG, "Could create menu " + ex);
                     }
             }
         };
@@ -294,7 +312,7 @@ public class MainActivity extends AppCompatActivity implements OnChatSelectedLis
 
 
     @Override
-    protected void onDestroy()
+    protected void onStop()
     {
         org.entermediadb.chat2.ui.chat.WebViewFragment browser = (org.entermediadb.chat2.ui.chat.WebViewFragment)
                 getSupportFragmentManager().findFragmentByTag("navtest_chatlog");
@@ -303,10 +321,12 @@ public class MainActivity extends AppCompatActivity implements OnChatSelectedLis
             String collectionid = browser.getOpenCollection();
             if( collectionid != null)
             {
-                FirebaseMessaging.getInstance().subscribeToTopic(collectionid);
+                    FirebaseMessaging.getInstance().subscribeToTopic(collectionid);
+                    Log.d(TAG, "re-subscribe complete " + collectionid);
             }
         }
-        super.onDestroy();
+        super.onStop();
+
     }
 
     public void selectDrawerItem(MenuItem menuItem) {
@@ -360,7 +380,7 @@ public class MainActivity extends AppCompatActivity implements OnChatSelectedLis
             String name = (String)data.get("name");
             setTitle(name);
 
-            ft.addToBackStack(null);
+            ft.addToBackStack("navtest_chatlog");
             ft.commit();
 
             //
@@ -446,6 +466,14 @@ public class MainActivity extends AppCompatActivity implements OnChatSelectedLis
         fragmentTransaction.commit(); // save the changes
     }
 
+    @Override
+    public void onBackPressed() {
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0 ){
+            getSupportFragmentManager().popBackStack();
+        } else {
+            super.onBackPressed();
+        }
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
