@@ -3,6 +3,7 @@ package org.entermediadb.chat2;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 import android.text.style.StyleSpan;
@@ -61,11 +62,11 @@ public class MainActivity extends AppCompatActivity implements OnChatSelectedLis
        private static final String TAG = "MainActivity";
 
     //TODO: get from fire
-    //public static final String CONFIG_SERVER = "https://entermediadb.org/entermediadb";
-    public static final String CONFIG_SERVER = "http://192.168.0.108:8080/assets";
+    public static final String CONFIG_SERVER = "https://entermediadb.org/entermediadb";
+    public static final String EMINSTITUTE = "https://entermediadb.org/entermediadb/app";
 
-    //public static final String EMINSTITUTE = "https://entermediadb.org/entermediadb/app";
-    public static final String EMINSTITUTE = "http://192.168.0.108:8080/assets/app";
+    //public static final String CONFIG_SERVER = "http://192.168.0.108:8080/assets";
+    //public static final String EMINSTITUTE = "http://192.168.0.108:8080/assets/app";
 
     EnterMediaConnection connection = new EnterMediaConnection();
     List<JSONObject> menudata;
@@ -216,13 +217,14 @@ public class MainActivity extends AppCompatActivity implements OnChatSelectedLis
                         setError(ex);
                     }
 
-                    String channelId  = "fcm_default_channel";
-                    String channelName = getString(R.string.default_notification_channel_name);
-                    NotificationManager notificationManager =
-                            getSystemService(NotificationManager.class);
-                    notificationManager.createNotificationChannel(new NotificationChannel(channelId,
-                            channelName, NotificationManager.IMPORTANCE_LOW));
-
+                    if (Build.VERSION.SDK_INT > 25) {
+                        String channelId = "fcm_default_channel";
+                        String channelName = getString(R.string.default_notification_channel_name);
+                        NotificationManager notificationManager =
+                                getSystemService(NotificationManager.class);
+                        notificationManager.createNotificationChannel(new NotificationChannel(channelId,
+                                channelName, NotificationManager.IMPORTANCE_LOW));
+                    }
 
                 }
 
