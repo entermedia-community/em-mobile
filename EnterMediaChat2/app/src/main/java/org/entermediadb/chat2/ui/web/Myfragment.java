@@ -1,4 +1,4 @@
-package org.entermediadb.chat2.ui.chat;
+package org.entermediadb.chat2.ui.web;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

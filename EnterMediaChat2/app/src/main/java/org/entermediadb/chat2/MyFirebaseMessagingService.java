@@ -36,6 +36,9 @@ import com.google.firebase.messaging.RemoteMessage;
 import org.entermediadb.firebase.quickstart.auth.java.ChooserActivity;
 import org.entermediadb.firebase.quickstart.auth.java.MyWorker;
 
+import java.util.Map;
+import java.util.Set;
+
 
 /**
  * NOTE: There can only be one service in each app that receives FCM messages. If multiple
@@ -87,12 +90,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             // Check if message contains a notification payload.
             if (remoteMessage.getNotification() != null) {
                 String msg = remoteMessage.getNotification().getBody();
-                String userlabel = remoteMessage.getData().get("userlabel");
                 String collectionid = remoteMessage.getData().get("collectionid");
-                String chattopic = remoteMessage.getData().get("chattopic");
+                String subject = remoteMessage.getNotification().getTitle();//remoteMessage.getData().get("chattopic");
 
                 Log.d(TAG, "Message Notification Body: " + msg);
-                showNotification(collectionid,chattopic,userlabel,msg);
+                showNotification(collectionid,subject,msg,remoteMessage.getData());
                 // Toast.makeText(MyFirebaseMessagingService.this, msg, Toast.LENGTH_SHORT).show();
             }
         }
@@ -156,7 +158,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      *
      * @param messageBody FCM message body received.
      */
-    protected void showNotification(String inCollectionId, String inTopic, String inUserLabel, String messageBody) {
+    protected void showNotification(String inCollectionId, String inSubject, String messageBody, Map<String,String> extradata) {
 
         //https://medium.com/@anitaa_1990/how-to-update-an-activity-from-background-service-or-a-broadcastreceiver-6dabdb5cef74
 
@@ -165,9 +167,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         intent.setData(Uri.parse("content:" + messageBody));
         intent.setType("text/plain");
         intent.putExtra("collectionid",inCollectionId);
-        intent.putExtra("chattopic",inTopic);
-        intent.putExtra("userlabel",inUserLabel);
-        intent.putExtra("message",messageBody);
+
+        for( String key : extradata.keySet())
+        {
+            intent.putExtra(key,extradata.get(key));
+        }
 
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
@@ -181,7 +185,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this, inCollectionId)
                         .setSmallIcon(R.drawable.ic_stat_ic_notification)
-                        .setContentTitle(inUserLabel + " " + inTopic)
+                        .setContentTitle(inSubject)
                         .setContentText(messageBody)
                         .setAutoCancel(true)
                         .setSound(defaultSoundUri)

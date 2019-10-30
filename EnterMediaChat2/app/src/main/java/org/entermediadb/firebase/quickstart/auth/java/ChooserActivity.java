@@ -97,8 +97,7 @@ public class ChooserActivity extends AppCompatActivity implements AdapterView.On
         {
             GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
             if (account != null) {
-                String collectionid = intent.getStringExtra("collectionid");
-                GetToken gett = new GetToken(getApplicationContext(),collectionid);
+                GetToken gett = new GetToken(getApplicationContext(),intent);
                 gett.execute();
                 return;
             }

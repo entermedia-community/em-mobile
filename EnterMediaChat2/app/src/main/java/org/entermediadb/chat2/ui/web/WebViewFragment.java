@@ -1,15 +1,18 @@
-package org.entermediadb.chat2.ui.chat;
+package org.entermediadb.chat2.ui.web;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
+import android.webkit.ConsoleMessage;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
@@ -23,6 +26,8 @@ public class WebViewFragment extends Fragment {
     public WebView mWebView;
     public String fieldBaseUrl;
     public String fieldOpenCollection;
+    public String fieldOpenGoal;
+
     private static WebViewFragment fieldInstance;
     public static WebViewFragment getInstance()
     {
@@ -57,8 +62,23 @@ public class WebViewFragment extends Fragment {
         //webSettings.setTextZoom(20);
         //webSettings.setLo
         // Force links and redirects to open in the WebView instead of in a browser
-        mWebView.setWebViewClient(new WebViewClient());
+        //mWebView.setWebViewClient(new WebViewClient());
 
+        mWebView.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
+                android.util.Log.d("WebView.javascript", consoleMessage.message());
+                return true;
+            }
+            @Override
+            public boolean onJsAlert(WebView view, String url, String message, final android.webkit.JsResult result)
+            {
+                Log.d("alert", message);
+                Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+                result.confirm();
+                return true;
+            };
+        });
 
         mWebView.setOnKeyListener(new View.OnKeyListener()
         {
@@ -108,6 +128,14 @@ public class WebViewFragment extends Fragment {
     public void setOpenCollection(String inCollectionId)
     {
         fieldOpenCollection = inCollectionId;
+    }
+    public String getOpenGoal()
+    {
+        return fieldOpenGoal;
+    }
+    public void setOpenGoal(String inGoalId)
+    {
+        fieldOpenCollection = inGoalId;
     }
     protected void renderUrl()
     {

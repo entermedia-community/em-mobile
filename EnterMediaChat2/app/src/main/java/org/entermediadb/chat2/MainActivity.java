@@ -62,11 +62,11 @@ public class MainActivity extends AppCompatActivity implements OnChatSelectedLis
        private static final String TAG = "MainActivity";
 
     //TODO: get from fire
-    public static final String CONFIG_SERVER = "https://entermediadb.org/entermediadb";
-    public static final String EMINSTITUTE = "https://entermediadb.org/entermediadb/app";
+    //public static final String CONFIG_SERVER = "https://entermediadb.org/entermediadb";
+    //public static final String EMINSTITUTE = "https://entermediadb.org/entermediadb/app";
 
-    //public static final String CONFIG_SERVER = "http://192.168.0.108:8080/assets";
-    //public static final String EMINSTITUTE = "http://192.168.0.108:8080/assets/app";
+    public static final String CONFIG_SERVER = "http://192.168.0.108:8080/assets";
+    public static final String EMINSTITUTE = "http://192.168.0.108:8080/assets/app";
 
     EnterMediaConnection connection = new EnterMediaConnection();
     List<JSONObject> menudata;
@@ -144,14 +144,16 @@ public class MainActivity extends AppCompatActivity implements OnChatSelectedLis
 //                    Toast.makeText(ChooserActivity.this, data.toString(), Toast.LENGTH_SHORT).show();
 //                }
 //            }
-            String selectedcollection = intent.getStringExtra("collectionid");  //Chooser notification
-            String idtoken = intent.getStringExtra("idtoken");  //Regular login
+            String idtoken = intent.getStringExtra("idtoken");  //Regular login from chooser
             if( idtoken != null)
             {
                 fieldUserToken = idtoken;
                 //String email = intent.getStringExtra("useremail");
                // Toast.makeText(MainActivity.this, idtoken, Toast.LENGTH_SHORT).show();
-                reloadMenu(selectedcollection);
+                String selectedcollection = intent.getStringExtra("collectionid");  //Chooser notification
+                String projectgoalid = intent.getStringExtra("projectgoalid");  //Chooser notification
+                String projectgoallabel = intent.getStringExtra("projectgoallabel");
+                reloadMenu(selectedcollection,projectgoalid,projectgoallabel);
                 //https://developer.android.com/guide/webapps/webview
             }
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -160,7 +162,7 @@ public class MainActivity extends AppCompatActivity implements OnChatSelectedLis
         }
         else
         {
-            reloadMenu(null);
+            reloadMenu(null,null, null);
         }
     }
 
@@ -181,9 +183,8 @@ public class MainActivity extends AppCompatActivity implements OnChatSelectedLis
 
         return super.onOptionsItemSelected(item);
     }
-    private void reloadMenu(String openCollectionId)
+    private void reloadMenu(String openCollectionId, String projectgoalid, String projectgoallabel)
     {
-
             UpdateActivity handler = new UpdateActivity(this)
             {
                 @Override
@@ -285,7 +286,17 @@ public class MainActivity extends AppCompatActivity implements OnChatSelectedLis
                                         }
                                     }
                              });
-                            if( openCollectionId != null && openCollectionId.equals(collectionid))
+
+                            if( projectgoalid != null )
+                            {
+                               //Show goal details
+                                ///demoall/webapp/WEB-INF/base/eminstitute/app/collective/goals/editgoalpanel_app.html
+
+                                String url = EMINSTITUTE + "/collective/goals/editgoalpanel_app.html?collectionid=" + collectionid + "goalid=" + projectgoalid + "&googleaccesskey=" + fieldUserToken;
+                                org.entermediadb.chat2.ui.web.WebViewFragment browser = showBrowser(projectgoallabel,url);
+                                browser.setOpenCollection(null);
+                            }
+                            else if( openCollectionId != null && openCollectionId.equals(collectionid))
                             {
                                 selectDrawerItem(item);
                             }
@@ -314,9 +325,9 @@ public class MainActivity extends AppCompatActivity implements OnChatSelectedLis
 
 
     @Override
-    protected void onStop()
+    protected void onPause()
     {
-        org.entermediadb.chat2.ui.chat.WebViewFragment browser = (org.entermediadb.chat2.ui.chat.WebViewFragment)
+        org.entermediadb.chat2.ui.web.WebViewFragment browser = (org.entermediadb.chat2.ui.web.WebViewFragment)
                 getSupportFragmentManager().findFragmentByTag("navtest_chatlog");
         if( browser != null)
         {
@@ -327,7 +338,14 @@ public class MainActivity extends AppCompatActivity implements OnChatSelectedLis
                     Log.d(TAG, "re-subscribe complete " + collectionid);
             }
         }
-        super.onStop();
+        super.onPause();
+
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        //TODO: Create menu again? Pick last menu item?
 
     }
 
@@ -346,44 +364,21 @@ public class MainActivity extends AppCompatActivity implements OnChatSelectedLis
 
             JSONObject data = menudata.get(id);
 
-
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-
             String collectionid = (String) data.get("id");
 
             String url = EMINSTITUTE + "/collective/community/appchat.html?goaltrackerstaff=*&collectionid=" + collectionid + "&googleaccesskey=" + fieldUserToken;
+            String title = (String)data.get("name");
 
-            org.entermediadb.chat2.ui.chat.WebViewFragment browser = (org.entermediadb.chat2.ui.chat.WebViewFragment)
-                    getSupportFragmentManager().findFragmentByTag("navtest_chatlog");
-
-            if( browser == null)
-            {
-                //https://developer.android.com/guide/components/fragments.html#Adding
-                browser = new org.entermediadb.chat2.ui.chat.WebViewFragment();
-                browser.setInstance(browser);
-                browser.setUrl(url);
-
-                ft.add(R.id.nav_host_fragment,browser,"navtest_chatlog");
-                ft.replace(R.id.nav_host_fragment, browser);
-            }
-            else
-            {
-                browser.setUrl(url);
-                ft.replace(R.id.nav_host_fragment, browser);
-            }
+            org.entermediadb.chat2.ui.web.WebViewFragment browser = showBrowser(title,url);
             String previouscollection = browser.getOpenCollection();
-            if( previouscollection != null)
+            if( previouscollection != null && previouscollection != collectionid)
             {
                 FirebaseMessaging.getInstance().subscribeToTopic(previouscollection);
             }
             browser.setOpenCollection(collectionid);
-            FirebaseMessaging.getInstance().unsubscribeFromTopic(collectionid);
+            FirebaseMessaging.getInstance().unsubscribeFromTopic(collectionid); //While visable
 
-            String name = (String)data.get("name");
-            setTitle(name);
 
-            ft.addToBackStack("navtest_chatlog");
-            ft.commit();
 
             //
 //            String collectionid = (String) data.get("id");
@@ -453,6 +448,34 @@ public class MainActivity extends AppCompatActivity implements OnChatSelectedLis
         */
         //return true;
 
+    }
+
+    public org.entermediadb.chat2.ui.web.WebViewFragment showBrowser(String inTitle, String inUrl)
+    {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        org.entermediadb.chat2.ui.web.WebViewFragment browser = (org.entermediadb.chat2.ui.web.WebViewFragment)
+                getSupportFragmentManager().findFragmentByTag("navtest_chatlog");
+
+        if( browser == null)
+        {
+            //https://developer.android.com/guide/components/fragments.html#Adding
+            browser = new org.entermediadb.chat2.ui.web.WebViewFragment();
+            browser.setInstance(browser);
+            browser.setUrl(inUrl);
+
+            ft.add(R.id.nav_host_fragment,browser,"navtest_chatlog");
+            ft.replace(R.id.nav_host_fragment, browser);
+        }
+        else
+        {
+            browser.setUrl(inUrl);
+            ft.replace(R.id.nav_host_fragment, browser);
+        }
+        ft.addToBackStack("navtest_chatlog");
+        ft.commit();
+        setTitle(inTitle);
+
+        return browser;
     }
 
     public void loadFragment(Fragment fragment) {

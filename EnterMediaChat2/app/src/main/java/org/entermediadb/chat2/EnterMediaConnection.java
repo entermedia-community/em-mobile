@@ -58,7 +58,7 @@ public class EnterMediaConnection
         }
         catch(Throwable ex)
         {
-            throw new EMException(ex);
+            throw new EMException("Error loading " + inUrl + " " + ex);
         }
         // log the response
         if (resp.getStatusCode() != 200) {
