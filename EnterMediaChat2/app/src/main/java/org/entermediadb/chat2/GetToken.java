@@ -49,15 +49,15 @@ import java.io.IOException;
       //  intent.putExtra("useremail", user.getEmail());
 
         intent.putExtra("idtoken", inToken);
-        if( fieldIntent != null)
+        if( fieldIntent != null && fieldIntent.getExtras() != null)
         {
             for (String key : fieldIntent.getExtras().keySet() )
             {
                 intent.putExtra(key, fieldIntent.getStringExtra(key));
             }
         }
-        //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);  //Error?
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);  //Error?
+        //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         context.startActivity(intent);
 

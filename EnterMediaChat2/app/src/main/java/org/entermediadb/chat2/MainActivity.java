@@ -62,11 +62,11 @@ public class MainActivity extends AppCompatActivity implements OnChatSelectedLis
        private static final String TAG = "MainActivity";
 
     //TODO: get from fire
-    //public static final String CONFIG_SERVER = "https://entermediadb.org/entermediadb";
-    //public static final String EMINSTITUTE = "https://entermediadb.org/entermediadb/app";
+    public static final String CONFIG_SERVER = "https://entermediadb.org/entermediadb";
+    public static final String EMINSTITUTE = "https://entermediadb.org/entermediadb/app";
 
-    public static final String CONFIG_SERVER = "http://192.168.0.108:8080/assets";
-    public static final String EMINSTITUTE = "http://192.168.0.108:8080/assets/app";
+    //public static final String CONFIG_SERVER = "http://192.168.0.108:8080/assets";
+    //public static final String EMINSTITUTE = "http://192.168.0.108:8080/assets/app";
 
     EnterMediaConnection connection = new EnterMediaConnection();
     List<JSONObject> menudata;
@@ -150,10 +150,11 @@ public class MainActivity extends AppCompatActivity implements OnChatSelectedLis
                 fieldUserToken = idtoken;
                 //String email = intent.getStringExtra("useremail");
                // Toast.makeText(MainActivity.this, idtoken, Toast.LENGTH_SHORT).show();
-                String selectedcollection = intent.getStringExtra("collectionid");  //Chooser notification
+                String collectionid = intent.getStringExtra("collectionid");  //Chooser notification
+                String collectionlabel = intent.getStringExtra("collectionlabel");
                 String projectgoalid = intent.getStringExtra("projectgoalid");  //Chooser notification
                 String projectgoallabel = intent.getStringExtra("projectgoallabel");
-                reloadMenu(selectedcollection,projectgoalid,projectgoallabel);
+                reloadMenu(collectionid,collectionlabel,projectgoalid,projectgoallabel);
                 //https://developer.android.com/guide/webapps/webview
             }
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -162,7 +163,7 @@ public class MainActivity extends AppCompatActivity implements OnChatSelectedLis
         }
         else
         {
-            reloadMenu(null,null, null);
+            reloadMenu(null,null,null, null);
         }
     }
 
@@ -183,7 +184,7 @@ public class MainActivity extends AppCompatActivity implements OnChatSelectedLis
 
         return super.onOptionsItemSelected(item);
     }
-    private void reloadMenu(String openCollectionId, String projectgoalid, String projectgoallabel)
+    private void reloadMenu(String openCollectionId,String collectionlabel, String projectgoalid, String projectgoallabel)
     {
             UpdateActivity handler = new UpdateActivity(this)
             {
@@ -287,20 +288,20 @@ public class MainActivity extends AppCompatActivity implements OnChatSelectedLis
                                     }
                              });
 
-                            if( projectgoalid != null )
-                            {
-                               //Show goal details
-                                ///demoall/webapp/WEB-INF/base/eminstitute/app/collective/goals/editgoalpanel_app.html
-
-                                String url = EMINSTITUTE + "/collective/goals/editgoalpanel_app.html?collectionid=" + collectionid + "goalid=" + projectgoalid + "&googleaccesskey=" + fieldUserToken;
-                                org.entermediadb.chat2.ui.web.WebViewFragment browser = showBrowser(projectgoallabel,url);
-                                browser.setOpenCollection(null);
-                            }
-                            else if( openCollectionId != null && openCollectionId.equals(collectionid))
+                            if(projectgoalid == null && openCollectionId != null && openCollectionId.equals(collectionid))
                             {
                                 selectDrawerItem(item);
                             }
                         }
+                        if( projectgoalid != null )
+                        {
+                            //Show goal details
+                            ///demoall/webapp/WEB-INF /base/eminstitute/app/coll ective/goals/editgoalpanel_app.html
+                            String url = EMINSTITUTE + "/collective/goals/editgoalpanel_app.html?collectionid=" + openCollectionId + "&goalid=" + projectgoalid + "&googleaccesskey=" + fieldUserToken;
+                            org.entermediadb.chat2.ui.web.WebViewFragment browser = showBrowser(collectionlabel,url);
+                            browser.setOpenCollection(null);
+                        }
+
 
                     } catch (Throwable ex)
                     {

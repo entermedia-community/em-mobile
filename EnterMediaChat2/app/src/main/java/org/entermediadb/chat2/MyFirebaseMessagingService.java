@@ -167,10 +167,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         intent.setData(Uri.parse("content:" + messageBody));
         intent.setType("text/plain");
         intent.putExtra("collectionid",inCollectionId);
-
-        for( String key : extradata.keySet())
-        {
-            intent.putExtra(key,extradata.get(key));
+        if( extradata != null) {
+            for (String key : extradata.keySet()) {
+                intent.putExtra(key, extradata.get(key));
+            }
         }
 
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
