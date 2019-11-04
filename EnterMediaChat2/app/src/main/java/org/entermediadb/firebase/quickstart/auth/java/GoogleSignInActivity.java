@@ -70,7 +70,7 @@ public class GoogleSignInActivity extends BaseActivity implements
         // Button listeners
         findViewById(R.id.signInButton).setOnClickListener(this);
         findViewById(R.id.signOutButton).setOnClickListener(this);
-        findViewById(R.id.disconnectButton).setOnClickListener(this);
+      //  findViewById(R.id.disconnectButton).setOnClickListener(this);
 
         // [START config_signin]
         // Configure Google Sign In
@@ -263,9 +263,10 @@ public class GoogleSignInActivity extends BaseActivity implements
 //                    });
 
             GoogleSignInAccount signedin = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
-            GetGoogleToken gett = new GetGoogleToken(getApplicationContext(),signedin.getAccount(),null);
-            gett.execute();
-
+            if( signedin != null) {
+                GetGoogleToken gett = new GetGoogleToken(getApplicationContext(), signedin.getAccount(), null);
+                gett.execute();
+            }
 
 /*
             mDetailTextView.setText(getString(R.string.firebase_status_fmt, user.getUid()) + " channel" + channelId );
@@ -310,8 +311,6 @@ public class GoogleSignInActivity extends BaseActivity implements
             signIn();
         } else if (i == R.id.signOutButton) {
             signOut();
-        } else if (i == R.id.disconnectButton) {
-            revokeAccess();
         }
     }
 }

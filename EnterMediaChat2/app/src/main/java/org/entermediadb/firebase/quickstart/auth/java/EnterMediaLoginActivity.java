@@ -53,7 +53,7 @@ public class EnterMediaLoginActivity extends BaseActivity implements
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_emailpassword);
+        setContentView(R.layout.activity_entermedialogin);
 
         // Views
         mStatusTextView = findViewById(R.id.status);

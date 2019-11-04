@@ -18,6 +18,7 @@ package org.entermediadb.firebase.quickstart.auth.java;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -36,6 +37,14 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.android.play.core.appupdate.AppUpdateManager;
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
+import com.google.android.play.core.install.InstallState;
+import com.google.android.play.core.install.InstallStateUpdatedListener;
+import com.google.android.play.core.install.model.AppUpdateType;
+import com.google.android.play.core.install.model.InstallStatus;
+import com.google.android.play.core.install.model.UpdateAvailability;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -62,11 +71,14 @@ import org.entermediadb.chat2.R;
  */
 public class ChooserActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
+    private static final String TAG = "ChooserActivity";
+
     private static final Class[] CLASSES = new Class[]{
             GoogleSignInActivity.class,
             EnterMediaLoginActivity.class,
     };
     private FirebaseAuth mAuth;
+
     private static final int[] DESCRIPTION_IDS = new int[] {
             R.string.desc_google_sign_in,
             R.string.desc_entermedia_sign_in,
@@ -94,9 +106,30 @@ public class ChooserActivity extends AppCompatActivity implements AdapterView.On
             */
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
 
+        setContentView(R.layout.activity_chooser);
+
+        // Set up ListView and Adapter
+        ListView listView = findViewById(R.id.listView);
+
+        MyArrayAdapter adapter = new MyArrayAdapter(this, android.R.layout.simple_list_item_2, CLASSES);
+        adapter.setDescriptionIds(DESCRIPTION_IDS);
+
+        listView.setAdapter(adapter);
+        listView.setOnItemClickListener(this);
+
+        loginCheck();
+
+        //https://developer.android.com/training/basics/intents/filters#java
+        // Get the intent that started this activity
+
+    }
+
+    protected void loginCheck()
+    {
         boolean autologin = true;
 
         Intent intent = getIntent();
@@ -124,20 +157,6 @@ public class ChooserActivity extends AppCompatActivity implements AdapterView.On
                 return;
             }
         }
-        setContentView(R.layout.activity_chooser);
-
-        // Set up ListView and Adapter
-        ListView listView = findViewById(R.id.listView);
-
-        MyArrayAdapter adapter = new MyArrayAdapter(this, android.R.layout.simple_list_item_2, CLASSES);
-        adapter.setDescriptionIds(DESCRIPTION_IDS);
-
-        listView.setAdapter(adapter);
-        listView.setOnItemClickListener(this);
-
-        //https://developer.android.com/training/basics/intents/filters#java
-        // Get the intent that started this activity
-
     }
 
     @Override

@@ -3,20 +3,16 @@ package org.entermediadb.chat2;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 import android.text.style.StyleSpan;
-import android.text.style.TypefaceSpan;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
-import android.webkit.WebViewFragment;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -26,39 +22,40 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.play.core.appupdate.AppUpdateManager;
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
+import com.google.android.play.core.install.InstallState;
+import com.google.android.play.core.install.InstallStateUpdatedListener;
+import com.google.android.play.core.install.model.AppUpdateType;
+import com.google.android.play.core.install.model.InstallStatus;
+import com.google.android.play.core.install.model.UpdateAvailability;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 
 import org.entermediadb.chat2.ui.home.HomeFragment;
 import org.entermediadb.firebase.quickstart.auth.java.ChooserActivity;
-import org.entermediadb.firebase.quickstart.auth.java.GoogleSignInActivity;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 
-public class MainActivity extends AppCompatActivity implements OnChatSelectedListener
+public class MainActivity extends AppCompatActivity
 {
        // MenuItem.OnMenuItemClickListener {
        private static final String TAG = "MainActivity";
@@ -72,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements OnChatSelectedLis
     private DrawerLayout mDrawer;
     private Toolbar toolbar;
     private NavigationView nvDrawer;
+    AppUpdateManager mAppUpdateManager;
 
     // Make sure to be using androidx.appcompat.app.ActionBarDrawerToggle version.
     private ActionBarDrawerToggle drawerToggle;
@@ -83,10 +81,11 @@ public class MainActivity extends AppCompatActivity implements OnChatSelectedLis
     {
         super.onCreate(savedInstanceState);
 
+        initUpdateCheck();
 
         //See if im loged in already?
 
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.navigation_drawer);
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -199,9 +198,24 @@ public class MainActivity extends AppCompatActivity implements OnChatSelectedLis
                 mDrawer.openDrawer(GravityCompat.START);
                 return true;
             case R.id.action_logout:
+                //GoogleSignIn.getLastSignedInAccount(
+                connection.setToken(null);
+                String url = EnterMediaConnection.EMINSTITUTE + "/authentication/logout.html";
+
+                showBrowser("Logout",url); //This should clear the cookies and record the event
+
+                //mGoogleSignInClient.signOut()
+                GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                        .requestEmail()
+                        .build();
+                GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(getApplicationContext(), gso);
+                mGoogleSignInClient.signOut();
                 FirebaseAuth.getInstance().signOut();
+
+
                 Intent intent = new Intent(getApplicationContext(), ChooserActivity.class);
                 intent.putExtra("logout","true");
+
                 getApplicationContext().startActivity(intent);
                 return true;
         }
@@ -476,7 +490,8 @@ public class MainActivity extends AppCompatActivity implements OnChatSelectedLis
         {
             //https://developer.android.com/guide/components/fragments.html#Adding
             browser = new org.entermediadb.chat2.ui.web.WebViewFragment();
-            ft.add(R.id.nav_host_fragment,browser,"navtest_chatlog");
+            ft.add(R.id.nav_host_fragment,browser,"navtest_chatlog").commit();
+            ft = getSupportFragmentManager().beginTransaction();
         }
         Map<String,String> headers = new HashMap<String,String>();
         headers.put("X-token",connection.getToken());
@@ -528,9 +543,69 @@ public class MainActivity extends AppCompatActivity implements OnChatSelectedLis
 //    }
 
 
-    public void onCollectionSelected(int position)
-    {
+    private void popupSnackbarForCompleteUpdate() {
 
+        View parentLayout = findViewById(android.R.id.content);
+        Snackbar snackbar =
+                Snackbar.make(
+                        parentLayout,
+                        "New app is ready!",
+                        Snackbar.LENGTH_INDEFINITE);
+
+        snackbar.setAction("Install", view -> {
+            if (mAppUpdateManager != null){
+                mAppUpdateManager.completeUpdate();
+            }
+        });
+
+
+        snackbar.setActionTextColor(getResources().getColor(R.color.colorPrimary));
+        snackbar.show();
+    }
+
+    protected void initUpdateCheck()
+    {
+        InstallStateUpdatedListener installStateUpdatedListener = new
+                InstallStateUpdatedListener() {
+                    @Override
+                    public void onStateUpdate(InstallState state) {
+                        if (state.installStatus() == InstallStatus.DOWNLOADED){
+                            popupSnackbarForCompleteUpdate();
+                        } else if (state.installStatus() == InstallStatus.INSTALLED){
+                            if (mAppUpdateManager != null){
+                                mAppUpdateManager.unregisterListener(this);
+                            }
+                        } else {
+                            Log.i(TAG, "InstallStateUpdatedListener: state: " + state.installStatus());
+                        }
+                    }
+                };
+
+
+        mAppUpdateManager = AppUpdateManagerFactory.create(this);
+
+        mAppUpdateManager.registerListener(installStateUpdatedListener);
+
+        int RC_APP_UPDATE_CODE = 666; //Custom code to track with
+
+        mAppUpdateManager.getAppUpdateInfo().addOnSuccessListener(appUpdateInfo ->
+        {
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+                    && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE))
+            {
+                try {
+                    mAppUpdateManager.startUpdateFlowForResult(
+                            appUpdateInfo, AppUpdateType.FLEXIBLE, MainActivity.this, RC_APP_UPDATE_CODE);
+                } catch (IntentSender.SendIntentException e) {
+                    e.printStackTrace();
+                }
+            }
+            else if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED){
+                popupSnackbarForCompleteUpdate();
+            } else {
+                Log.e(TAG, "checkForAppUpdateAvailability: nada");
+            }
+        });
     }
 
 }

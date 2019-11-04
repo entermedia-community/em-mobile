@@ -12,7 +12,7 @@
 
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="nav_header_vertical_spacing">1dp</dimen>
-    <dimen name="nav_header_height">120dp</dimen>
+    <dimen name="nav_header_height">135dp</dimen>
 
     <!--
 https://stackoverflow.com/questions/36943213/how-to-control-navigationview-margin-between-menu-items/41718559

@@ -27,12 +27,10 @@ public class EnterMediaConnection
 {
     private static final String TAG = "EnterMediaConnection";
 
-//    public static final String CONFIG_SERVER = "https://entermediadb.org/entermediadb";
-//    public static final String EMINSTITUTE = "https://entermediadb.org/entermediadb/app";
-//    public static final String MEDIADB = "https://entermediadb.org/entermediadb/mediadb";
+  //  public static final String EMINSTITUTE = "https://entermediadb.org/entermediadb/app";
+   // public static final String MEDIADB = "https://entermediadb.org/entermediadb/mediadb";
 
-//    public static final String CONFIG_SERVER = "http://192.168.0.108:8080/assets";
-    public static final String EMINSTITUTE = "http://192.168.0.108:8080/assets/app";
+   public static final String EMINSTITUTE = "http://192.168.0.108:8080/assets/app";
     public static final String MEDIADB = "http://192.168.0.108:8080/assets/mediadb";
 
 
