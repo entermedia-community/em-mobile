@@ -19,6 +19,7 @@ package org.entermediadb.firebase.quickstart.auth.java;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,12 +29,20 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
-import org.entermediadb.chat2.GetToken;
+import org.entermediadb.chat2.GetEmToken;
+import org.entermediadb.chat2.GetGoogleToken;
+import org.entermediadb.chat2.MainActivity;
 import org.entermediadb.chat2.R;
 
 
@@ -55,6 +64,15 @@ public class ChooserActivity extends AppCompatActivity implements AdapterView.On
 
     private static final Class[] CLASSES = new Class[]{
             GoogleSignInActivity.class,
+            EnterMediaLoginActivity.class,
+    };
+    private FirebaseAuth mAuth;
+    private static final int[] DESCRIPTION_IDS = new int[] {
+            R.string.desc_google_sign_in,
+            R.string.desc_entermedia_sign_in,
+    };
+
+                /*
             FacebookLoginActivity.class,
             TwitterLoginActivity.class,
             EmailPasswordActivity.class,
@@ -64,10 +82,6 @@ public class ChooserActivity extends AppCompatActivity implements AdapterView.On
             FirebaseUIActivity.class,
             CustomAuthActivity.class,
             GenericIdpActivity.class,
-    };
-
-    private static final int[] DESCRIPTION_IDS = new int[] {
-            R.string.desc_google_sign_in,
             R.string.desc_facebook_login,
             R.string.desc_twitter_login,
             R.string.desc_emailpassword,
@@ -77,7 +91,7 @@ public class ChooserActivity extends AppCompatActivity implements AdapterView.On
             R.string.desc_firebase_ui,
             R.string.desc_custom_auth,
             R.string.desc_generic_idp,
-    };
+            */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,16 +107,23 @@ public class ChooserActivity extends AppCompatActivity implements AdapterView.On
                 autologin = false;
             }
         }
-        if( autologin)
-        {
+        if( autologin) {
             GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
             if (account != null) {
-                GetToken gett = new GetToken(getApplicationContext(),intent);
+                GetGoogleToken gett = new GetGoogleToken(getApplicationContext(), account.getAccount(), intent);
+                gett.execute();
+                return;
+            }
+
+            String email = getPreferences(Context.MODE_PRIVATE).getString("email", null);
+            String password = getPreferences(Context.MODE_PRIVATE).getString("password", null);
+            if(email != null && password != null) {
+                mAuth = FirebaseAuth.getInstance();
+                GetEmToken gett = new GetEmToken(this, mAuth, email, password);
                 gett.execute();
                 return;
             }
         }
-
         setContentView(R.layout.activity_chooser);
 
         // Set up ListView and Adapter

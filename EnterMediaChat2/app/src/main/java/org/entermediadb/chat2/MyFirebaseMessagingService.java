@@ -30,6 +30,8 @@ import androidx.core.app.NotificationCompat;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -83,8 +85,17 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
         Log.d(TAG, "From: " + remoteMessage.getFrom());
 
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
+
+        if( account != null && remoteMessage.getFrom().equalsIgnoreCase( account.getEmail() ) )
+        {
+            return;
+        }
+
         // Check if message contains a data payload.
-        if (remoteMessage.getData().size() > 0) {
+        if (remoteMessage.getData().size() > 0)
+        {
+
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
 
             // Check if message contains a notification payload.

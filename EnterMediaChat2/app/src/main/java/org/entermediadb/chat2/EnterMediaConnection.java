@@ -2,8 +2,10 @@ package org.entermediadb.chat2;
 
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.util.Log;
 
 import com.google.api.client.http.GenericUrl;
+import com.google.api.client.http.HttpHeaders;
 import com.google.api.client.http.HttpRequest;
 import com.google.api.client.http.HttpRequestFactory;
 import com.google.api.client.http.HttpResponse;
@@ -23,6 +25,39 @@ import java.util.Collections;
 
 public class EnterMediaConnection
 {
+    private static final String TAG = "EnterMediaConnection";
+
+//    public static final String CONFIG_SERVER = "https://entermediadb.org/entermediadb";
+//    public static final String EMINSTITUTE = "https://entermediadb.org/entermediadb/app";
+//    public static final String MEDIADB = "https://entermediadb.org/entermediadb/mediadb";
+
+//    public static final String CONFIG_SERVER = "http://192.168.0.108:8080/assets";
+    public static final String EMINSTITUTE = "http://192.168.0.108:8080/assets/app";
+    public static final String MEDIADB = "http://192.168.0.108:8080/assets/mediadb";
+
+
+    protected String fieldToken;
+    protected String fieldTokenType;
+
+    public void setToken(String inToken)
+    {
+        fieldToken = inToken;
+    }
+
+    public void setTokenType(String inType)
+    {
+        fieldTokenType = inType;
+    }
+
+    public String getToken()
+    {
+        return fieldToken;
+    }
+
+    public String getTokenType()
+    {
+        return fieldTokenType;
+    }
     public Collection getAsList(String mqlQuery)
     {
         JSONObject ret = getResponse(mqlQuery);
@@ -38,6 +73,7 @@ public class EnterMediaConnection
 
     public JSONObject postJson(String inUrl, JSONObject inParams)
     {
+        Log.d(TAG, "Loading json url: " + inUrl);
         // utilize accessToken to access protected resource in DEAL
         HttpTransport httpTransport = new NetHttpTransport();
         HttpRequestFactory requestFactory = httpTransport.createRequestFactory();
@@ -52,6 +88,10 @@ public class EnterMediaConnection
         String responsetxt = null;
         try {
             HttpRequest req = requestFactory.buildPostRequest(url, content);
+            HttpHeaders headers = new HttpHeaders();
+            headers.put("X-token", getToken());
+            headers.put("X-tokentype", getTokenType());
+            req.setHeaders(headers);
 
             resp = req.execute();
             responsetxt = resp.parseAsString();
@@ -85,6 +125,8 @@ public class EnterMediaConnection
     public JSONObject getResponse(String inUrl)
     {
         try {
+            Log.d(TAG, "Loading url: " + inUrl);
+
             HttpTransport httpTransport = new NetHttpTransport();
             HttpRequestFactory requestFactory = httpTransport.createRequestFactory();
             GenericUrl url = new GenericUrl(inUrl);
@@ -92,6 +134,10 @@ public class EnterMediaConnection
             //url.put("key", apikey);
             //logger.debug("Querying Freebase QUERY URL: " + url.toString());
             HttpRequest request = requestFactory.buildGetRequest(url);
+            HttpHeaders headers = new HttpHeaders();
+            headers.put("X-token", getToken());
+            headers.put("X-tokentype", getTokenType());
+            request.setHeaders(headers);
             HttpResponse httpResponse;
             try {
                 httpResponse = request.execute();

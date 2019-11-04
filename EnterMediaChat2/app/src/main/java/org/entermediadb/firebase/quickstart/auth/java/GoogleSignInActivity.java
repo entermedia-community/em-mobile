@@ -16,26 +16,18 @@
 
 package org.entermediadb.firebase.quickstart.auth.java;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 
-import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -44,14 +36,9 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
-import com.google.firebase.messaging.FirebaseMessaging;
 
-import org.entermediadb.chat2.GetToken;
-import org.entermediadb.chat2.MainActivity;
+import org.entermediadb.chat2.GetGoogleToken;
 import org.entermediadb.chat2.R;
 
 /**
@@ -275,7 +262,8 @@ public class GoogleSignInActivity extends BaseActivity implements
 //                        }
 //                    });
 
-            GetToken gett = new GetToken(getApplicationContext(),null);
+            GoogleSignInAccount signedin = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
+            GetGoogleToken gett = new GetGoogleToken(getApplicationContext(),signedin.getAccount(),null);
             gett.execute();
 
 

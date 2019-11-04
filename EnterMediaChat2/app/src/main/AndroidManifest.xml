@@ -51,13 +51,18 @@
         <!-- [START fcm_default_channel] -->
 
 
-
         <activity
-            android:name="org.entermediadb.firebase.quickstart.auth.java.CustomAuthActivity"
-            android:label="@string/label_custom_auth" />
+            android:name="org.entermediadb.firebase.quickstart.auth.java.EnterMediaLoginActivity"
+            android:label="@string/label_entermedia_sign_in" />
+
         <activity
             android:name="org.entermediadb.firebase.quickstart.auth.java.GoogleSignInActivity"
             android:label="@string/label_google_sign_in" />
+
+        <!--
+        <activity
+            android:name="org.entermediadb.firebase.quickstart.auth.java.CustomAuthActivity"
+            android:label="@string/label_custom_auth" />
         <activity
             android:name="org.entermediadb.firebase.quickstart.auth.java.FacebookLoginActivity"
             android:label="@string/label_facebook_login" />
@@ -94,7 +99,7 @@
         <activity
             android:name="org.entermediadb.firebase.quickstart.auth.java.GenericIdpActivity"
             android:label="@string/label_generic_idp" />
-
+           -->
 
         <!-- Facebook Configuration -->
         <meta-data

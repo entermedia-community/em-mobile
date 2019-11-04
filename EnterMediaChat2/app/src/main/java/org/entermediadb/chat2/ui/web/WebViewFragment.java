@@ -18,6 +18,8 @@ import androidx.fragment.app.Fragment;
 
 import org.entermediadb.chat2.R;
 
+import java.util.Map;
+
 import javax.annotation.Nullable;
 
 
@@ -27,16 +29,22 @@ public class WebViewFragment extends Fragment {
     public String fieldBaseUrl;
     public String fieldOpenCollection;
     public String fieldOpenGoal;
+    protected Map<String,String> fieldExtraHeaders;
 
-    private static WebViewFragment fieldInstance;
-    public static WebViewFragment getInstance()
+    public void setFieldExtraHeaders(Map<String,String> inMap)
     {
-        return fieldInstance;
+        fieldExtraHeaders = inMap;
     }
-    public void setInstance(WebViewFragment inThis)
-    {
-        fieldInstance = inThis;
-    }
+
+//    private static WebViewFragment fieldInstance;
+//    public static WebViewFragment getInstance()
+//    {
+//        return fieldInstance;
+//    }
+//    public void setInstance(WebViewFragment inThis)
+//    {
+//        fieldInstance = inThis;
+//    }
 
     public boolean loaded = false;
     @Override
@@ -62,8 +70,9 @@ public class WebViewFragment extends Fragment {
         //webSettings.setTextZoom(20);
         //webSettings.setLo
         // Force links and redirects to open in the WebView instead of in a browser
-        //mWebView.setWebViewClient(new WebViewClient());
+        mWebView.setWebViewClient(new WebViewClient() );
 
+        /*
         mWebView.setWebChromeClient(new WebChromeClient() {
             @Override
             public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
@@ -79,7 +88,7 @@ public class WebViewFragment extends Fragment {
                 return true;
             };
         });
-
+        */
         mWebView.setOnKeyListener(new View.OnKeyListener()
         {
             @Override
@@ -113,6 +122,8 @@ public class WebViewFragment extends Fragment {
         //you can set the title for your toolbar here for different fragments different titles
         renderUrl();
     }
+
+
     public void setUrl(String inUrl)
     {
         fieldBaseUrl = inUrl;
@@ -139,7 +150,13 @@ public class WebViewFragment extends Fragment {
     }
     protected void renderUrl()
     {
-        mWebView.loadUrl(fieldBaseUrl);
+        if( fieldExtraHeaders != null)
+        {
+            mWebView.loadUrl(fieldBaseUrl,fieldExtraHeaders);
+        }
+        else {
+            mWebView.loadUrl(fieldBaseUrl);
+        }
 
     }
 }

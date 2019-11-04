@@ -51,8 +51,10 @@ import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 
@@ -62,11 +64,6 @@ public class MainActivity extends AppCompatActivity implements OnChatSelectedLis
        private static final String TAG = "MainActivity";
 
     //TODO: get from fire
-    public static final String CONFIG_SERVER = "https://entermediadb.org/entermediadb";
-    public static final String EMINSTITUTE = "https://entermediadb.org/entermediadb/app";
-
-    //public static final String CONFIG_SERVER = "http://192.168.0.108:8080/assets";
-    //public static final String EMINSTITUTE = "http://192.168.0.108:8080/assets/app";
 
     EnterMediaConnection connection = new EnterMediaConnection();
     List<JSONObject> menudata;
@@ -75,8 +72,6 @@ public class MainActivity extends AppCompatActivity implements OnChatSelectedLis
     private DrawerLayout mDrawer;
     private Toolbar toolbar;
     private NavigationView nvDrawer;
-
-    protected String fieldUserToken;
 
     // Make sure to be using androidx.appcompat.app.ActionBarDrawerToggle version.
     private ActionBarDrawerToggle drawerToggle;
@@ -144,18 +139,47 @@ public class MainActivity extends AppCompatActivity implements OnChatSelectedLis
 //                    Toast.makeText(ChooserActivity.this, data.toString(), Toast.LENGTH_SHORT).show();
 //                }
 //            }
-            String idtoken = intent.getStringExtra("idtoken");  //Regular login from chooser
-            if( idtoken != null)
+            String error = intent.getStringExtra("error");  //Regular login from chooser
+            if( error != null)
             {
-                fieldUserToken = idtoken;
+                //TODO: Show error fragment
+                Toast.makeText(MainActivity.this, "Could login " + error, Toast.LENGTH_SHORT).show();
+                return;
+            }
+            String token = intent.getStringExtra("token");  //Regular login from chooser
+            if( token != null)
+            {
+                connection.setToken(token);
+                String tokentype = intent.getStringExtra("tokentype");  //Regular login from chooser
+                connection.setTokenType(tokentype);
                 //String email = intent.getStringExtra("useremail");
                // Toast.makeText(MainActivity.this, idtoken, Toast.LENGTH_SHORT).show();
                 String collectionid = intent.getStringExtra("collectionid");  //Chooser notification
                 String collectionlabel = intent.getStringExtra("collectionlabel");
                 String projectgoalid = intent.getStringExtra("projectgoalid");  //Chooser notification
                 String projectgoallabel = intent.getStringExtra("projectgoallabel");
-                reloadMenu(collectionid,collectionlabel,projectgoalid,projectgoallabel);
+                String collectivetopicid = intent.getStringExtra("collectivetopicid");
+
+                reloadMenu(collectionid,collectionlabel,projectgoalid,projectgoallabel,collectivetopicid);
                 //https://developer.android.com/guide/webapps/webview
+
+                if( projectgoalid != null )
+                {
+                    //Show goal details
+                    ///demoall/webapp/WEB-INF /base/eminstitute/app/coll ective/goals/editgoalpanel_app.html
+                    String url = EnterMediaConnection.EMINSTITUTE + "/collective/goals/editgoalpanel_app.html?collectionid=" + collectionid + "&goalid=" + projectgoalid;
+                    org.entermediadb.chat2.ui.web.WebViewFragment browser = showBrowser("Ticket: " + collectionlabel,url);
+                    browser.setOpenCollection(null);
+                    return;
+                }
+                else if ( collectionid != null )
+                {
+                    String url = EnterMediaConnection.EMINSTITUTE + "/collective/community/index_app.html?goaltrackerstaff=*&collectionid=" + collectionid + "&topic=" +  collectivetopicid;
+                    org.entermediadb.chat2.ui.web.WebViewFragment browser = showBrowser("Chat:" + collectionlabel,url);
+                    browser.setOpenCollection(collectionid);
+                    return;
+                }
+
             }
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.nav_host_fragment, new HomeFragment());
@@ -163,7 +187,7 @@ public class MainActivity extends AppCompatActivity implements OnChatSelectedLis
         }
         else
         {
-            reloadMenu(null,null,null, null);
+            reloadMenu(null,null,null, null,null);
         }
     }
 
@@ -184,7 +208,7 @@ public class MainActivity extends AppCompatActivity implements OnChatSelectedLis
 
         return super.onOptionsItemSelected(item);
     }
-    private void reloadMenu(String openCollectionId,String collectionlabel, String projectgoalid, String projectgoallabel)
+    private void reloadMenu(String openCollectionId,String collectionlabel, String projectgoalid, String projectgoallabel, String collectivetopicid)
     {
             UpdateActivity handler = new UpdateActivity(this)
             {
@@ -209,7 +233,7 @@ public class MainActivity extends AppCompatActivity implements OnChatSelectedLis
 
                     try
                     {
-                        JSONObject all = connection.postJson(CONFIG_SERVER + "/mediadb/services/module/librarycollection/viewprojects.json?googleaccesskey=" + fieldUserToken,
+                        JSONObject all = connection.postJson(EnterMediaConnection.MEDIADB+ "/services/module/librarycollection/viewprojects.json",
                                 obj);
                         setJsonData(all);
 
@@ -287,21 +311,7 @@ public class MainActivity extends AppCompatActivity implements OnChatSelectedLis
                                         }
                                     }
                              });
-
-                            if(projectgoalid == null && openCollectionId != null && openCollectionId.equals(collectionid))
-                            {
-                                selectDrawerItem(item);
-                            }
                         }
-                        if( projectgoalid != null )
-                        {
-                            //Show goal details
-                            ///demoall/webapp/WEB-INF /base/eminstitute/app/coll ective/goals/editgoalpanel_app.html
-                            String url = EMINSTITUTE + "/collective/goals/editgoalpanel_app.html?collectionid=" + openCollectionId + "&goalid=" + projectgoalid + "&googleaccesskey=" + fieldUserToken;
-                            org.entermediadb.chat2.ui.web.WebViewFragment browser = showBrowser(collectionlabel,url);
-                            browser.setOpenCollection(null);
-                        }
-
 
                     } catch (Throwable ex)
                     {
@@ -367,10 +377,10 @@ public class MainActivity extends AppCompatActivity implements OnChatSelectedLis
 
             String collectionid = (String) data.get("id");
 
-            String url = EMINSTITUTE + "/collective/community/appchat.html?goaltrackerstaff=*&collectionid=" + collectionid + "&googleaccesskey=" + fieldUserToken;
+            String url = EnterMediaConnection.EMINSTITUTE + "/collective/community/index_app.html?goaltrackerstaff=*&collectionid=" + collectionid;
             String title = (String)data.get("name");
 
-            org.entermediadb.chat2.ui.web.WebViewFragment browser = showBrowser(title,url);
+            org.entermediadb.chat2.ui.web.WebViewFragment browser = showBrowser("Chat " + title,url);
             String previouscollection = browser.getOpenCollection();
             if( previouscollection != null && previouscollection != collectionid)
             {
@@ -406,6 +416,11 @@ public class MainActivity extends AppCompatActivity implements OnChatSelectedLis
             Fragment fragment = null;
             Class fragmentClass;
             switch(menuItem.getItemId()) {
+                case R.id.nav_tools:
+                    String url = EnterMediaConnection.EMINSTITUTE + "/account/activity/recent_app.html";
+                    String title = "Recent Tickets";
+                    org.entermediadb.chat2.ui.web.WebViewFragment browser = showBrowser(title,url);
+                    return;
                 case R.id.nav_gallery:
                     fragmentClass = org.entermediadb.chat2.ui.gallery.GalleryFragment.class;
                     break;
@@ -461,17 +476,15 @@ public class MainActivity extends AppCompatActivity implements OnChatSelectedLis
         {
             //https://developer.android.com/guide/components/fragments.html#Adding
             browser = new org.entermediadb.chat2.ui.web.WebViewFragment();
-            browser.setInstance(browser);
-            browser.setUrl(inUrl);
-
             ft.add(R.id.nav_host_fragment,browser,"navtest_chatlog");
-            ft.replace(R.id.nav_host_fragment, browser);
         }
-        else
-        {
-            browser.setUrl(inUrl);
-            ft.replace(R.id.nav_host_fragment, browser);
-        }
+        Map<String,String> headers = new HashMap<String,String>();
+        headers.put("X-token",connection.getToken());
+        headers.put("X-tokentype",connection.getTokenType());
+        browser.setFieldExtraHeaders(headers);
+        browser.setUrl(inUrl);
+        ft.replace(R.id.nav_host_fragment, browser);
+
         ft.addToBackStack("navtest_chatlog");
         ft.commit();
         setTitle(inTitle);
