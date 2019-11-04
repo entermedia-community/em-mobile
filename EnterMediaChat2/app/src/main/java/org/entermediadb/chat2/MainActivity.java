@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -162,6 +163,14 @@ public class MainActivity extends AppCompatActivity
                 reloadMenu(collectionid,collectionlabel,projectgoalid,projectgoallabel,collectivetopicid);
                 //https://developer.android.com/guide/webapps/webview
 
+                String useremail = intent.getStringExtra("useremail");
+                if( useremail != null)
+                {
+                    NavigationView navigationView = findViewById(R.id.nav_view);
+                    View header = navigationView.getHeaderView(0);
+                    TextView text = (TextView) header.findViewById(R.id.subtitle);
+                    text.setText(useremail);
+                }
                 if( projectgoalid != null )
                 {
                     //Show goal details
@@ -333,6 +342,7 @@ public class MainActivity extends AppCompatActivity
                         Toast.makeText(MainActivity.this, "Could create menu " + ex, Toast.LENGTH_SHORT).show();
                         Log.d(TAG, "Could create menu " + ex);
                     }
+
             }
         };
         connection.process(handler);

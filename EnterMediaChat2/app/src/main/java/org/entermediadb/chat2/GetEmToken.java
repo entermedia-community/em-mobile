@@ -90,7 +90,8 @@ import java.io.IOException;
                                 Log.d(TAG, "signInWithEmail:success");
                                 FirebaseUser user = mAuth.getCurrentUser();
                                 Intent intent = new Intent(activity, MainActivity.class);
-                                //  intent.putExtra("useremail", user.getEmail());
+
+                                intent.putExtra("useremail", fieldEmail);
 
                                 intent.putExtra("token", entermediakey);
                                 intent.putExtra("tokentype", "entermedia");

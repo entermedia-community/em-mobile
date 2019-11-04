@@ -55,7 +55,11 @@ import java.io.IOException;
     protected void onPostExecute(String inToken) {
 
         Intent intent = new Intent(context, MainActivity.class);
-      //  intent.putExtra("useremail", user.getEmail());
+        GoogleSignInAccount signedin = GoogleSignIn.getLastSignedInAccount(context);
+        if(signedin !=null)
+        {
+            intent.putExtra("useremail", signedin.getEmail());
+        }
 
         intent.putExtra("token", inToken);
         intent.putExtra("tokentype", "google");
