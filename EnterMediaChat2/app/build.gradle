@@ -9,8 +9,8 @@ android {
         applicationId "org.entermediadb.chat2"
         minSdkVersion 26
         targetSdkVersion 28
-        versionCode 111
-        versionName '111'
+        versionCode 114
+        versionName '114d'
         multiDexEnabled true
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
@@ -20,7 +20,13 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        debugRelease {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
+        }
     }
+
 
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'

@@ -11,7 +11,7 @@
 
     <!--This is the main toolbar theme -->
     <style name="AppTheme.DarkToolbar" parent="ThemeOverlay.AppCompat.Dark" >
-        <item name="listPreferredItemHeightSmall">40dp</item>
+        <item name="listPreferredItemHeightSmall">32dp</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 

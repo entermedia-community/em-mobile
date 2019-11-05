@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
 
-        initUpdateCheck();
+        // initUpdateCheck();
 
         //See if im loged in already?
 
