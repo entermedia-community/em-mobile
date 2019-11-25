@@ -67,7 +67,7 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="000000" />
-                                                <entry key="scalingPercent" value="69" />
+                                                <entry key="scalingPercent" value="92" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -78,8 +78,7 @@
                                   <option name="values">
                                     <map>
                                       <entry key="backgroundAssetType" value="COLOR" />
-                                      <entry key="backgroundColor" value="ffffff" />
-                                      <entry key="foregroundImage" value="$USER_HOME$/Downloads/emshare.png" />
+                                      <entry key="foregroundImage" value="$USER_HOME$/Downloads/EMLogo-small.png" />
                                     </map>
                                   </option>
                                 </PersistentState>

@@ -41,12 +41,13 @@ import java.io.IOException;
         String fieldPassword;
         private FirebaseAuth mAuth;
 
-        public GetEmToken(Activity inActivity, FirebaseAuth inAuth, String inEmail, String inPassword)
+        public GetEmToken(Activity inActivity, FirebaseAuth inAuth, String inEmail, String inPassword, Intent inIntent)
         {
             this.activity = inActivity;
             mAuth = inAuth;
             fieldEmail = inEmail;
             fieldPassword = inPassword;
+            fieldIntent = inIntent;
         }
 
         @Override
@@ -74,9 +75,13 @@ import java.io.IOException;
 
             JSONObject results = (JSONObject) jsonreply.get("results");
             final String entermediakey = (String) results.get("entermediakey");
+            final String userid = (String) results.get("userid");
 
             activity.getPreferences(Context.MODE_PRIVATE).edit().
-                    putString("email", fieldEmail).putString("password", fieldPassword).commit();
+                    putString("email", fieldEmail).
+                    putString("emuserid", userid).
+                    putString("password", fieldPassword).
+                    commit();
 
 
             //Login with firebase API

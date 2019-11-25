@@ -4,6 +4,8 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
@@ -59,7 +61,7 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity
 {
        // MenuItem.OnMenuItemClickListener {
-       private static final String TAG = "MainActivity";
+    private static final String TAG = "MainActivity";
 
     //TODO: get from fire
 
@@ -152,6 +154,17 @@ public class MainActivity extends AppCompatActivity
                 connection.setToken(token);
                 String tokentype = intent.getStringExtra("tokentype");  //Regular login from chooser
                 connection.setTokenType(tokentype);
+
+                try {
+                    PackageInfo pInfo = getApplicationContext().getPackageManager().getPackageInfo(getPackageName(), 0);
+                    String version = pInfo.versionName;
+                    connection.setVersion(version);
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
+                }
+
+                //TODO: Add excellent error handling
+
                 //String email = intent.getStringExtra("useremail");
                // Toast.makeText(MainActivity.this, idtoken, Toast.LENGTH_SHORT).show();
                 String collectionid = intent.getStringExtra("collectionid");  //Chooser notification
@@ -162,6 +175,7 @@ public class MainActivity extends AppCompatActivity
 
                 reloadMenu(collectionid,collectionlabel,projectgoalid,projectgoallabel,collectivetopicid);
                 //https://developer.android.com/guide/webapps/webview
+
 
                 String useremail = intent.getStringExtra("useremail");
                 if( useremail != null)
@@ -182,8 +196,17 @@ public class MainActivity extends AppCompatActivity
                 }
                 else if ( collectionid != null )
                 {
-                    String url = EnterMediaConnection.EMINSTITUTE + "/collective/community/index_app.html?goaltrackerstaff=*&collectionid=" + collectionid + "&topic=" +  collectivetopicid;
-                    org.entermediadb.chat2.ui.web.WebViewFragment browser = showBrowser("Chat:" + collectionlabel,url);
+                    String url = EnterMediaConnection.EMINSTITUTE + "/collective/community/index.html?goaltrackerstaff=*&collectionid=" + collectionid + "&topic=" +  collectivetopicid;
+                    String label = null;
+                    if( collectionid.endsWith("-messages"))
+                    {
+                        label = "Direct Message";
+                    }
+                    else
+                    {
+                        label = "Chat:" + collectionlabel;
+                    }
+                    org.entermediadb.chat2.ui.web.WebViewFragment browser = showBrowser(label,url);
                     browser.setOpenCollection(collectionid);
                     return;
                 }
@@ -282,7 +305,8 @@ public class MainActivity extends AppCompatActivity
                     //TODO?? getJsonData();
                 if( getError() != null)
                 {
-                    Toast.makeText(MainActivity.this, "Could load data " + getError(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Could load data " + getError(), Toast.LENGTH_LONG).show();
+                    Log.d(TAG, "Could download menu " + getError());
                     return;
                 }
 
@@ -313,7 +337,23 @@ public class MainActivity extends AppCompatActivity
                     try {
 
                         JSONObject data = getJsonData();
+                        JSONObject response = (JSONObject) data.get("response");
                         menudata = new ArrayList((Collection)data.get("results"));
+
+                        String userid = (String)response.get("userid");
+                        connection.setUserId(userid);
+
+                        String messagecollectionid = userid + "-messages";
+                        FirebaseMessaging.getInstance().subscribeToTopic(messagecollectionid).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (!task.isSuccessful()) {
+                                    Log.d(TAG, "Could not subscribe to " +messagecollectionid);
+                                }
+                            }
+                        });
+
+
                         int index = 0;
                         for(JSONObject objct : menudata)
                         {
@@ -339,7 +379,7 @@ public class MainActivity extends AppCompatActivity
                     } catch (Throwable ex)
                     {
                         //log
-                        Toast.makeText(MainActivity.this, "Could create menu " + ex, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "Could create menu " + ex, Toast.LENGTH_LONG).show();
                         Log.d(TAG, "Could create menu " + ex);
                     }
 
@@ -401,17 +441,17 @@ public class MainActivity extends AppCompatActivity
 
             String collectionid = (String) data.get("id");
 
-            String url = EnterMediaConnection.EMINSTITUTE + "/collective/community/index_app.html?goaltrackerstaff=*&collectionid=" + collectionid;
+            String url = EnterMediaConnection.EMINSTITUTE + "/collective/community/index.html?goaltrackerstaff=*&collectionid=" + collectionid;
             String title = (String)data.get("name");
 
             org.entermediadb.chat2.ui.web.WebViewFragment browser = showBrowser("Chat " + title,url);
-            String previouscollection = browser.getOpenCollection();
-            if( previouscollection != null && previouscollection != collectionid)
-            {
-                FirebaseMessaging.getInstance().subscribeToTopic(previouscollection);
-            }
+//            String previouscollection = browser.getOpenCollection();
+//            if( previouscollection != null && previouscollection != collectionid)
+//            {
+//                FirebaseMessaging.getInstance().subscribeToTopic(previouscollection);
+//            }
             browser.setOpenCollection(collectionid);
-            FirebaseMessaging.getInstance().unsubscribeFromTopic(collectionid); //While visable
+            //FirebaseMessaging.getInstance().unsubscribeFromTopic(collectionid); //While visable
 
 
 
@@ -441,13 +481,18 @@ public class MainActivity extends AppCompatActivity
             Class fragmentClass;
             switch(menuItem.getItemId()) {
                 case R.id.nav_tools:
-                    String url = EnterMediaConnection.EMINSTITUTE + "/account/activity/recent_app.html";
+                    String url = EnterMediaConnection.EMINSTITUTE + "/users/activity/recent.html";
                     String title = "Recent Tickets";
                     org.entermediadb.chat2.ui.web.WebViewFragment browser = showBrowser(title,url);
                     return;
                 case R.id.nav_gallery:
                     fragmentClass = org.entermediadb.chat2.ui.gallery.GalleryFragment.class;
                     break;
+                case R.id.nav_messages:
+                    url = EnterMediaConnection.EMINSTITUTE + "/messages/index.html";
+                    title = "Direct Messages";
+                    browser = showBrowser(title,url);
+                    return;
                 default:
                     fragmentClass = org.entermediadb.chat2.ui.home.HomeFragment.class;
             }
@@ -506,13 +551,16 @@ public class MainActivity extends AppCompatActivity
         Map<String,String> headers = new HashMap<String,String>();
         headers.put("X-token",connection.getToken());
         headers.put("X-tokentype",connection.getTokenType());
-        browser.setFieldExtraHeaders(headers);
-        browser.setUrl(inUrl);
-        ft.replace(R.id.nav_host_fragment, browser);
+        headers.put("X-emappversion",connection.getVersion());
 
+
+        setTitle(inTitle);
+        ft.replace(R.id.nav_host_fragment, browser);
         ft.addToBackStack("navtest_chatlog");
         ft.commit();
-        setTitle(inTitle);
+        browser.setFieldExtraHeaders(headers);
+        browser.setUrl(inUrl);
+
 
         return browser;
     }

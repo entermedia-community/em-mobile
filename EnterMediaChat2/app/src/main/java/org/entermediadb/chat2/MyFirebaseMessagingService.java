@@ -32,6 +32,8 @@ import androidx.work.WorkManager;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -85,9 +87,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
         Log.d(TAG, "From: " + remoteMessage.getFrom());
 
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-        if( account != null && remoteMessage.getFrom().equalsIgnoreCase( account.getEmail() ) )
+        if( user != null && remoteMessage.getFrom().equalsIgnoreCase( user.getEmail() ) )
         {
             return;
         }

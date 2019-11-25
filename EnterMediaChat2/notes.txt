@@ -56,3 +56,11 @@ gcloud@openedit.org
 https://console.firebase.google.com/project/entermediadb-177816/settings/general/android:org.entermediadb.chat2
 
 https://play.google.com/apps/publish/?account=7056730519978099587#ManageReleasesPlace:p=org.entermediadb.app1&appid=4975355597455888380
+
+If you get trust issues you need to log into here:
+
+https://admin.google.com/AdminHome?hl=en#Oauth2ScopeManagement:subtab=trusted
+
+And make sure your client ID is trusted
+
+279466694094-r5n936g7slf2jmifdu1vi2v8r4tckd0c.apps.googleusercontent.com

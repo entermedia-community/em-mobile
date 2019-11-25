@@ -30,12 +30,32 @@ public class EnterMediaConnection
     public static final String EMINSTITUTE = "https://entermediadb.org/entermediadb/app";
     public static final String MEDIADB = "https://entermediadb.org/entermediadb/mediadb";
 
-   //public static final String EMINSTITUTE = "http://192.168.0.108:8080/assets/app";
-   // public static final String MEDIADB = "http://192.168.0.108:8080/assets/mediadb";
-
+ //  public static final String EMINSTITUTE = "http://192.168.0.170:8080/assets/app";
+ //  public static final String MEDIADB = "http://192.168.0.170:8080/assets/mediadb";
 
     protected String fieldToken;
     protected String fieldTokenType;
+    protected String fieldVersion;
+    protected String fieldUserId;
+
+    public String getUserId()
+    {
+        return fieldUserId;
+    }
+    public void setUserId(String inUserId)
+    {
+        fieldUserId= inUserId;
+    }
+
+    public String getVersion()
+    {
+        return fieldVersion;
+    }
+    public void setVersion(String inVersion)
+    {
+        fieldVersion= inVersion;
+    }
+
 
     public void setToken(String inToken)
     {
@@ -89,6 +109,7 @@ public class EnterMediaConnection
             HttpHeaders headers = new HttpHeaders();
             headers.put("X-token", getToken());
             headers.put("X-tokentype", getTokenType());
+            headers.put("X-emappversion",getVersion() );
             req.setHeaders(headers);
 
             resp = req.execute();

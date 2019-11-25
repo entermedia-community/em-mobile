@@ -131,7 +131,7 @@ public class EnterMediaLoginActivity extends BaseActivity implements
 
         showProgressDialog();
 
-        GetEmToken gett = new GetEmToken(this,mAuth,email,password);
+        GetEmToken gett = new GetEmToken(this,mAuth,email,password,null);
         gett.execute();
 
 //        // [START sign_in_with_email]

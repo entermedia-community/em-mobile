@@ -152,7 +152,7 @@ public class ChooserActivity extends AppCompatActivity implements AdapterView.On
             String password = getPreferences(Context.MODE_PRIVATE).getString("password", null);
             if(email != null && password != null) {
                 mAuth = FirebaseAuth.getInstance();
-                GetEmToken gett = new GetEmToken(this, mAuth, email, password);
+                GetEmToken gett = new GetEmToken(this, mAuth, email, password,intent);
                 gett.execute();
                 return;
             }
