@@ -44,6 +44,7 @@ import com.google.android.play.core.install.model.AppUpdateType;
 import com.google.android.play.core.install.model.InstallStatus;
 import com.google.android.play.core.install.model.UpdateAvailability;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 
@@ -53,6 +54,7 @@ import org.entermediadb.firebase.quickstart.auth.java.EnterMediaLoginActivity;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -164,8 +166,8 @@ public class MainActivity extends AppCompatActivity
 
                 try {
                     PackageInfo pInfo = getApplicationContext().getPackageManager().getPackageInfo(getPackageName(), 0);
-                    String version = pInfo.versionName;
-                    connection.setVersion(version);
+                    int version = pInfo.versionCode;
+                    connection.setVersion(String.valueOf( version ) );
                 } catch (PackageManager.NameNotFoundException e) {
                     e.printStackTrace();
                 }
@@ -203,15 +205,17 @@ public class MainActivity extends AppCompatActivity
                 }
                 else if ( collectionid != null )
                 {
-                    String url = EnterMediaConnection.EMINSTITUTE + "/collective/community/index.html?goaltrackerstaff=*&collectionid=" + collectionid + "&topic=" +  collectivetopicid;
+                    String url = null;
                     String label = null;
                     if( collectionid.endsWith("-messages"))
                     {
                         label = "Direct Message";
+                        url = EnterMediaConnection.EMINSTITUTE + "/messages/index.html?topic=" +  collectivetopicid;
                     }
                     else
                     {
                         label = "Chat:" + collectionlabel;
+                        url = EnterMediaConnection.EMINSTITUTE + "/collective/community/index.html?goaltrackerstaff=*&collectionid=" + collectionid + "&topic=" +  collectivetopicid;
                     }
                     org.entermediadb.chat2.ui.web.WebViewFragment browser = showBrowser(label,url);
                     browser.setOpenCollection(collectionid);
@@ -288,6 +292,12 @@ public class MainActivity extends AppCompatActivity
                             obj);
                     setJsonData(all);
 
+                    try {
+                        FirebaseInstanceId.getInstance().deleteInstanceId();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
                     if (Build.VERSION.SDK_INT > 25) {
                         String channelId = "fcm_default_channel";
                         String channelName = getString(R.string.default_notification_channel_name);
@@ -297,6 +307,39 @@ public class MainActivity extends AppCompatActivity
                                 channelName, NotificationManager.IMPORTANCE_LOW));
                     }
 
+                    JSONObject data = getJsonData();
+                    JSONObject response = (JSONObject) data.get("response");
+                    Collection<JSONObject> results = new ArrayList((Collection)data.get("results"));
+
+                    String userid = (String)response.get("userid");
+                    connection.setUserId(userid);
+
+                    String messagecollectionid = userid + "-messages";
+                    FirebaseMessaging.getInstance().subscribeToTopic(messagecollectionid).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (!task.isSuccessful()) {
+                                Log.d(TAG, "Could not subscribe to " +messagecollectionid);
+                            }
+                        }
+                    });
+
+
+                    int index = 0;
+                    for(JSONObject objct : results)
+                    {
+                        final String collectionid = (String)objct.get("id");
+                        String name = (String)objct.get("name");
+
+                        FirebaseMessaging.getInstance().subscribeToTopic(collectionid).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (!task.isSuccessful()) {
+                                    Log.d(TAG, "Could not subscribe to " + collectionid);
+                                }
+                            }
+                        });
+                    }
 
                 }
 
@@ -327,55 +370,23 @@ public class MainActivity extends AppCompatActivity
     //                title.setSpan(bss, 0, title.length(), 0);
                     //menu.add(0, 0, 1, title);
 
-                    try {
+                    JSONObject data = getJsonData();
+                    JSONObject response = (JSONObject) data.get("response");
+                    menudata = new ArrayList((Collection)data.get("results"));
 
-                        JSONObject data = getJsonData();
-                        JSONObject response = (JSONObject) data.get("response");
-                        menudata = new ArrayList((Collection)data.get("results"));
-
-                        String userid = (String)response.get("userid");
-                        connection.setUserId(userid);
-
-                        String messagecollectionid = userid + "-messages";
-                        FirebaseMessaging.getInstance().subscribeToTopic(messagecollectionid).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (!task.isSuccessful()) {
-                                    Log.d(TAG, "Could not subscribe to " +messagecollectionid);
-                                }
-                            }
-                        });
-
-
-                        int index = 0;
-                        for(JSONObject objct : menudata)
-                        {
-                            final String collectionid = (String)objct.get("id");
-                            String name = (String)objct.get("name");
-
-                            SpannableStringBuilder title = new SpannableStringBuilder(name);
-                            final StyleSpan bss = new StyleSpan(android.graphics.Typeface.BOLD);  //Depending on unread
-                            title.setSpan(bss, 0, title.length(), 0);
-
-                            MenuItem item = topChannelMenu.add(666, index++, Menu.NONE, title);
-
-                            FirebaseMessaging.getInstance().subscribeToTopic(collectionid).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (!task.isSuccessful()) {
-                                            Log.d(TAG, "Could not subscribe to " + collectionid);
-                                        }
-                                    }
-                             });
-                        }
-
-                    } catch (Throwable ex)
+                    int index = 0;
+                    for(JSONObject objct : menudata)
                     {
-                        //log
-                        Toast.makeText(MainActivity.this, "Could create menu " + ex, Toast.LENGTH_LONG).show();
-                        Log.d(TAG, "Could create menu " + ex);
-                    }
+                        final String collectionid = (String)objct.get("id");
+                        String name = (String)objct.get("name");
 
+                        SpannableStringBuilder title = new SpannableStringBuilder(name);
+                        final StyleSpan bss = new StyleSpan(android.graphics.Typeface.BOLD);  //Depending on unread
+                        title.setSpan(bss, 0, title.length(), 0);
+
+                        MenuItem item = topChannelMenu.add(666, index++, Menu.NONE, title);
+
+                    }
             }
         };
         connection.process(handler);
