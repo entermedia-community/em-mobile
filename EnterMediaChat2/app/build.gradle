@@ -9,21 +9,30 @@ android {
         applicationId "org.entermediadb.chat2"
         minSdkVersion 26
         targetSdkVersion 28
-        versionCode 117
-        versionName '117d'
+        versionCode 122
+        versionName '122newseervices'
         multiDexEnabled true
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
 
+    signingConfigs {
+        release {
+            storeFile file("/home/shanti/git/em-mobile/EnterMediaChat2/emreleasekeystore.jks")
+            storePassword 'Mobile1234Pass'
+            keyAlias 'chat2'
+            keyPassword 'Mobile1234Pass'
+        }
+    }
     buildTypes {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
         debugRelease {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
         }
     }
 
@@ -74,7 +83,7 @@ dependencies {
     implementation 'com.google.android.play:core:1.6.3'
 
     // Google Sign In SDK (only required for Google Sign In)
-    implementation 'com.google.android.gms:play-services-auth:17.0.0'
+   implementation 'com.google.android.gms:play-services-auth:17.0.0'
 
     // Firebase UI
     // Used in FirebaseUIActivity.
@@ -82,17 +91,17 @@ dependencies {
 
     // Facebook Android SDK (only required for Facebook Login)
     // Used in FacebookLoginActivity.
-    implementation 'com.facebook.android:facebook-login:4.42.0'
+ //   implementation 'com.facebook.android:facebook-login:4.42.0'
     implementation 'androidx.browser:browser:1.0.0'
 
     // Twitter Android SDK (only required for Twitter Login)
-    implementation 'com.twitter.sdk.android:twitter-core:3.3.0'
-    implementation 'com.twitter.sdk.android:twitter:3.3.0'
+//    implementation 'com.twitter.sdk.android:twitter-core:3.3.0'
+//    implementation 'com.twitter.sdk.android:twitter:3.3.0'
 
-    implementation 'com.google.android.gms:play-services-maps:17.0.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    androidTestImplementation 'androidx.test:rules:1.2.0'
-    androidTestImplementation 'androidx.test:runner:1.2.0'
+//    implementation 'com.google.android.gms:play-services-maps:17.0.0'
+//    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+//    androidTestImplementation 'androidx.test:rules:1.2.0'
+//    androidTestImplementation 'androidx.test:runner:1.2.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.50"
 
     implementation 'com.google.api-client:google-api-client-android:1.30.2'

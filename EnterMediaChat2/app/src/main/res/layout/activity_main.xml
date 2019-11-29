@@ -22,10 +22,10 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+
     <include
         layout="@layout/content_main"
-        android:background="@color/com_facebook_button_login_silver_background_color_pressed" />
-
+        android:background="@color/embackground" />
     <!--
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"

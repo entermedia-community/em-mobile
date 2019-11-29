@@ -18,39 +18,19 @@ package org.entermediadb.firebase.quickstart.auth.java;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentSender;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.android.play.core.appupdate.AppUpdateManager;
-import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
-import com.google.android.play.core.install.InstallState;
-import com.google.android.play.core.install.InstallStateUpdatedListener;
-import com.google.android.play.core.install.model.AppUpdateType;
-import com.google.android.play.core.install.model.InstallStatus;
-import com.google.android.play.core.install.model.UpdateAvailability;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import org.entermediadb.chat2.GetEmToken;
-import org.entermediadb.chat2.GetGoogleToken;
 import org.entermediadb.chat2.MainActivity;
 import org.entermediadb.chat2.R;
 
@@ -60,8 +40,6 @@ import org.entermediadb.chat2.R;
  * contain any useful code related to Firebase Authentication. You may want to start with
  * one of the following Files:
  *     {@link GoogleSignInActivity}
- *     {@link FacebookLoginActivity}
- *     {@link TwitterLoginActivity}
  *     {@link EmailPasswordActivity}
  *     {@link PasswordlessActivity}
  *     {@link PhoneAuthActivity}
@@ -110,17 +88,17 @@ public class ChooserActivity extends AppCompatActivity implements AdapterView.On
     {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_chooser);
+//        setContentView(R.layout.activity_chooser);
 
-        // Set up ListView and Adapter
-        ListView listView = findViewById(R.id.listView);
-
-        MyArrayAdapter adapter = new MyArrayAdapter(this, android.R.layout.simple_list_item_2, CLASSES);
-        adapter.setDescriptionIds(DESCRIPTION_IDS);
-
-        listView.setAdapter(adapter);
-        listView.setOnItemClickListener(this);
-
+//        // Set up ListView and Adapter
+//        ListView listView = findViewById(R.id.listView);
+//
+//        MyArrayAdapter adapter = new MyArrayAdapter(this, android.R.layout.simple_list_item_2, CLASSES);
+//        adapter.setDescriptionIds(DESCRIPTION_IDS);
+//
+//        listView.setAdapter(adapter);
+//        listView.setOnItemClickListener(this);
+//
         loginCheck();
 
         //https://developer.android.com/training/basics/intents/filters#java
@@ -140,23 +118,48 @@ public class ChooserActivity extends AppCompatActivity implements AdapterView.On
                 autologin = false;
             }
         }
-        if( autologin) {
-            GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-            if (account != null) {
-                GetGoogleToken gett = new GetGoogleToken(getApplicationContext(), account.getAccount(), intent);
-                gett.execute();
-                return;
-            }
+        if( autologin)
+        {
+            mAuth = FirebaseAuth.getInstance(); //Have to run this first. If I am already logged into Firebase then just skip ahead?
+            //FirebaseAuth.getInstance().addAuthStateListener(mAuthState());
+//            mAuth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
+//                @Override
+//                public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+//                    //Nada?
+//                }
+//            });
+            if( mAuth.getCurrentUser() != null )
+            {
+                String entermediakey = getSharedPreferences("app",Context.MODE_PRIVATE).getString("entermediakey", null);
+                String emuserid = getSharedPreferences("app",Context.MODE_PRIVATE).getString("emuserid", null);
+                if( entermediakey != null && emuserid != null)
+                {
+                    FirebaseUser user = mAuth.getCurrentUser();
+                    Intent gopage = new Intent(this, MainActivity.class);
 
-            String email = getPreferences(Context.MODE_PRIVATE).getString("email", null);
-            String password = getPreferences(Context.MODE_PRIVATE).getString("password", null);
-            if(email != null && password != null) {
-                mAuth = FirebaseAuth.getInstance();
-                GetEmToken gett = new GetEmToken(this, mAuth, email, password,intent);
-                gett.execute();
-                return;
+                    if (intent != null && intent.getExtras() != null) {
+                        for (String key : intent.getExtras().keySet()) {
+                            gopage.putExtra(key, intent.getStringExtra(key));
+                        }
+                    }
+                    gopage.putExtra("useremail", user.getEmail());
+                    gopage.putExtra("emuserid", emuserid);
+
+                    gopage.putExtra("token", entermediakey);
+                    gopage.putExtra("tokentype", "entermedia");
+                    startActivity(gopage);
+                    return;
+                }
             }
         }
+        Intent loginpage = new Intent(this, EnterMediaLoginActivity.class);
+        if (intent != null && intent.getExtras() != null) {
+            for (String key : intent.getExtras().keySet()) {
+                loginpage.putExtra(key, intent.getStringExtra(key));
+            }
+        }
+        startActivity(loginpage);
+
     }
 
     @Override

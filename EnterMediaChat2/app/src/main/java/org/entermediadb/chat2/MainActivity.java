@@ -2,6 +2,7 @@ package org.entermediadb.chat2;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageInfo;
@@ -48,6 +49,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.entermediadb.chat2.ui.home.HomeFragment;
 import org.entermediadb.firebase.quickstart.auth.java.ChooserActivity;
+import org.entermediadb.firebase.quickstart.auth.java.EnterMediaLoginActivity;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -128,6 +130,11 @@ public class MainActivity extends AppCompatActivity
 
         // Tie DrawerLayout events to the ActionBarToggle
         mDrawer.addDrawerListener(drawerToggle);
+
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.nav_host_fragment, new HomeFragment());
+        ft.commit();
+
 
         Intent intent = getIntent();
         if( intent != null) {
@@ -210,11 +217,7 @@ public class MainActivity extends AppCompatActivity
                     browser.setOpenCollection(collectionid);
                     return;
                 }
-
             }
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.nav_host_fragment, new HomeFragment());
-            ft.commit();
         }
         else
         {
@@ -232,20 +235,24 @@ public class MainActivity extends AppCompatActivity
             case R.id.action_logout:
                 //GoogleSignIn.getLastSignedInAccount(
                 connection.setToken(null);
+                getSharedPreferences("app",Context.MODE_PRIVATE).edit().
+                        remove("email").
+                        remove("emuserid").
+                        remove("password").
+                        remove("entermediakey").
+                        commit();
+                //mGoogleSignInClient.signOut()
+//                GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+//                        .requestEmail()
+//                        .build();
+//                GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(getApplicationContext(), gso);
+//                mGoogleSignInClient.signOut();
+                FirebaseAuth.getInstance().signOut();
                 String url = EnterMediaConnection.EMINSTITUTE + "/authentication/logout.html";
-
                 showBrowser("Logout",url); //This should clear the cookies and record the event
 
-                //mGoogleSignInClient.signOut()
-                GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                        .requestEmail()
-                        .build();
-                GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(getApplicationContext(), gso);
-                mGoogleSignInClient.signOut();
-                FirebaseAuth.getInstance().signOut();
 
-
-                Intent intent = new Intent(getApplicationContext(), ChooserActivity.class);
+                Intent intent = new Intent(getApplicationContext(), EnterMediaLoginActivity.class);
                 intent.putExtra("logout","true");
 
                 getApplicationContext().startActivity(intent);
@@ -256,7 +263,7 @@ public class MainActivity extends AppCompatActivity
     }
     private void reloadMenu(String openCollectionId,String collectionlabel, String projectgoalid, String projectgoallabel, String collectivetopicid)
     {
-            UpdateActivity handler = new UpdateActivity(this)
+            UpdateActivity handler = new UpdateActivity(this, TAG)
             {
                 @Override
                 public void runNetwork()
@@ -277,17 +284,9 @@ public class MainActivity extends AppCompatActivity
                     term.put("value","*");
                     terms.add(term);
 
-                    try
-                    {
-                        JSONObject all = connection.postJson(EnterMediaConnection.MEDIADB+ "/services/module/librarycollection/viewprojects.json",
-                                obj);
-                        setJsonData(all);
-
-                    }
-                    catch( Exception ex)
-                    {
-                        setError(ex);
-                    }
+                    JSONObject all = connection.postJson(EnterMediaConnection.MEDIADB+ "/services/module/librarycollection/viewprojects.json",
+                            obj);
+                    setJsonData(all);
 
                     if (Build.VERSION.SDK_INT > 25) {
                         String channelId = "fcm_default_channel";
@@ -298,41 +297,35 @@ public class MainActivity extends AppCompatActivity
                                 channelName, NotificationManager.IMPORTANCE_LOW));
                     }
 
+
                 }
 
                 public void runUiUpdate()
                 {
-                    //TODO?? getJsonData();
-                if( getError() != null)
-                {
-                    Toast.makeText(MainActivity.this, "Could load data " + getError(), Toast.LENGTH_LONG).show();
-                    Log.d(TAG, "Could download menu " + getError());
-                    return;
-                }
 
-                DrawerLayout drawer = findViewById(R.id.drawer_layout);
+                    DrawerLayout drawer = findViewById(R.id.drawer_layout);
 
-                //https://blog.teamtreehouse.com/add-navigation-drawer-android
-                //https://stackoverflow.com/questions/31722566/dynamic-adding-item-to-navigationview-in-android
+                    //https://blog.teamtreehouse.com/add-navigation-drawer-android
+                    //https://stackoverflow.com/questions/31722566/dynamic-adding-item-to-navigationview-in-android
 
-                NavigationView navigationView = findViewById(R.id.nav_view);
+                    NavigationView navigationView = findViewById(R.id.nav_view);
 
-                //https://stackoverflow.com/questions/31722566/dynamic-adding-item-to-navigationview-in-android
-                Menu menu = navigationView.getMenu();
+                    //https://stackoverflow.com/questions/31722566/dynamic-adding-item-to-navigationview-in-android
+                    Menu menu = navigationView.getMenu();
 
-                SubMenu topChannelMenu = menu.addSubMenu("Projects");
+                    SubMenu topChannelMenu = menu.addSubMenu("Projects");
 
-                //TODO: Go to EnterMedia REST API and get projects your a team on
+                    //TODO: Go to EnterMedia REST API and get projects your a team on
 
-                //Collection all = connection.getAsList("https://entermediadb.org/");
+                    //Collection all = connection.getAsList("https://entermediadb.org/");
 
-                //topChannelMenu.add(0, 2, 1, "EnterMedia / General");
+                    //topChannelMenu.add(0, 2, 1, "EnterMedia / General");
 
-//                TypefaceSpan span = new TypefaceSpan("serif");
-//                SpannableStringBuilder title = new SpannableStringBuilder("My Menu Item Title");
-//                final StyleSpan bss = new StyleSpan(android.graphics.Typeface.BOLD);
-//                title.setSpan(bss, 0, title.length(), 0);
-                //menu.add(0, 0, 1, title);
+    //                TypefaceSpan span = new TypefaceSpan("serif");
+    //                SpannableStringBuilder title = new SpannableStringBuilder("My Menu Item Title");
+    //                final StyleSpan bss = new StyleSpan(android.graphics.Typeface.BOLD);
+    //                title.setSpan(bss, 0, title.length(), 0);
+                    //menu.add(0, 0, 1, title);
 
                     try {
 

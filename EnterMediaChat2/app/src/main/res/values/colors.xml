@@ -14,6 +14,7 @@
     <color name="emgreen">#6FB353</color>
     <color name="emdark">#565656</color>
     <color name="emforeground">#E0E0E0</color>
+    <color name="embackground">#e9eaf0</color>
 
     <color name="grey_100">#F5F5F5</color>
     <color name="grey_300">#E0E0E0</color>

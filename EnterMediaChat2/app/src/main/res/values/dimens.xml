@@ -14,6 +14,9 @@
     <dimen name="nav_header_vertical_spacing">1dp</dimen>
     <dimen name="nav_header_height">135dp</dimen>
 
+    <dimen name="emimagepadding">8dp</dimen>
+    <dimen name="em6dp">6dp</dimen>
+
     <!--
 https://stackoverflow.com/questions/36943213/how-to-control-navigationview-margin-between-menu-items/41718559
 -->

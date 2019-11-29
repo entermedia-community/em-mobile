@@ -38,7 +38,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
-import org.entermediadb.chat2.GetGoogleToken;
+import org.entermediadb.chat2.LoginWithGoogle;
 import org.entermediadb.chat2.R;
 
 /**
@@ -75,6 +75,11 @@ public class GoogleSignInActivity extends BaseActivity implements
         // [START config_signin]
         // Configure Google Sign In
         Log.d(TAG, "onCreate:" + getIntent());
+
+        //OLD String clientid = getString(R.string.default_web_client_id); //201465843723-eok1lebp3vr648shdqtm1a1tban7h2dc.apps.googleusercontent.com
+
+        //String clientid = "279466694094-cialssvh671nbe8qqk0r8r5kb0ec7usi.apps.googleusercontent.com";
+
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -151,7 +156,7 @@ public class GoogleSignInActivity extends BaseActivity implements
                             else
                             {
                                 mDetailTextView.setText("Success " + user.getEmail());
-                                GetGoogleToken gett = new GetGoogleToken(getApplicationContext(), signedin.getAccount(), null);
+                                LoginWithGoogle gett = new LoginWithGoogle(GoogleSignInActivity.this,getApplicationContext(), signedin.getAccount(), null);
                                 gett.execute();
                             }
                         } else {

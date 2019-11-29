@@ -87,12 +87,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
         Log.d(TAG, "From: " + remoteMessage.getFrom());
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-        if( user != null && remoteMessage.getFrom().equalsIgnoreCase( user.getEmail() ) )
-        {
-            return;
-        }
+//        if( user != null && remoteMessage.getFrom().equalsIgnoreCase( user.getEmail() ) )
+//        {
+//            return;
+//        }
 
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0)
@@ -102,6 +101,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
             // Check if message contains a notification payload.
             if (remoteMessage.getNotification() != null) {
+
+                String useremail = remoteMessage.getData().get("useremail");
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                if( user != null && remoteMessage.getFrom().equalsIgnoreCase( user.getEmail() ) )
+                {
+                    return;
+                }
+
+
                 String msg = remoteMessage.getNotification().getBody();
                 String collectionid = remoteMessage.getData().get("collectionid");
                 String subject = remoteMessage.getNotification().getTitle();//remoteMessage.getData().get("chattopic");

@@ -17,14 +17,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/nav_header_desc"
-        android:paddingTop="@dimen/tw__composer_spacing_medium"
+        android:paddingTop="@dimen/emimagepadding"
         app:srcCompat="@mipmap/ic_launcher_round" />
 
     <TextView
         android:id="@+id/subtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/com_facebook_likeboxcountview_caret_width"
+        android:paddingBottom="@dimen/em6dp"
         android:text="@string/nav_header_subtitle" />
 
 </LinearLayout>

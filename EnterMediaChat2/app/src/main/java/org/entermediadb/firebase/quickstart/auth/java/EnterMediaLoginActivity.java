@@ -17,6 +17,7 @@
 package org.entermediadb.firebase.quickstart.auth.java;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -33,8 +34,13 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import org.entermediadb.chat2.GetEmToken;
+import org.entermediadb.chat2.EnterMediaConnection;
+import org.entermediadb.chat2.MainActivity;
 import org.entermediadb.chat2.R;
+import org.entermediadb.chat2.UpdateActivity;
+import org.json.simple.JSONObject;
+
+import java.util.Map;
 
 public class EnterMediaLoginActivity extends BaseActivity implements
         View.OnClickListener {
@@ -63,7 +69,7 @@ public class EnterMediaLoginActivity extends BaseActivity implements
 
         // Buttons
         findViewById(R.id.emailSignInButton).setOnClickListener(this);
-        //findViewById(R.id.emailCreateAccountButton).setOnClickListener(this);
+        findViewById(R.id.emailCreateAccountButton).setOnClickListener(this);
         findViewById(R.id.signOutButton).setOnClickListener(this);
         findViewById(R.id.verifyEmailButton).setOnClickListener(this);
 
@@ -71,132 +77,155 @@ public class EnterMediaLoginActivity extends BaseActivity implements
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
 
-        String email = getPreferences(Context.MODE_PRIVATE).getString("email", null);
+        String email = getSharedPreferences("app",Context.MODE_PRIVATE).getString("email", null);
         mEmailField.setText(email);
-        String password = getPreferences(Context.MODE_PRIVATE).getString("password", null);
+        String password = getSharedPreferences("app",Context.MODE_PRIVATE).getString("password", null);
         mPasswordField.setText(password);
 
         // [END initialize_auth]
+
+        if(email != null && password != null)
+        {
+            String logoutaction = getIntent().getStringExtra("logout");
+            if( !Boolean.parseBoolean(logoutaction))
+            {
+                signIn(email, password);
+            }
+        }
+
     }
 
-    // [START on_start_check_user]
-    @Override
-    public void onStart() {
-        super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        //FirebaseUser currentUser = mAuth.getCurrentUser();
-        //updateUI(currentUser);
-    }
-    // [END on_start_check_user]
-
-//    private void createAccount(String email, String password) {
-//        Log.d(TAG, "createAccount:" + email);
-//        if (!validateForm()) {
-//            return;
-//        }
-//
-//        showProgressDialog();
-//
-//        // [START create_user_with_email]
-//        mAuth.createUserWithEmailAndPassword(email, password)
-//                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<AuthResult> task) {
-//                        if (task.isSuccessful()) {
-//                            // Sign in success, update UI with the signed-in user's information
-//                            Log.d(TAG, "createUserWithEmail:success");
-//                            FirebaseUser user = mAuth.getCurrentUser();
-//                            updateUI(user);
-//                        } else {
-//                            // If sign in fails, display a message to the user.
-//                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
-//                            Toast.makeText(EnterMediaLoginActivity.this, "Authentication failed.",
-//                                    Toast.LENGTH_SHORT).show();
-//                            updateUI(null);
-//                        }
-//
-//                        // [START_EXCLUDE]
-//                        hideProgressDialog();
-//                        // [END_EXCLUDE]
-//                    }
-//                });
-//        // [END create_user_with_email]
-//    }
 
     private void signIn(String email, String password) {
         Log.d(TAG, "signIn:" + email);
         if (!validateForm()) {
             return;
         }
+        EnterMediaConnection connection = new EnterMediaConnection();
+        UpdateActivity handler = new UpdateActivity(this,TAG)
+       {
+           @Override
+           public void runNetwork() {
+               showProgressDialog();
+               JSONObject obj = new JSONObject();
 
-        showProgressDialog();
+               obj.put("email", email);
+               obj.put("password", password);
 
-        GetEmToken gett = new GetEmToken(this,mAuth,email,password,null);
-        gett.execute();
+               JSONObject jsonreply = connection.postJson(EnterMediaConnection.MEDIADB + "/services/authentication/firebaselogin.json", obj);
+               setJsonData(jsonreply);
+           }
 
-//        // [START sign_in_with_email]
-//        mAuth.signInWithEmailAndPassword(email, password)
-//                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<AuthResult> task) {
-//                        if (task.isSuccessful()) {
-//                            // Sign in success, update UI with the signed-in user's information
-//                            Log.d(TAG, "signInWithEmail:success");
-//                            FirebaseUser user = mAuth.getCurrentUser();
-//                            updateUI(user);
-//                        } else {
-//                            // If sign in fails, display a message to the user.
-//                            Log.w(TAG, "signInWithEmail:failure", task.getException());
-//                            Toast.makeText(EnterMediaLoginActivity.this, "Authentication failed.",
-//                                    Toast.LENGTH_SHORT).show();
-//                            updateUI(null);
-//                        }
-//
-//                        // [START_EXCLUDE]
-//                        if (!task.isSuccessful()) {
-//                            mStatusTextView.setText(R.string.auth_failed);
-//                        }
-//                        hideProgressDialog();
-//                        // [END_EXCLUDE]
-//                    }
-//                });
-//        // [END sign_in_with_email]
+           public void runUiUpdate()
+           {
+               JSONObject results = (JSONObject) getJsonData().get("results");
+
+               //TODO Cheeck for ok
+               String ok = (String) results.get("status");
+               if ("invalidlogin".equals(ok)) {
+                   String error = "Could not login";
+                   Toast.makeText(getApplicationContext(), error, Toast.LENGTH_LONG).show();
+                   return;
+               }
+
+               final String entermediakey = (String) results.get("entermediakey");
+               final String userid = (String) results.get("userid");
+
+               getSharedPreferences("app",Context.MODE_PRIVATE).edit().
+                       putString("email", email).
+                       putString("emuserid", userid).
+                       putString("password", password).
+                       putString("entermediakey", entermediakey).
+                       commit();
+
+               //Login with firebase API
+                mAuth.signInWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(EnterMediaLoginActivity.this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    // Sign in success, update UI with the signed-in user's information
+                                    Log.d(TAG, "signInWithEmail:success");
+                                    FirebaseUser user = mAuth.getCurrentUser();
+                                    Intent gotopage = new Intent(getApplicationContext(), MainActivity.class);
+
+                                    Intent intent = EnterMediaLoginActivity.this.getIntent();
+
+                                    if (intent != null && intent.getExtras() != null) {
+                                        for (String key : intent.getExtras().keySet()) {
+                                            intent.putExtra(key, intent.getStringExtra(key));
+                                        }
+                                    }
+
+                                    gotopage.putExtra("useremail", email);
+                                    gotopage.putExtra("token", entermediakey);
+                                    gotopage.putExtra("tokentype", "entermedia");
+
+                                    gotopage.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);  //Error?
+                                    //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+                                    startActivity(gotopage);
+
+                                } else {
+                                    // If sign in fails, display a message to the user.
+                                    Log.w(TAG, "signInWithEmail:failure", task.getException());
+                                    // Toast.makeText(EnterMediaLoginActivity.this, "Authentication failed.",Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+           }
+           public void runUiFinally()
+           {
+               hideProgressDialog();
+           }
+       };
+       connection.process(handler);
+
     }
 
-    private void signOut() {
-        mAuth.signOut();
-        //updateUI(null);
-    }
 
-    private void sendEmailVerification() {
+
+    private void sentEmailReminder() {
         // Disable button
-        findViewById(R.id.verifyEmailButton).setEnabled(false);
+            JSONObject obj = new JSONObject();
 
-        // Send verification email
-        // [START send_email_verification]
-        final FirebaseUser user = mAuth.getCurrentUser();
-        user.sendEmailVerification()
-                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        // [START_EXCLUDE]
-                        // Re-enable button
-                        findViewById(R.id.verifyEmailButton).setEnabled(true);
+            String email = mEmailField.getText().toString();
+            if( email == null )
+            {
+                Toast.makeText(this, "Please enter an email", Toast.LENGTH_LONG).show();
+                return;
+            }
 
-                        if (task.isSuccessful()) {
-                            Toast.makeText(EnterMediaLoginActivity.this,
-                                    "Verification email sent to " + user.getEmail(),
-                                    Toast.LENGTH_SHORT).show();
-                        } else {
-                            Log.e(TAG, "sendEmailVerification", task.getException());
-                            Toast.makeText(EnterMediaLoginActivity.this,
-                                    "Failed to send verification email.",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                        // [END_EXCLUDE]
+            obj.put("to", email);
+
+            EnterMediaConnection connection = new EnterMediaConnection();
+            UpdateActivity handler = new UpdateActivity(this, TAG) {
+                @Override
+                public void runNetwork()
+                {
+                    JSONObject jsonreply = connection.postJson(EnterMediaConnection.MEDIADB + "/services/authentication/sendpassword.json", obj);
+                    setJsonData(jsonreply);
+                }
+
+                public void runUiUpdate()
+                {
+                    if( getError() != null) {
+                        Toast.makeText(EnterMediaLoginActivity.this, "network:failure" + getError(), Toast.LENGTH_LONG).show();
+                        return;
                     }
-                });
-        // [END send_email_verification]
+                    String status = (String)((Map)getJsonData().get("response")).get("status");
+                    if( status.equals("invalidlogin") )
+                    {
+                        Toast.makeText(EnterMediaLoginActivity.this, "No such email", Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                    // [END send_email_verification]
+                    Toast.makeText(EnterMediaLoginActivity.this,"Email sent to "  + email, Toast.LENGTH_LONG).show();
+
+                }
+            };
+            connection.process(handler);
+
     }
 
     private boolean validateForm() {
@@ -238,7 +267,7 @@ public class EnterMediaLoginActivity extends BaseActivity implements
 //            String password = mPasswordField.getText().toString();
 //            //Send to EnterMedia and get back entermedia.key
 //            //Pass along the key to all requests
-//            GetEmToken gett = new GetEmToken(getApplicationContext(),null,email,password);
+//            LoginWithPassword gett = new LoginWithPassword(getApplicationContext(),null,email,password);
 //            gett.execute();
 //
 //        } else {
@@ -251,17 +280,15 @@ public class EnterMediaLoginActivity extends BaseActivity implements
 //        }
 //    }
 
+
     @Override
     public void onClick(View v) {
         int i = v.getId();
         if (i == R.id.emailCreateAccountButton) {
             //createAccount(mEmailField.getText().toString(), mPasswordField.getText().toString());
+            sentEmailReminder();
         } else if (i == R.id.emailSignInButton) {
             signIn(mEmailField.getText().toString(), mPasswordField.getText().toString());
-        } else if (i == R.id.signOutButton) {
-            signOut();
-        } else if (i == R.id.verifyEmailButton) {
-            sendEmailVerification();
         }
     }
 }
