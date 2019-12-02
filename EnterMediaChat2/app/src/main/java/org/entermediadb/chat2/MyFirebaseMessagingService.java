@@ -104,13 +104,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
                 String useremail = remoteMessage.getData().get("useremail");
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                if( user != null && remoteMessage.getFrom().equalsIgnoreCase( user.getEmail() ) )
+                String msg = remoteMessage.getNotification().getBody();
+                if( user != null && useremail != null && useremail.equals( user.getEmail() ) )
                 {
+                    Log.d(TAG, "Skipping message to self: " + msg);
                     return;
                 }
 
 
-                String msg = remoteMessage.getNotification().getBody();
                 String collectionid = remoteMessage.getData().get("collectionid");
                 String subject = remoteMessage.getNotification().getTitle();//remoteMessage.getData().get("chattopic");
 
