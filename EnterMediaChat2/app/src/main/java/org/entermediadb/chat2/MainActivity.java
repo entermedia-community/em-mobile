@@ -45,6 +45,7 @@ import com.google.android.play.core.install.model.InstallStatus;
 import com.google.android.play.core.install.model.UpdateAvailability;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 
@@ -251,15 +252,34 @@ public class MainActivity extends AppCompatActivity
 //                        .build();
 //                GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(getApplicationContext(), gso);
 //                mGoogleSignInClient.signOut();
-                FirebaseAuth.getInstance().signOut();
-                String url = EnterMediaConnection.EMINSTITUTE + "/authentication/logout.html";
-                showBrowser("Logout",url); //This should clear the cookies and record the event
 
+                UpdateActivity handler = new UpdateActivity(this, TAG) {
+                    public void runNetwork()
+                    {
+                        try
+                        {
+                            FirebaseAuth.getInstance().signOut();
+                            FirebaseInstanceId.getInstance().deleteInstanceId();
+                        } catch (IOException e)
+                        {
+                            e.printStackTrace();
+                        }
+                        //FirebaseInstanceId.getInstance().deleteToken(FirebaseInstanceId.getInstance().getToken(), INSTANCE_ID_SCOPE);
+                    }
 
-                Intent intent = new Intent(getApplicationContext(), EnterMediaLoginActivity.class);
-                intent.putExtra("logout","true");
+                    @Override
+                    public void runUiUpdate() {
+                        String url = EnterMediaConnection.EMINSTITUTE + "/authentication/logout.html";
+                        showBrowser("Logout", url); //This should clear the cookies and record the event
 
-                getApplicationContext().startActivity(intent);
+                        Intent intent = new Intent(getApplicationContext(), EnterMediaLoginActivity.class);
+                        intent.putExtra("logout", "true");
+
+                        fieldActivity.startActivity(intent);
+                    }
+                };
+                connection.process(handler);
+
                 return true;
         }
 
@@ -292,11 +312,11 @@ public class MainActivity extends AppCompatActivity
                             obj);
                     setJsonData(all);
 
-                    try {
-                        FirebaseInstanceId.getInstance().deleteInstanceId();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+//                    try {
+//                        FirebaseInstanceId.getInstance().deleteInstanceId();
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
 
                     if (Build.VERSION.SDK_INT > 25) {
                         String channelId = "fcm_default_channel";
@@ -314,6 +334,19 @@ public class MainActivity extends AppCompatActivity
                     String userid = (String)response.get("userid");
                     connection.setUserId(userid);
 
+//                    FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( MyActivity.this,  new OnSuccessListener<InstanceIdResult>() {
+//                        @Override
+//                        public void onSuccess(InstanceIdResult instanceIdResult) {
+//                            String mToken = instanceIdResult.getToken();
+//                            Log.e("Token",mToken);
+//                        }
+//                    });
+//                    String token = FirebaseInstanceId.getInstance().getToken();
+//                    // Used to get firebase token until its null so it will save you from null pointer exeption
+//                    while(token == null) {
+//                        token = FirebaseInstanceId.getInstance().getToken();
+//                    }
+
                     String messagecollectionid = userid + "-messages";
                     FirebaseMessaging.getInstance().subscribeToTopic(messagecollectionid).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
@@ -329,7 +362,7 @@ public class MainActivity extends AppCompatActivity
                     for(JSONObject objct : results)
                     {
                         final String collectionid = (String)objct.get("id");
-                        String name = (String)objct.get("name");
+                        //String name = (String)objct.get("name");
 
                         FirebaseMessaging.getInstance().subscribeToTopic(collectionid).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
@@ -449,13 +482,13 @@ public class MainActivity extends AppCompatActivity
             String title = (String)data.get("name");
 
             org.entermediadb.chat2.ui.web.WebViewFragment browser = showBrowser("Chat " + title,url);
-//            String previouscollection = browser.getOpenCollection();
-//            if( previouscollection != null && previouscollection != collectionid)
-//            {
-//                FirebaseMessaging.getInstance().subscribeToTopic(previouscollection);
-//            }
+            String previouscollection = browser.getOpenCollection();
+            if( previouscollection != null && previouscollection != collectionid)
+            {
+                FirebaseMessaging.getInstance().subscribeToTopic(previouscollection);
+            }
             browser.setOpenCollection(collectionid);
-            //FirebaseMessaging.getInstance().unsubscribeFromTopic(collectionid); //While visable
+            FirebaseMessaging.getInstance().unsubscribeFromTopic(collectionid); //While visable
 
 
 
