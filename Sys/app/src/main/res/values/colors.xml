@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--This controls the selected menu color and the toolbar header -->
+    <color name="colorPrimary">#565656</color>
+
+
+    <color name="colorPrimaryDark">#222C2B</color>
+    <color name="colorAccent">#FFA000</color>
+
+    <color name="colorBackGrnd">#FFFFFF</color>
+    <color name="colorForeGrnd">#E0E0E0</color>
+    <color name="nav_menu_background">#565656</color>
+    <color name="emgreen">#6FB353</color>
+    <color name="emdark">#565656</color>
+    <color name="emforeground">#E0E0E0</color>
+    <color name="embackground">#e9eaf0</color>
+
+    <color name="grey_100">#F5F5F5</color>
+    <color name="grey_300">#E0E0E0</color>
+    <color name="grey_500">#9E9E9E</color>
+</resources>

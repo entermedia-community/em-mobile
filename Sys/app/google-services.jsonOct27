@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "201465843723",
+    "firebase_url": "https://entermediadbcom.firebaseio.com",
+    "project_id": "entermediadbcom",
+    "storage_bucket": "entermediadbcom.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:201465843723:android:d56f6c68b9f795f668770e",
+        "android_client_info": {
+          "package_name": "org.entermediadb.chat2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "201465843723-eok1lebp3vr648shdqtm1a1tban7h2dc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAsEOSdR_Q-Veen6r-GFJuLuL1VrWkiRIU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "201465843723-eok1lebp3vr648shdqtm1a1tban7h2dc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

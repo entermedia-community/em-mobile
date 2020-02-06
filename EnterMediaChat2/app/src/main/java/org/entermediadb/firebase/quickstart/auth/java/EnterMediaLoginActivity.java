@@ -169,6 +169,8 @@ public class EnterMediaLoginActivity extends BaseActivity implements
                                 } else {
                                     // If sign in fails, display a message to the user.
                                     Log.w(TAG, "signInWithEmail:failure", task.getException());
+                                    getSharedPreferences("app",Context.MODE_PRIVATE).edit().remove("email").
+                                            commit();
                                     // Toast.makeText(EnterMediaLoginActivity.this, "Authentication failed.",Toast.LENGTH_SHORT).show();
                                 }
                             }

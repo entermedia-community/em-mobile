@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "340947888684",
+    "firebase_url": "https://openinstitute-27575.firebaseio.com",
+    "project_id": "openinstitute-27575",
+    "storage_bucket": "openinstitute-27575.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:340947888684:android:2c84f8d6852af1ef4fbf89",
+        "android_client_info": {
+          "package_name": "org.openinstitute.chat2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "340947888684-830jo38m4up8bru3ujn5mkp82i9kdrjk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.openinstitute.chat2",
+            "certificate_hash": "7cf4e292b909ea91bf5888cb4a416de1f494fada"
+          }
+        },
+        {
+          "client_id": "340947888684-i741k85d4dnfbuchbptuh4b74nru4uks.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2PX8sbNvlG1avTDUv3yH8K_3eRz9jgi0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "340947888684-i741k85d4dnfbuchbptuh4b74nru4uks.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

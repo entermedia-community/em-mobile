@@ -1,0 +1,89 @@
+https://sdkman.io/install
+sdk install gradle 5.6.2
+
+more ~/.gradle/gradle.properties 
+org.gradle.daemon=false
+
+org.gradle.parallel=true
+
+
+cd $ANDROID_HOME
+tools/bin/sdkmanager --licenses
+
+
+Using Android SDK: /home/shanti/Android/Sdk
+Install missing SDK package(s) <-- This is a link
+
+\From studio Packages to install: 
+- Android SDK Platform 28 (platforms;android-28)
+
+Preparing "Install Android SDK Platform 28 (revision: 6)".
+Downloading https://dl.google.com/android/repository/platform-28_r06.zip
+
+https://developer.android.com/guide/app-bundle/in-app-updates#java
+
+
+1. import cordova project: new, import, choose projectdir/platforms/android/ and import
+2. wait for gradle to sync
+3. build-> generate signed bundle (see keystore and alias password on OEpwd at monaca line *** GDRIVE: https://drive.google.com/open?id=1pdEzVqSNPuyRU6uo7-TaWmapzVeR9iAs
+4. https://play.google.com/apps/publish/?account=7056730519978099587#ManageReleasesPlace:p=org.entermediadb.app1&appid=4975355597455888380
+
+
+
+
+Firebase app
+
+Created new key in
+/home/shanti/git/em-mobile/EnterMediaDB/etc/entermediadb.keystore
+
+Password is Burkey@12
+Created debug build:
+
+It put a key here:
+/home/shanti/git/em-mobile/EnterMediaDB/etc/exported
+
+
+
+com.google.android.gms.common.api.ApiException: 10:
+
+https://stackoverflow.com/questions/47619229/google-sign-in-failed-com-google-android-gms-common-api-apiexception-10
+
+This is the SHA errors?
+
+RELEASE
+keytool -genkey -v -keystore ~/git/em-mobile/OI/oireleasekeystore.jks -alias oichat2 -storepass Mobile1234Pass -keypass Mobile1234Pass -keyalg RSA -validity 36500
+
+keytool -list -v -keystore ~/git/em-mobile/OI/oireleasekeystore.jks -alias chat2 -storepass Mobile1234Pass -keypass Mobile1234Pass
+ SHA1: 1D:E8:7B:6E:78:0E:0A:76:F8:E9:F7:28:24:15:5D:B4:A2:60:5E:43
+	 SHA256: DD:C8:21:7B:4A:11:4E:EC:BB:91:95:12:57:76:7A:1D:28:20:A9:19:17:33:0B:18:4F:6B:71:5A:34:E9:E7:6A
+
+
+DEBUG
+keytool -list -v -keystore ~/.android/debug.keystore
+94:DD:F6:A0:7C:A9:02:A9:D5:03:92:A7:A2:CA:3A:CE:26:CF:6B:9F
+
+Also make sure it's being signed?
+
+1. Check it here:
+https://console.firebase.google.com/project/entermediadb-177816/settings/general/android:org.entermediadb.chat2
+
+2. https://console.developers.google.com/apis/credentials?project=entermediadb-177816&organizationId=40130280469
+
+
+
+https://www.freakyjolly.com/change-version-number-of-app-in-android-studio/
+
+
+gcloud@openedit.org
+
+https://console.firebase.google.com/project/entermediadb-177816/settings/general/android:org.entermediadb.chat2
+
+https://play.google.com/apps/publish/?account=7056730519978099587#ManageReleasesPlace:p=org.entermediadb.app1&appid=4975355597455888380
+
+If you get trust issues you need to log into here:
+
+https://admin.google.com/AdminHome?hl=en#Oauth2ScopeManagement:subtab=trusted
+
+And make sure your client ID is trusted
+
+279466694094-r5n936g7slf2jmifdu1vi2v8r4tckd0c.apps.googleusercontent.com
