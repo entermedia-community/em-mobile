@@ -3,9 +3,15 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/EnterMediaChat2.iml" filepath="$PROJECT_DIR$/EnterMediaChat2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/EnterMediaChat2-app.iml" filepath="$PROJECT_DIR$/app/EnterMediaChat2-app.iml" group="EnterMediaChat2/app" />
+      <module fileurl="file://$PROJECT_DIR$/internal/EnterMediaChat2-internal.iml" filepath="$PROJECT_DIR$/internal/EnterMediaChat2-internal.iml" group="EnterMediaChat2/internal" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/../internal/chooserx/chooserx.iml" filepath="$PROJECT_DIR$/../internal/chooserx/chooserx.iml" />
+      <module fileurl="file://$PROJECT_DIR$/em-mobile-EnterMediaChat2.iml" filepath="$PROJECT_DIR$/em-mobile-EnterMediaChat2.iml" group="EnterMediaChat2" />
       <module fileurl="file://$PROJECT_DIR$/internal/internal.iml" filepath="$PROJECT_DIR$/internal/internal.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../internal/chooserx/internal-chooserx.iml" filepath="$PROJECT_DIR$/../internal/chooserx/internal-chooserx.iml" group="EnterMediaChat2/internal/chooserx" />
+      <module fileurl="file://$PROJECT_DIR$/../internal/lint/internal-lint.iml" filepath="$PROJECT_DIR$/../internal/lint/internal-lint.iml" group="EnterMediaChat2/internal/lint" />
+      <module fileurl="file://$PROJECT_DIR$/../internal/lintchecks/internal-lintchecks.iml" filepath="$PROJECT_DIR$/../internal/lintchecks/internal-lintchecks.iml" group="EnterMediaChat2/internal/lintchecks" />
       <module fileurl="file://$PROJECT_DIR$/../internal/lint/lint.iml" filepath="$PROJECT_DIR$/../internal/lint/lint.iml" />
       <module fileurl="file://$PROJECT_DIR$/../internal/lintchecks/lintchecks.iml" filepath="$PROJECT_DIR$/../internal/lintchecks/lintchecks.iml" />
     </modules>

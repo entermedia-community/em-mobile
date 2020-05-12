@@ -18,6 +18,7 @@ package org.entermediadb.firebase.quickstart.auth.java;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -77,22 +78,24 @@ public class EnterMediaLoginActivity extends BaseActivity implements
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
 
-        String email = getSharedPreferences("app",Context.MODE_PRIVATE).getString("email", null);
+        String email = getSharedPreferences("app", Context.MODE_PRIVATE).getString("email", null);
         mEmailField.setText(email);
-        String password = getSharedPreferences("app",Context.MODE_PRIVATE).getString("password", null);
+        String password = getSharedPreferences("app", Context.MODE_PRIVATE).getString("password", null);
         mPasswordField.setText(password);
 
         // [END initialize_auth]
 
-        if(email != null && password != null)
-        {
+        if (email != null && password != null) {
             String logoutaction = getIntent().getStringExtra("logout");
-            if( !Boolean.parseBoolean(logoutaction))
-            {
+            if (!Boolean.parseBoolean(logoutaction)) {
                 signIn(email, password);
             }
         }
 
+        // ATTENTION: This was auto-generated to handle app links.
+        Intent appLinkIntent = getIntent();
+        String appLinkAction = appLinkIntent.getAction();
+        Uri appLinkData = appLinkIntent.getData();
     }
 
 

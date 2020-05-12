@@ -103,6 +103,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             if (remoteMessage.getNotification() != null) {
 
                 String useremail = remoteMessage.getData().get("useremail");
+
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 String msg = remoteMessage.getNotification().getBody();
                 if( user != null && useremail != null && useremail.equals( user.getEmail() ) )
@@ -112,12 +113,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 }
 
 
-                String collectionid = remoteMessage.getData().get("collectionid");
-                String subject = remoteMessage.getNotification().getTitle();//remoteMessage.getData().get("chattopic");
+                    String collectionid = remoteMessage.getData().get("collectionid");
+                    String subject = remoteMessage.getNotification().getTitle();//remoteMessage.getData().get("chattopic");
 
-                Log.d(TAG, "Message Notification Body: " + msg);
-                showNotification(collectionid,subject,msg,remoteMessage.getData());
-                // Toast.makeText(MyFirebaseMessagingService.this, msg, Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "Message Notification Body: " + msg);
+                    showNotification(collectionid, subject, msg, remoteMessage.getData());
+                    // Toast.makeText(MyFirebaseMessagingService.this, msg, Toast.LENGTH_SHORT).show();
+
             }
         }
 
