@@ -33,8 +33,11 @@ public class EnterMediaConnection
    //public static final String EMINSTITUTE = "http://192.168.0.170:8080/assets/app";
    //public static final String MEDIADB = "http://192.168.0.170:8080/assets/mediadb";
 
-    public static final String EMINSTITUTE = "http://192.168.189.111:8080/site/app";
-    public static final String MEDIADB = "http://192.168.189.111:8080/site/mediadb";
+//    public static final String EMINSTITUTE = "http://192.168.189.111:8080/site/app";
+ //   public static final String MEDIADB = "http://192.168.189.111:8080/site/mediadb";
+
+    public static final String EMINSTITUTE = "https://openinstitute.org/app";
+    public static final String MEDIADB = "https://openinstitute.org/site/mediadb";
 
 
     protected String fieldToken;

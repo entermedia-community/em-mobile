@@ -21,8 +21,8 @@
     <string name="label_google_sign_in">Google Sign In</string>
     <string name="desc_google_sign_in">Use a Google Sign In</string>
 
-    <string name="label_entermedia_sign_in">EnterMedia Sign In</string>
-    <string name="desc_entermedia_sign_in">Use EnterMedia to Sign In</string>
+    <string name="label_entermedia_sign_in">OI Sign In</string>
+    <string name="desc_entermedia_sign_in">Use OI Sign In</string>
 
     <string name="label_facebook_login">Firebase + Facebook Login</string>
     <string name="desc_facebook_login">Use a Facebook Login</string>
@@ -116,6 +116,6 @@
 
 
     <string name="default_notification_channel_id">9</string>
-    <string name="default_notification_channel_name">EnterMedia Channel</string>
-    <string name="fcm_message">EM Message Received</string>
+    <string name="default_notification_channel_name">OI Channel</string>
+    <string name="fcm_message">OI Message Received</string>
 </resources>

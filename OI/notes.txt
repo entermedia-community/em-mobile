@@ -53,14 +53,17 @@ This is the SHA errors?
 RELEASE
 keytool -genkey -v -keystore ~/git/em-mobile/OI/oireleasekeystore.jks -alias oichat2 -storepass Mobile1234Pass -keypass Mobile1234Pass -keyalg RSA -validity 36500
 
-keytool -list -v -keystore ~/git/em-mobile/OI/oireleasekeystore.jks -alias chat2 -storepass Mobile1234Pass -keypass Mobile1234Pass
- SHA1: 1D:E8:7B:6E:78:0E:0A:76:F8:E9:F7:28:24:15:5D:B4:A2:60:5E:43
-	 SHA256: DD:C8:21:7B:4A:11:4E:EC:BB:91:95:12:57:76:7A:1D:28:20:A9:19:17:33:0B:18:4F:6B:71:5A:34:E9:E7:6A
-
-
-DEBUG
+DEBUG  (no password)
 keytool -list -v -keystore ~/.android/debug.keystore
-94:DD:F6:A0:7C:A9:02:A9:D5:03:92:A7:A2:CA:3A:CE:26:CF:6B:9F
+SHA1: 94:DD:F6:A0:7C:A9:02:A9:D5:03:92:A7:A2:CA:3A:CE:26:CF:6B:9F
+
+
+keytool -list -v -keystore ~/git/em-mobile/OI/oireleasekeystore.jks -alias oichat2 -storepass Mobile1234Pass -keypass Mobile1234Pass
+   SHA1: 7C:F4:E2:92:B9:09:EA:91:BF:58:88:CB:4A:41:6D:E1:F4:94:FA:DA
+          SHA256: 4B:14:EC:67:07:8B:EB:E9:FC:B2:81:53:96:12:86:BB:A4:A7:9F:B2:0D:65:74:F6:9B:DF:0D:AB:6D:93:52:BC
+
+
+
 
 Also make sure it's being signed?
 
@@ -78,7 +81,14 @@ gcloud@openedit.org
 
 https://console.firebase.google.com/project/entermediadb-177816/settings/general/android:org.entermediadb.chat2
 
-https://play.google.com/apps/publish/?account=7056730519978099587#ManageReleasesPlace:p=org.entermediadb.app1&appid=4975355597455888380
+https://play.google.com/apps/publish/?account=7056730519978099587#ManageReleasesPlace:p=org.entermediadb.app1&appid=4975355597455888380
+
+
+Get WebAPI Key AIzaSyA06T1FpixxxXFkFv2x3BXnyjfqdspZfVmuyY  put into
+
+Add to emshare2 catlogs ettings
+And fix permissions
+m
 
 If you get trust issues you need to log into here:
 
@@ -87,3 +97,22 @@ https://admin.google.com/AdminHome?hl=en#Oauth2ScopeManagement:subtab=trusted
 And make sure your client ID is trusted
 
 279466694094-r5n936g7slf2jmifdu1vi2v8r4tckd0c.apps.googleusercontent.com
+
+2020 Adding a new project:
+
+https://console.developers.google.com/apis/credentials?project=openinstitute-27575&folder=&organizationId=
+https://console.cloud.google.com/iam-admin/serviceaccounts?project=openinstitute-27575&authuser=0&pli=1
+
+Browser key
+
+Seems that EM is using the Android Key for the WEBAPIKEY
+
+
+https://console.cloud.google.com/iam-admin/iam?project=entermediadb-177816&authuser=0
+
+
+
+curl -XPOST curl --header "Content-Type: application/json"  https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBMdzd87TdjqYQ0NR5tAQD9OH0I -d '{"password":"admin2343sdfdsf!","email":"support3@openedit.org","returnSecureToken":true}'| python -mjson.tool
+
+
+

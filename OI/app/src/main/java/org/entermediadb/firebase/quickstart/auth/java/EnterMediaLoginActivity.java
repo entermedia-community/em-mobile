@@ -101,12 +101,13 @@ public class EnterMediaLoginActivity extends BaseActivity implements
         if (!validateForm()) {
             return;
         }
+        showProgressDialog();
+
         EnterMediaConnection connection = new EnterMediaConnection();
         UpdateActivity handler = new UpdateActivity(this,TAG)
        {
            @Override
            public void runNetwork() {
-               showProgressDialog();
                JSONObject obj = new JSONObject();
 
                obj.put("email", email);
