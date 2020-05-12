@@ -80,11 +80,11 @@ https://www.freakyjolly.com/change-version-number-of-app-in-android-studio/
 gcloud@openedit.org
 
 https://console.firebase.google.com/project/entermediadb-177816/settings/general/android:org.entermediadb.chat2
-
+-
 https://play.google.com/apps/publish/?account=7056730519978099587#ManageReleasesPlace:p=org.entermediadb.app1&appid=4975355597455888380
 
 
-Get WebAPI Key AIzaSyA06T1FpixxxXFkFv2x3BXnyjfqdspZfVmuyY  put into
+Get WebAPI Key SECRETT1FpixxxXFkFv2x3BXnyjfqdspZfVmuy__Y  put into
 
 Add to emshare2 catlogs ettings
 And fix permissions
