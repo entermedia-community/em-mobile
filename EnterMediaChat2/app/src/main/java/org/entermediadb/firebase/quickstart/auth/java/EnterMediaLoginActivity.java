@@ -105,7 +105,7 @@ public class EnterMediaLoginActivity extends BaseActivity implements
             /*String appLinkAction = appLinkIntent.getAction();*/
             Uri appLinkData = appLinkIntent.getData();
             if(appLinkData != null) {
-                String urlKey = String.valueOf(appLinkData.getQueryParameters("entermedia.key"));
+                String urlKey = String.valueOf(appLinkData.getQueryParameter("entermedia.key"));
                 signIn(null,null, urlKey);
                 //Log.d(TAG, appLinkAction);
                 Log.d(TAG, String.valueOf(urlKey));
@@ -116,9 +116,7 @@ public class EnterMediaLoginActivity extends BaseActivity implements
 
     private void signIn(String email, String password, String entermediakey) {
         Log.d(TAG, "signIn:" + email);
-        if (!validateForm()) {
-            return;
-        }
+
         EnterMediaConnection connection = new EnterMediaConnection();
         UpdateActivity handler = new UpdateActivity(this,TAG)
        {
@@ -134,17 +132,18 @@ public class EnterMediaLoginActivity extends BaseActivity implements
                    obj.put("password", password);
                    obj.put("email", email);
                }
-
+          //      curl https://entermediadb.org/mediadb//services/authentication/firebaselogin.json?entermedia.key=426md5423a2a7c0c40a50970c656693f5975093002d4c
                JSONObject jsonreply = connection.postJson(EnterMediaConnection.MEDIADB + "/services/authentication/firebaselogin.json", obj);
                setJsonData(jsonreply);
            }
 
            public void runUiUpdate()
            {
+               JSONObject response = (JSONObject) getJsonData().get("response");
                JSONObject results = (JSONObject) getJsonData().get("results");
-
                //TODO Cheeck for ok
-               String ok = (String) results.get("status");
+
+               String ok = (String) response.get("status");
                if ("invalidlogin".equals(ok)) {
                    String error = "Could not login";
                    Toast.makeText(getApplicationContext(), error, Toast.LENGTH_LONG).show();
@@ -315,6 +314,9 @@ public class EnterMediaLoginActivity extends BaseActivity implements
             //createAccount(mEmailField.getText().toString(), mPasswordField.getText().toString());
             sentEmailReminder();
         } else if (i == R.id.emailSignInButton) {
+            if (!validateForm()) {
+                return;
+            }
             signIn(mEmailField.getText().toString(), mPasswordField.getText().toString(),null);
         }
     }
