@@ -153,16 +153,18 @@ public class EnterMediaLoginActivity extends BaseActivity implements
 
                final String entermediakey = (String) results.get("entermediakey");
                final String userid = (String) results.get("userid");
+               final String email = (String) results.get("email");
+               final String firebasepassword = (String) results.get("firebasepassword");
 
                getSharedPreferences("app",Context.MODE_PRIVATE).edit().
                        putString("email", email).
                        putString("emuserid", userid).
-                       putString("password", password).
+  //                     putString("firebasepassword", firebasepassword).
                        putString("entermediakey", entermediakey).
                        commit();
 
                //Login with firebase API
-                mAuth.signInWithEmailAndPassword(email, password)
+                mAuth.signInWithEmailAndPassword(email, firebasepassword)
                         .addOnCompleteListener(EnterMediaLoginActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -313,7 +315,7 @@ public class EnterMediaLoginActivity extends BaseActivity implements
             //createAccount(mEmailField.getText().toString(), mPasswordField.getText().toString());
             sentEmailReminder();
         } else if (i == R.id.emailSignInButton) {
-            signIn(mEmailField.getText().toString(), mPasswordField.getText().toString());
+            signIn(mEmailField.getText().toString(), mPasswordField.getText().toString(),null);
         }
     }
 }
