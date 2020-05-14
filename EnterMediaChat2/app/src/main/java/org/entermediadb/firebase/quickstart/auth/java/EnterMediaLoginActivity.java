@@ -41,6 +41,7 @@ import org.entermediadb.chat2.R;
 import org.entermediadb.chat2.UpdateActivity;
 import org.json.simple.JSONObject;
 
+import java.util.List;
 import java.util.Map;
 
 public class EnterMediaLoginActivity extends BaseActivity implements
@@ -88,18 +89,32 @@ public class EnterMediaLoginActivity extends BaseActivity implements
         if (email != null && password != null) {
             String logoutaction = getIntent().getStringExtra("logout");
             if (!Boolean.parseBoolean(logoutaction)) {
-                signIn(email, password);
+                signIn(email, password,null);
             }
         }
 
+
         // ATTENTION: This was auto-generated to handle app links.
         Intent appLinkIntent = getIntent();
-        String appLinkAction = appLinkIntent.getAction();
-        Uri appLinkData = appLinkIntent.getData();
+
+        if (appLinkIntent != null) {
+
+            if(appLinkIntent.getExtras() != null) {
+                Log.d(TAG, String.valueOf(appLinkIntent.getExtras().keySet()));
+            }
+            /*String appLinkAction = appLinkIntent.getAction();*/
+            Uri appLinkData = appLinkIntent.getData();
+            if(appLinkData != null) {
+                String urlKey = String.valueOf(appLinkData.getQueryParameters("entermedia.key"));
+                signIn(null,null, urlKey);
+                //Log.d(TAG, appLinkAction);
+                Log.d(TAG, String.valueOf(urlKey));
+            }
+        }
     }
 
 
-    private void signIn(String email, String password) {
+    private void signIn(String email, String password, String entermediakey) {
         Log.d(TAG, "signIn:" + email);
         if (!validateForm()) {
             return;
@@ -112,8 +127,13 @@ public class EnterMediaLoginActivity extends BaseActivity implements
                showProgressDialog();
                JSONObject obj = new JSONObject();
 
-               obj.put("email", email);
-               obj.put("password", password);
+               if(entermediakey != null) {
+                   obj.put("entermedia.key",entermediakey);
+               }
+               else {
+                   obj.put("password", password);
+                   obj.put("email", email);
+               }
 
                JSONObject jsonreply = connection.postJson(EnterMediaConnection.MEDIADB + "/services/authentication/firebaselogin.json", obj);
                setJsonData(jsonreply);

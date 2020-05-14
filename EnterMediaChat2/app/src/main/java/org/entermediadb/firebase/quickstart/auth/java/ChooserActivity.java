@@ -18,7 +18,9 @@ package org.entermediadb.firebase.quickstart.auth.java;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,8 +86,7 @@ public class ChooserActivity extends AppCompatActivity implements AdapterView.On
             */
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
 //        setContentView(R.layout.activity_chooser);
@@ -99,10 +100,28 @@ public class ChooserActivity extends AppCompatActivity implements AdapterView.On
 //        listView.setAdapter(adapter);
 //        listView.setOnItemClickListener(this);
 //
+        // ATTENTION: This was auto-generated to handle app links.
+        Intent appLinkIntent = getIntent();
+
+        if (appLinkIntent != null) {
+
+            if(appLinkIntent.getExtras() != null) {
+                Log.d(TAG, String.valueOf(appLinkIntent.getExtras().keySet()));
+            }
+            /*String appLinkAction = appLinkIntent.getAction();*/
+            Uri appLinkData = appLinkIntent.getData();
+            if(appLinkData != null) {
+                String urlKey = String.valueOf(appLinkData.getQueryParameters("entermedia.key"));
+                //Log.d(TAG, appLinkAction);
+                Log.d(TAG, String.valueOf(urlKey));
+            }
+        }
+
         loginCheck();
 
         //https://developer.android.com/training/basics/intents/filters#java
         // Get the intent that started this activity
+
 
     }
 

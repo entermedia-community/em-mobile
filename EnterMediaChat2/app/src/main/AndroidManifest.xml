@@ -78,7 +78,7 @@
         <activity
             android:name="org.entermediadb.firebase.quickstart.auth.java.EnterMediaLoginActivity"
             android:label="@string/label_entermedia_sign_in">
-            <intent-filter android:autoVerify="true">
+            <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
@@ -87,7 +87,7 @@
                 <data
                     android:scheme="https"
                     android:host="entermediadb.org"
-                    android:path="/entermediadb/app/authentication/autologin.html" />
+                    android:pathPrefix="/app/authentication/" />
             </intent-filter>
         </activity>
         <activity

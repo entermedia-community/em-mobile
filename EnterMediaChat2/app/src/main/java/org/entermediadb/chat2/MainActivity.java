@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
@@ -85,8 +86,7 @@ public class MainActivity extends AppCompatActivity
     //https://medium.com/hootsuite-engineering/handling-orientation-changes-on-android-41a6b62cb43f
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         // initUpdateCheck();
@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity
 
         // Find our drawer view
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawerToggle =  new ActionBarDrawerToggle(this, mDrawer, toolbar, R.string.drawer_open,  R.string.drawer_close);
+        drawerToggle = new ActionBarDrawerToggle(this, mDrawer, toolbar, R.string.drawer_open, R.string.drawer_close);
 
 
         // Setup toggle to display hamburger icon with nice animation
@@ -138,9 +138,23 @@ public class MainActivity extends AppCompatActivity
         ft.replace(R.id.nav_host_fragment, new HomeFragment());
         ft.commit();
 
+        //Auto login code begin.
 
         Intent intent = getIntent();
-        if( intent != null) {
+        if (intent != null) {
+
+            if(intent.getExtras() != null) {
+                Log.d(TAG, String.valueOf(intent.getExtras().keySet()));
+            }
+            /*String appLinkAction = appLinkIntent.getAction();*/
+            Uri appLinkData = intent.getData();
+
+            if(appLinkData != null) {
+
+                String urlKey = String.valueOf(appLinkData.getQueryParameters("entermedia.key"));
+                //Log.d(TAG, appLinkAction);
+                Log.d(TAG, String.valueOf(urlKey));
+            }
 //            Uri data = intent.getData();
 //            if( data != null) {
 //                // Figure out what to do based on the intent type
@@ -152,15 +166,13 @@ public class MainActivity extends AppCompatActivity
 //                }
 //            }
             String error = intent.getStringExtra("error");  //Regular login from chooser
-            if( error != null)
-            {
+            if (error != null) {
                 //TODO: Show error fragment
                 Toast.makeText(MainActivity.this, "Could login " + error, Toast.LENGTH_SHORT).show();
                 return;
             }
             String token = intent.getStringExtra("token");  //Regular login from chooser
-            if( token != null)
-            {
+            if (token != null) {
                 connection.setToken(token);
                 String tokentype = intent.getStringExtra("tokentype");  //Regular login from chooser
                 connection.setTokenType(tokentype);
@@ -168,7 +180,7 @@ public class MainActivity extends AppCompatActivity
                 try {
                     PackageInfo pInfo = getApplicationContext().getPackageManager().getPackageInfo(getPackageName(), 0);
                     int version = pInfo.versionCode;
-                    connection.setVersion(String.valueOf( version ) );
+                    connection.setVersion(String.valueOf(version));
                 } catch (PackageManager.NameNotFoundException e) {
                     e.printStackTrace();
                 }
@@ -176,58 +188,50 @@ public class MainActivity extends AppCompatActivity
                 //TODO: Add excellent error handling
 
                 //String email = intent.getStringExtra("useremail");
-               // Toast.makeText(MainActivity.this, idtoken, Toast.LENGTH_SHORT).show();
+                // Toast.makeText(MainActivity.this, idtoken, Toast.LENGTH_SHORT).show();
                 String collectionid = intent.getStringExtra("collectionid");  //Chooser notification
                 String collectionlabel = intent.getStringExtra("collectionlabel");
                 String projectgoalid = intent.getStringExtra("projectgoalid");  //Chooser notification
                 String projectgoallabel = intent.getStringExtra("projectgoallabel");
                 String collectivetopicid = intent.getStringExtra("collectivetopicid");
 
-                reloadMenu(collectionid,collectionlabel,projectgoalid,projectgoallabel,collectivetopicid);
+                reloadMenu(collectionid, collectionlabel, projectgoalid, projectgoallabel, collectivetopicid);
                 //https://developer.android.com/guide/webapps/webview
 
 
                 String useremail = intent.getStringExtra("useremail");
-                if( useremail != null)
-                {
+                if (useremail != null) {
                     NavigationView navigationView = findViewById(R.id.nav_view);
                     View header = navigationView.getHeaderView(0);
                     TextView text = (TextView) header.findViewById(R.id.subtitle);
                     text.setText(useremail);
                 }
-                if( projectgoalid != null )
-                {
+                if (projectgoalid != null) {
                     //Show goal details
                     ///demoall/webapp/WEB-INF /base/eminstitute/app/coll ective/goals/editgoalpanel_app.html
                     String url = EnterMediaConnection.EMINSTITUTE + "/collective/goals/editgoalpanel_app.html?collectionid=" + collectionid + "&goalid=" + projectgoalid;
-                    org.entermediadb.chat2.ui.web.WebViewFragment browser = showBrowser("Ticket: " + collectionlabel,url);
+                    org.entermediadb.chat2.ui.web.WebViewFragment browser = showBrowser("Ticket: " + collectionlabel, url);
                     browser.setOpenCollection(null);
                     return;
-                }
-                else if ( collectionid != null )
-                {
+                } else if (collectionid != null) {
                     String url = null;
                     String label = null;
-                    if( collectionid.endsWith("-messages"))
-                    {
+                    if (collectionid.endsWith("-messages")) {
                         label = "Direct Message";
-                        url = EnterMediaConnection.EMINSTITUTE + "/messages/index.html?topic=" +  collectivetopicid;
-                    }
-                    else
-                    {
+                        url = EnterMediaConnection.EMINSTITUTE + "/messages/index.html?topic=" + collectivetopicid;
+                    } else {
                         label = "Chat:" + collectionlabel;
-                        url = EnterMediaConnection.EMINSTITUTE + "/collective/community/index.html?goaltrackerstaff=*&collectionid=" + collectionid + "&topic=" +  collectivetopicid;
+                        url = EnterMediaConnection.EMINSTITUTE + "/collective/community/index.html?goaltrackerstaff=*&collectionid=" + collectionid + "&topic=" + collectivetopicid;
                     }
-                    org.entermediadb.chat2.ui.web.WebViewFragment browser = showBrowser(label,url);
+                    org.entermediadb.chat2.ui.web.WebViewFragment browser = showBrowser(label, url);
                     browser.setOpenCollection(collectionid);
                     return;
                 }
             }
+        } else {
+            reloadMenu(null, null, null, null, null);
         }
-        else
-        {
-            reloadMenu(null,null,null, null,null);
-        }
+
     }
 
     @Override
