@@ -29,9 +29,9 @@ public class EnterMediaConnection
 
    public static final String EMINSTITUTE = "https://entermediadb.org/entermediadb/app";
    public static final String MEDIADB = "https://entermediadb.org/entermediadb/mediadb";
-
-   //public static final String EMINSTITUTE = "http://192.168.0.170:8080/assets/app";
-   //public static final String MEDIADB = "http://192.168.0.170:8080/assets/mediadb";
+// TODO: 5/20/20 replace back with above!!!!!! 
+   //public static final String EMINSTITUTE = "http://192.168.83.135:8080/assets/app";
+   //public static final String MEDIADB = "http://192.168.83.135:8080/assets/mediadb";
 
     protected String fieldToken;
     protected String fieldTokenType;

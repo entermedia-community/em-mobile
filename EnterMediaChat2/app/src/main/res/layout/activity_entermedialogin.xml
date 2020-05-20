@@ -5,13 +5,13 @@
     android:layout_height="match_parent"
     android:background="@color/grey_100"
     android:orientation="vertical"
-    android:weightSum="4">
+    android:weightSum="5">
 
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_weight="4"
         android:background="@color/grey_300"
         android:gravity="center_vertical">
 
@@ -30,6 +30,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:hint="@string/hint_email"
+
                 android:inputType="textEmailAddress" />
 
             <EditText
@@ -40,6 +41,21 @@
                 android:layout_weight="1"
                 android:hint="@string/hint_password"
                 android:inputType="textPassword" />
+
+            <Button
+                android:id="@+id/forgotPasswordButton"
+                style="@style/Widget.AppCompat.Button.Small"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="@color/grey_300"
+                android:shadowColor="@color/grey_300"
+                android:text="Forgot password?"
+                android:textColor="#000000"
+                android:textColorLink="#FFFFFF"
+                android:textSize="8sp"
+                android:onClick=""
+                android:theme="@style/ThemeOverlay.MyDarkButton" />
         </LinearLayout>
 
         <LinearLayout

@@ -74,6 +74,9 @@ public class EnterMediaLoginActivity extends BaseActivity implements
         findViewById(R.id.emailCreateAccountButton).setOnClickListener(this);
         findViewById(R.id.signOutButton).setOnClickListener(this);
         findViewById(R.id.verifyEmailButton).setOnClickListener(this);
+        // Magic link button
+        findViewById(R.id.forgotPasswordButton).setOnClickListener(this);
+
 
         // [START initialize_auth]
         // Initialize Firebase Auth
@@ -113,7 +116,44 @@ public class EnterMediaLoginActivity extends BaseActivity implements
         }
     }
 
+    public void sendMagicLink(String email){
 
+        EnterMediaConnection connection = new EnterMediaConnection();
+        Log.d(TAG, "signIn:" + email);
+
+        UpdateActivity handler = new UpdateActivity(this,TAG)
+        {
+            @Override
+            public void runNetwork() {
+
+                showProgressDialog();
+                JSONObject obj = new JSONObject();
+
+                obj.put("to", email);
+                //      curl https://entermediadb.org/mediadb//services/authentication/firebaselogin.json?entermedia.key=426md5423a2a7c0c40a50970c656693f5975093002d4c
+                String url = EnterMediaConnection.MEDIADB + "/services/authentication/sendmagiclink.json";
+
+                //todo replace with mediadb api
+                JSONObject jsonreply = connection.postJson(url, obj);
+                setJsonData(jsonreply);
+            }
+
+            public void runUiUpdate()
+            {
+                getSharedPreferences("app",Context.MODE_PRIVATE).edit().
+                        putString("email", email).
+                        commit();
+            }
+
+            public void runUiFinally()
+            {
+                hideProgressDialog();
+            }
+        };
+        connection.process(handler);
+
+
+    }
     private void signIn(String email, String password, String entermediakey) {
         Log.d(TAG, "signIn:" + email);
 
@@ -276,6 +316,21 @@ public class EnterMediaLoginActivity extends BaseActivity implements
         return valid;
     }
 
+    private boolean validateMagicLink() {
+        // TODO: 5/20/20 make background of email yellow for alert.
+        boolean valid = true;
+
+        String email = mEmailField.getText().toString();
+        if (TextUtils.isEmpty(email)) {
+            mEmailField.setError("Required.");
+            valid = false;
+        } else {
+            mEmailField.setError(null);
+        }
+
+        return valid;
+    }
+
 //    private void updateUI(FirebaseUser user) {
 //        hideProgressDialog();
 //        if (user != null) {
@@ -318,6 +373,12 @@ public class EnterMediaLoginActivity extends BaseActivity implements
                 return;
             }
             signIn(mEmailField.getText().toString(), mPasswordField.getText().toString(),null);
+        }else if (i == R.id.forgotPasswordButton){
+            if (!validateMagicLink()){
+                return;
+            }
+            sendMagicLink(mEmailField.getText().toString());
+
         }
     }
 }
