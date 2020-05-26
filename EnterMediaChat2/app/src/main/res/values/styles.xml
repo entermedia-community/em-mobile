@@ -1,18 +1,25 @@
 <resources>
 
     <!-- Base application theme. -->
+
     <style name="AppTheme" parent="Theme.AppCompat.DayNight.DarkActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimary">@color/emgreen</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColor">@color/emgreen</item>
         <item name="android:actionButtonStyle">@style/ActionButton</item>
         <item name="listPreferredItemHeightSmall">32dp</item>
+        <item name="android:fontFamily">@font/open_sans_font</item>
     </style>
 
     <!--This is the main toolbar theme -->
     <style name="AppTheme.DarkToolbar" parent="ThemeOverlay.AppCompat.Dark" >
         <item name="listPreferredItemHeightSmall">32dp</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <!--Main background after logging in and background of sidebar-->
+        <item name="android:background">@color/black</item>
+        <item name="android:textColor">@color/emgreen</item>
+        <item name="android:color">@color/emgreen</item>
     </style>
 
 
@@ -22,6 +29,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:actionButtonStyle">@style/ActionButton</item>
         <item name="listPreferredItemHeightSmall">62dp</item>
+        <item name="android:textColor">@color/emgreen</item>
     </style>
 
 
@@ -31,6 +39,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:actionButtonStyle">@style/ActionButton</item>
         <item name="listPreferredItemHeightSmall">62dp</item>
+        <item name="android:color">@color/emgreen</item>
     </style>
 
 
@@ -58,7 +67,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:layout_marginRight">0dp</item>
         <item name="android:layout_marginLeft">0dp</item>
-        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textColor">@color/emgreen</item>
     </style>
 
     <!-- Light EditTexts -->
@@ -73,6 +82,7 @@
         <item name="android:padding">4dp</item>
         <item name="android:scrollbars">vertical</item>
         <item name="android:textSize">14sp</item>
+        <item name="android:color">@color/emgreen</item>
     </style>
 
     <style name="ThemeOverlay.FirebaseIcon" parent="AppTheme">
@@ -85,4 +95,8 @@
         <item name="android:textSize">36sp</item>
     </style>
 
+    <style name="AppTheme.NoActionBar." parent="AppTheme">
+        <item name="android:color">@color/emgreen</item>
+        <item name="android:textColor">@color/emgreen</item>
+    </style>
 </resources>

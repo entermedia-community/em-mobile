@@ -80,12 +80,13 @@ pw:hixst2q3
 
 file>projectstructure>Modules>defaultconfig
 -change version #'s
--export
+-change SDK version if needed
+-then go to Build> Generate Signed APK Bundle>Next>Next
 Go Here: https://play.google.com/apps/publish/?account=7056730519978099587#ManageReleasesPlace:p=org.entermediadb.app1&appid=4975355597455888380
 
 -change project in upper right to EnterMedia with right logo
 >Release Management
->upload bundle from git>em-mobile>EnterMediaChat2>build or debugRelease or release
+>upload bundle from git>em-mobile>EnterMediaChat2>build or debugRelease(prolly this one) or release
 -write release notes
 -save
 -release

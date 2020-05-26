@@ -3,8 +3,8 @@
     android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grey_100"
     android:orientation="vertical"
+    android:fontFamily="@font/open_sans_font"
     android:weightSum="5">
 
 
@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="4"
-        android:background="@color/grey_300"
+        android:background="@color/black"
         android:gravity="center_vertical">
 
         <LinearLayout
@@ -21,6 +21,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingLeft="16dp"
+            android:paddingBottom="100dp"
             android:paddingRight="16dp">
 
             <EditText
@@ -30,8 +31,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:hint="@string/hint_email"
-
-                android:inputType="textEmailAddress" />
+                android:inputType="textEmailAddress"
+                android:textColor="@color/emgreen"
+                android:textColorHint="@color/emgreen" />
 
             <EditText
                 android:id="@+id/fieldPassword"
@@ -40,9 +42,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:hint="@string/hint_password"
-                android:inputType="textPassword" />
-
-            <Button
+                android:inputType="textPassword"
+                android:textColor="@color/emgreen"
+                android:textColorHint="@color/emgreen" />
+            <!--<Button
                 android:id="@+id/forgotPasswordButton"
                 style="@style/Widget.AppCompat.Button.Small"
                 android:layout_width="match_parent"
@@ -54,8 +57,7 @@
                 android:textColor="#000000"
                 android:textColorLink="#FFFFFF"
                 android:textSize="8sp"
-                android:onClick=""
-                android:theme="@style/ThemeOverlay.MyDarkButton" />
+                android:theme="@style/ThemeOverlay.MyDarkButton" />-->
         </LinearLayout>
 
         <LinearLayout
@@ -74,16 +76,23 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/sign_in"
-                android:theme="@style/ThemeOverlay.MyDarkButton" />
+                android:theme="@style/ThemeOverlay.MyDarkButton"
+                android:textColor="@color/emgreen"
+                android:background="@color/black"
+                />
+
 
             <Button
-                android:id="@+id/emailCreateAccountButton"
+                android:id="@+id/forgotPasswordButton"
                 style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/create_account"
-                android:theme="@style/ThemeOverlay.MyDarkButton" />
+                android:text="@string/forgot_password"
+                android:theme="@style/ThemeOverlay.MyDarkButton"
+                android:textColor="@color/emgreen"
+                android:background="@color/black"
+                />
 
         </LinearLayout>
 

@@ -101,21 +101,21 @@ public class ChooserActivity extends AppCompatActivity implements AdapterView.On
 //        listView.setOnItemClickListener(this);
 //
         // ATTENTION: This was auto-generated to handle app links.
-        Intent appLinkIntent = getIntent();
-
-        if (appLinkIntent != null) {
-
-            if(appLinkIntent.getExtras() != null) {
-                Log.d(TAG, String.valueOf(appLinkIntent.getExtras().keySet()));
-            }
-            /*String appLinkAction = appLinkIntent.getAction();*/
-            Uri appLinkData = appLinkIntent.getData();
-            if(appLinkData != null) {
-                String urlKey = String.valueOf(appLinkData.getQueryParameters("entermedia.key"));
-                //Log.d(TAG, appLinkAction);
-                Log.d(TAG, String.valueOf(urlKey));
-            }
-        }
+//        Intent appLinkIntent = getIntent();
+//
+//        if (appLinkIntent != null) {
+//
+//            if(appLinkIntent.getExtras() != null) {
+//                Log.d(TAG, String.valueOf(appLinkIntent.getExtras().keySet()));
+//            }
+//            /*String appLinkAction = appLinkIntent.getAction();*/
+//            Uri appLinkData = appLinkIntent.getData();
+//            if(appLinkData != null) {
+//                String urlKey = String.valueOf(appLinkData.getQueryParameters("entermedia.key"));
+//                //Log.d(TAG, appLinkAction);
+//                Log.d(TAG, String.valueOf(urlKey));
+//            }
+//        }
 
         loginCheck();
 

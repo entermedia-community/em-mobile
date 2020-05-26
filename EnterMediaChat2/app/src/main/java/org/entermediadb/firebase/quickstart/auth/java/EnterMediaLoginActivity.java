@@ -71,7 +71,7 @@ public class EnterMediaLoginActivity extends BaseActivity implements
 
         // Buttons
         findViewById(R.id.emailSignInButton).setOnClickListener(this);
-        findViewById(R.id.emailCreateAccountButton).setOnClickListener(this);
+        //findViewById(R.id.emailCreateAccountButton).setOnClickListener(this);
         findViewById(R.id.signOutButton).setOnClickListener(this);
         findViewById(R.id.verifyEmailButton).setOnClickListener(this);
         // Magic link button
@@ -310,7 +310,7 @@ public class EnterMediaLoginActivity extends BaseActivity implements
             mPasswordField.setError("Required.");
             valid = false;
         } else {
-            mPasswordField.setError(null);
+            mPasswordField.setError("Email sent!");
         }
 
         return valid;
