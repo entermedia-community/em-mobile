@@ -323,6 +323,7 @@ public class EnterMediaLoginActivity extends BaseActivity implements
         String email = mEmailField.getText().toString();
         if (TextUtils.isEmpty(email)) {
             mEmailField.setError("Required.");
+            mEmailField.setHighlightColor(android.R.attr.colorAccent);
             valid = false;
         } else {
             mEmailField.setError(null);
@@ -377,6 +378,7 @@ public class EnterMediaLoginActivity extends BaseActivity implements
             if (!validateMagicLink()){
                 return;
             }
+            Toast.makeText(this, "Sent! Please check your e-mail.", Toast.LENGTH_LONG).show();
             sendMagicLink(mEmailField.getText().toString());
 
         }
