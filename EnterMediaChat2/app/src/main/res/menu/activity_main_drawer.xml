@@ -8,15 +8,14 @@
         android:checkableBehavior="single"
         >
         <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="@string/menu_home" />
+        <item
             android:id="@+id/nav_messages"
             android:icon="@drawable/ic_person_white"
             android:title="@string/menu_messages"
             />
-
-        <item
-            android:id="@+id/nav_home"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="@string/menu_home" />
    <!--     <item
             android:id="@+id/nav_gallery"
             android:icon="@drawable/ic_menu_gallery"
@@ -24,8 +23,13 @@
             android:title="@string/menu_gallery" />
 -->
         <item
+            android:id="@+id/nav_upload"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="@string/Upload" />
+
+        <item
             android:id="@+id/nav_tools"
-            android:icon="@drawable/ic_person_white"
+            android:icon="@drawable/ic_menu_manage"
             android:title="@string/menu_tools" />
     </group>
 

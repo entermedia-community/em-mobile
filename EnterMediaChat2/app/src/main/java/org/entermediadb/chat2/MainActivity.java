@@ -526,8 +526,8 @@ public class MainActivity extends AppCompatActivity
                     String title = "Recent Tickets";
                     org.entermediadb.chat2.ui.web.WebViewFragment browser = showBrowser(title,url);
                     return;
-                case R.id.nav_gallery:
-                    fragmentClass = org.entermediadb.chat2.ui.gallery.GalleryFragment.class;
+                case R.id.nav_upload:
+                    fragmentClass = org.entermediadb.chat2.ui.upload.UploadFragment.class;
                     break;
                 case R.id.nav_messages:
                     url = EnterMediaConnection.EMINSTITUTE + "/messages/index.html";
