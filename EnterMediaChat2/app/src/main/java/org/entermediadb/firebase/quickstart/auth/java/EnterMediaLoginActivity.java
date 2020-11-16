@@ -310,7 +310,7 @@ public class EnterMediaLoginActivity extends BaseActivity implements
             mPasswordField.setError("Required.");
             valid = false;
         } else {
-            mPasswordField.setError("Email sent!");
+            mPasswordField.setError(null);
         }
 
         return valid;
@@ -326,7 +326,7 @@ public class EnterMediaLoginActivity extends BaseActivity implements
             mEmailField.setHighlightColor(android.R.attr.colorAccent);
             valid = false;
         } else {
-            mEmailField.setError(null);
+            mEmailField.setError("Email sent");
         }
 
         return valid;

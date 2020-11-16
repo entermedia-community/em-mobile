@@ -9,8 +9,8 @@ android {
         applicationId "org.entermediadb.chat2"
         minSdkVersion 23
         targetSdkVersion 28
-        versionCode 126
-        versionName '126_Magic_Link_Black'
+        versionCode 127
+        versionName '127_Upload'
         multiDexEnabled true
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
